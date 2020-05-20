@@ -1,0 +1,27 @@
+import 'package:json_annotation/json_annotation.dart';
+import 'package:scaler/back/entity/base.dart';
+
+part 'plan.g.dart';
+
+
+final String tablePlan = 'plan';
+final String Plan_id = 'id';
+final String Plan_content = 'content';
+
+@JsonSerializable()
+class Plan extends Base {
+
+  int id;
+
+  String content;
+
+  Plan(
+    this.id,
+    this.content,
+  );
+
+  factory Plan.fromJson(Map<String, dynamic> srcJson) =>
+      _$PlanFromJson(srcJson);
+
+  Map<String, dynamic> toJson() => _$PlanToJson(this);
+}
