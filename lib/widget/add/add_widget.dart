@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
 import 'package:gzx_dropdown_menu/gzx_dropdown_menu.dart';
 
+import 'add_page.dart';
+
 class AddWidget extends StatefulWidget {
   final Widget child;
   final GZXDropdownMenuController dropdownMenuController;
@@ -39,13 +41,14 @@ class AddWidgetState extends State<AddWidget> {
           // 下拉菜单，高度自定义，你想显示什么就显示什么，完全由你决定，你只需要在选择后调用_dropdownMenuController.hide();即可
           menus: [
             GZXDropdownMenuBuilder(
-              dropDownHeight: scaler.getHeight(30),
-              dropDownWidget: Container(
-                width: scaler.getWidth(100),
-                height: scaler.getHeight(30),
-                color: Colors.blue,
-                child: Text('hhd'),
-              ),
+              dropDownHeight: scaler.getHeight(50),
+//              dropDownWidget: Container(
+//                width: scaler.getWidth(100),
+//                height: scaler.getHeight(30),
+//                color: Colors.blue,
+//                child: Text('hhd'),
+//              ),
+              dropDownWidget: TabBarTabPage(),
             ),
           ]),
     ]);
