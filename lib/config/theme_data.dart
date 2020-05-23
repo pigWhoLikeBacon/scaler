@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'config.dart';
+
 final Map<String, ThemeData> themes = {
   'light' : ThemeData(
     primaryColor: Colors.blue,
@@ -12,3 +14,11 @@ final Map<String, ThemeData> themes = {
     brightness: Brightness.dark,
   )
 };
+
+abstract class TD {
+  static ThemeData td;
+
+  static init() {
+    td = themes[Config.get('themeKey')];
+  }
+}

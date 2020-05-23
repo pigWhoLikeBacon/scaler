@@ -78,5 +78,6 @@ class _SettingsPageState extends State<SettingsPage> {
       Config.set('themeKey', 'dark');
       DynamicTheme.of(context).setThemeData(themes[Config.get('themeKey')]);
     }
+    TD.init();
   }
 }

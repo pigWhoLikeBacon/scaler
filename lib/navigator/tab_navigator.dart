@@ -5,7 +5,7 @@ import 'package:scaler/page/calendar_page.dart';
 import 'package:scaler/page/plan_page.dart';
 import 'package:scaler/util/dialog_utils.dart';
 import 'package:scaler/web/http.dart';
-import 'package:scaler/widget/add_widget.dart';
+import 'file:///C:/Users/hhd/AndroidStudioProjects/scaler-master/lib/widget/add/add_widget.dart';
 
 class TabNavigator extends StatefulWidget {
   @override
@@ -49,7 +49,11 @@ class _TabNavigatorState extends State<TabNavigator> {
         child: Icon(Icons.add),
         heroTag: 'add',
         onPressed: () {
-          _dropdownMenuController.show(0);
+          if (_dropdownMenuController.isShow) {
+            _dropdownMenuController.hide();
+          } else {
+            _dropdownMenuController.show(0);
+          }
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

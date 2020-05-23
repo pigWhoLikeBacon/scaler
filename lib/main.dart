@@ -14,6 +14,7 @@ void main() async {
   await SP.init();
   await DB.init();
   Config.init();
+  TD.init();
   await HC.init();
   runApp(MyApp());
 }
