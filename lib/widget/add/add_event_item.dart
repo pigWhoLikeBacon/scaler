@@ -11,7 +11,8 @@ class AddEventItem extends StatefulWidget {
 }
 
 class AddEventItemState extends State<AddEventItem> {
-  String _username, _password;
+  String _content;
+  DateTime _time;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -32,23 +33,39 @@ class AddEventItemState extends State<AddEventItem> {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Divider(),
-                      GestureDetector(
-                        onTap: () {
-                          DatePicker.showDateTimePicker(context,
-                              showTitleActions: true,
-                              minTime: DateTime(2018, 3, 5),
-                              maxTime: DateTime(2019, 6, 7),
-                              onConfirm: (date) {
-                                print('confirm $date');
-                              },
-                              currentTime: DateTime.now(),
-                              locale: LocaleType.en);
-                        },
-                        child: Text(
-                          'show date time picker (Chinese)',
-                          style: TextStyle(color: Colors.blue),
+                        FlatButton(
+                          onPressed: () {
+                            DatePicker.showDateTimePicker(context,
+                                showTitleActions: true,
+                                minTime: DateTime(2018, 3, 5),
+                                maxTime: DateTime(2019, 6, 7),
+                                onConfirm: (date) {
+                                  setState(() {
+                                    _time = date;
+                                  });
+                                },
+                                currentTime: DateTime.now(),
+                                locale: LocaleType.en);
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(6, 0, 10, 0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text('Start Time'),
+                                    SizedBox(height: 6, width: 1,),
+                                    Text('$_time'),
+                                  ],
+                                ),
+                                Icon(Icons.arrow_forward_ios),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
                         Divider(),
                         ListTile(
                           title: TextFormField(
@@ -58,7 +75,7 @@ class AddEventItemState extends State<AddEventItem> {
                             decoration: InputDecoration(labelText: 'Content'),
                             validator: (val) =>
                             val.length < 1 ? 'Content Required' : null,
-                            onSaved: (val) => _username = val,
+                            onSaved: (val) => _content = val,
                             obscureText: false,
                             keyboardType: TextInputType.text,
                             autocorrect: false,

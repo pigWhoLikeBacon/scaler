@@ -5,7 +5,7 @@ import 'package:scaler/page/calendar_page.dart';
 import 'package:scaler/page/plan_page.dart';
 import 'package:scaler/util/dialog_utils.dart';
 import 'package:scaler/web/http.dart';
-import 'file:///C:/Users/hhd/AndroidStudioProjects/scaler-master/lib/widget/add/add_widget.dart';
+import 'package:scaler/widget/add/add_widget.dart';
 
 class TabNavigator extends StatefulWidget {
   @override
@@ -51,6 +51,7 @@ class _TabNavigatorState extends State<TabNavigator> {
         onPressed: () {
           if (_dropdownMenuController.isShow) {
             _dropdownMenuController.hide();
+            FocusScope.of(context).requestFocus(FocusNode());
           } else {
             _dropdownMenuController.show(0);
           }

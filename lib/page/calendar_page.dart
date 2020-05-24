@@ -1,6 +1,7 @@
 import 'dart:math' show pi;
 
 import 'package:flutter/material.dart';
+import 'package:scaler/back/entity/plan.dart';
 import 'package:scaler/widget/drawer_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:toggle_rotate/toggle_rotate.dart';
@@ -102,7 +103,7 @@ class _CalendarPageState extends State<CalendarPage>
           const SizedBox(height: 8.0),
           _buildButtons(),
           const SizedBox(height: 8.0),
-          Expanded(child: _buildEventList()),
+          Expanded(child: _buildList())
         ],
       ),
     );
@@ -285,11 +286,12 @@ class _CalendarPageState extends State<CalendarPage>
             child: ToggleRotate(
               rad: pi,
               curve: Curves.linear,
-              child:
-                  Icon(Icons.arrow_drop_up, size: 50, color: Colors.orangeAccent),
+              child: Icon(Icons.arrow_drop_up,
+                  size: 50, color: Colors.orangeAccent),
               onTap: () {
                 setState(() {
-                  if (_calendarController.calendarFormat == CalendarFormat.month) {
+                  if (_calendarController.calendarFormat ==
+                      CalendarFormat.month) {
                     _calendarController.setCalendarFormat(CalendarFormat.week);
                   } else {
                     _calendarController.setCalendarFormat(CalendarFormat.month);
@@ -303,22 +305,89 @@ class _CalendarPageState extends State<CalendarPage>
     );
   }
 
-  Widget _buildEventList() {
-    return ListView(
-      children: _selectedEvents
-          .map((event) => Container(
-                decoration: BoxDecoration(
-                  border: Border.all(width: 0.8),
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                child: ListTile(
-                  title: Text(event.toString()),
-                  onTap: () => print('$event tapped!'),
-                ),
-              ))
-          .toList(),
+  List<Plan> _plans = [
+    Plan(1, 'content1'),
+    Plan(2, 'content2'),
+    Plan(3, 'content3'),
+  ];
+
+  Widget _buildList() {
+    List<Widget> _totalList = <Widget>[];
+
+    List<Widget> _planList = <Widget>[];
+    _plans.forEach((plan) {
+      _planList.add(Container(
+        child: ListTile(
+          title: Text(plan.content),
+          onTap: () => print('$plan tapped!'),
+        ),
+      ));
+      _planList.add(Divider());
+    });
+    _planList.removeLast();
+    Widget _planItem = Container(
+      decoration: BoxDecoration(
+        border: Border.all(width: 0.8),
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      child: Column(
+        children: _planList,
+      ),
     );
+
+//    print(_planList.toString());
+
+    List<Widget> _eventList = _selectedEvents
+        .map((event) => Container(
+              decoration: BoxDecoration(
+                border: Border.all(width: 0.8),
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              margin:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              child: ListTile(
+                title: Text(event.toString()),
+                onTap: () => print('$event tapped!'),
+              ),
+            ))
+        .toList();
+
+    Widget _logItem = Container(
+      decoration: BoxDecoration(
+        border: Border.all(width: 0.8),
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      child: Column(
+        children: <Widget>[
+          Text('hhd'),
+          Container(
+            width: 1000,
+            color: Colors.amber,
+            child: FlatButton(
+              onPressed: () {
+                print('hhd');
+              },
+              child: Text('hhd'),
+            ),
+          ),
+//          Divider(),
+//          FlatButton(
+//              onPressed: () {
+//                print('hhd');
+//              },
+//              child: Text('hhd'),
+//          ),
+        ],
+      ),
+    );
+
+    _totalList
+      ..add(_planItem)
+      ..addAll(_eventList)
+      ..add(_logItem);
+
+    return ListView(children: _totalList);
   }
 }
