@@ -1,5 +1,6 @@
 import 'dart:math' show pi;
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scaler/back/entity/plan.dart';
 import 'package:scaler/widget/drawer_widget.dart';
@@ -336,8 +337,6 @@ class _CalendarPageState extends State<CalendarPage>
       ),
     );
 
-//    print(_planList.toString());
-
     List<Widget> _eventList = _selectedEvents
         .map((event) => Container(
               decoration: BoxDecoration(
@@ -353,40 +352,60 @@ class _CalendarPageState extends State<CalendarPage>
             ))
         .toList();
 
-    Widget _logItem = Container(
-      decoration: BoxDecoration(
-        border: Border.all(width: 0.8),
-        borderRadius: BorderRadius.circular(12.0),
+    List<Widget> _logList = <Widget>[
+      Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
       ),
-      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-      child: Column(
-        children: <Widget>[
-          Text('hhd'),
-          Container(
-            width: 1000,
-            color: Colors.amber,
-            child: FlatButton(
-              onPressed: () {
-                print('hhd');
-              },
-              child: Text('hhd'),
+      Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
+        decoration: BoxDecoration(
+          color: Colors.grey[400],
+          borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(15.0),
+            topRight: const Radius.circular(15.0),
+          ), // BorderRadius
+        ), // BoxDecoration
+        child: Container(
+          height: 100,
+          margin: const EdgeInsetsDirectional.only(start: 2, end: 2, top: 2),
+          decoration: BoxDecoration(
+            color: Colors.grey[300],
+
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(12.0),
+              topRight: const Radius.circular(12.0),
+            ), // BorderRadius
+          ), // BoxDecoration
+        ), // Container
+      ), // Container
+      Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
+        child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              bottomLeft: const Radius.circular(12.0),
+              bottomRight: const Radius.circular(12.0),
             ),
-          ),
-//          Divider(),
-//          FlatButton(
-//              onPressed: () {
-//                print('hhd');
-//              },
-//              child: Text('hhd'),
-//          ),
-        ],
+            child: Container(
+              color: Colors.amber,// BorderRadius
+              child: FlatButton(
+                color: Colors.amber,
+                onPressed: () {
+                  print('hhd');
+                },
+                child: Text('hhd'),
+              ),
+            ),
+        ),
       ),
-    );
+      Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      ),
+    ];
 
     _totalList
       ..add(_planItem)
       ..addAll(_eventList)
-      ..add(_logItem);
+      ..addAll(_logList);
 
     return ListView(children: _totalList);
   }
