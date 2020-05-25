@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scaler/back/entity/plan.dart';
 import 'package:scaler/config/theme_data.dart';
+import 'package:scaler/page/edit_log_page.dart';
 import 'package:scaler/widget/drawer_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:toggle_rotate/toggle_rotate.dart';
@@ -393,6 +394,8 @@ class _CalendarPageState extends State<CalendarPage>
             child: FlatButton(
               onPressed: () {
                 print('hhd');
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => EditLogPage()));
               },
               child: Text('hhd'),
             ),

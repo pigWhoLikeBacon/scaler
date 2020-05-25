@@ -2,6 +2,7 @@ import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flare_splash_screen/flare_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:scaler/navigator/tab_navigator.dart';
+import 'package:scaler/util/init_utils.dart';
 import 'package:scaler/web/http.dart';
 
 import 'back/database/db.dart';
@@ -16,6 +17,7 @@ void main() async {
   Config.init();
   TD.init();
   await HC.init();
+  await InitUtils.setToday();
   runApp(MyApp());
 }
 
