@@ -3,6 +3,7 @@ import 'dart:math' show pi;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scaler/back/entity/plan.dart';
+import 'package:scaler/config/theme_data.dart';
 import 'package:scaler/widget/drawer_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:toggle_rotate/toggle_rotate.dart';
@@ -359,42 +360,43 @@ class _CalendarPageState extends State<CalendarPage>
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
         decoration: BoxDecoration(
-          color: Colors.grey[400],
+          color: Colors.orange,
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(15.0),
             topRight: const Radius.circular(15.0),
           ), // BorderRadius
         ), // BoxDecoration
         child: Container(
-          height: 100,
           margin: const EdgeInsetsDirectional.only(start: 2, end: 2, top: 2),
           decoration: BoxDecoration(
-            color: Colors.grey[300],
-
+            color: TD.td.cardColor,
             borderRadius: BorderRadius.only(
               topLeft: const Radius.circular(12.0),
               topRight: const Radius.circular(12.0),
             ), // BorderRadius
-          ), // BoxDecoration
+          ),
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+            child: Text('data'),
+          ),// BoxDecoration
         ), // Container
       ), // Container
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
         child: ClipRRect(
-            borderRadius: BorderRadius.only(
-              bottomLeft: const Radius.circular(12.0),
-              bottomRight: const Radius.circular(12.0),
+          borderRadius: BorderRadius.only(
+            bottomLeft: const Radius.circular(12.0),
+            bottomRight: const Radius.circular(12.0),
+          ),
+          child: Container(
+            color: Colors.cyan,
+            child: FlatButton(
+              onPressed: () {
+                print('hhd');
+              },
+              child: Text('hhd'),
             ),
-            child: Container(
-              color: Colors.amber,// BorderRadius
-              child: FlatButton(
-                color: Colors.amber,
-                onPressed: () {
-                  print('hhd');
-                },
-                child: Text('hhd'),
-              ),
-            ),
+          ),
         ),
       ),
       Container(
