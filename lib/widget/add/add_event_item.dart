@@ -1,7 +1,14 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:scaler/back/database/db.dart';
+import 'package:scaler/back/entity/day.dart';
+import 'package:scaler/back/entity/event.dart';
 import 'package:scaler/config/theme_data.dart';
+import 'package:scaler/page/calendar_page.dart';
+import 'package:scaler/util/dialog_utils.dart';
+import 'package:scaler/util/init_utils.dart';
 import 'package:scaler/widget/simple_round_button.dart';
 
 class AddEventItem extends StatefulWidget {
@@ -12,12 +19,14 @@ class AddEventItem extends StatefulWidget {
 
 class AddEventItemState extends State<AddEventItem> {
   String _content;
-  DateTime _time;
+  DateTime _dateTime;
 
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    _dateTime = DateTime.now();
+
     return Container(
       child: Column(
         children: <Widget>[
@@ -37,14 +46,14 @@ class AddEventItemState extends State<AddEventItem> {
                           onPressed: () {
                             DatePicker.showDateTimePicker(context,
                                 showTitleActions: true,
-                                minTime: DateTime(2018, 3, 5),
-                                maxTime: DateTime(2019, 6, 7),
-                                onConfirm: (date) {
+                                minTime: DateTime(2019, 3, 5),
+                                maxTime: DateTime(2021, 6, 7),
+                                onConfirm: (data) {
                                   setState(() {
-                                    _time = date;
+                                    _dateTime = data;
                                   });
                                 },
-                                currentTime: DateTime.now(),
+                                currentTime: _dateTime,
                                 locale: LocaleType.en);
                           },
                           child: Padding(
@@ -58,7 +67,7 @@ class AddEventItemState extends State<AddEventItem> {
                                   children: <Widget>[
                                     Text('Start Time'),
                                     SizedBox(height: 6, width: 1,),
-                                    Text('$_time'),
+                                    Text(formatDate(_dateTime, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss])),
                                   ],
                                 ),
                                 Icon(Icons.arrow_forward_ios),
@@ -97,7 +106,7 @@ class AddEventItemState extends State<AddEventItem> {
                 textColor: Colors.white,
                 buttonText: Text("SUBMIT"),
                 onPressed: () {
-                  print(TD.td.accentColor);
+                  _submit();
                 },
               ),
             ),
@@ -105,5 +114,21 @@ class AddEventItemState extends State<AddEventItem> {
         ],
       ),
     );
+  }
+
+  _submit() async {
+    DialogUtils.showLoader(context, 'Adding...');
+
+    _formKey.currentState.save();
+
+    int dayId = await InitUtils.setDay(_dateTime);
+    String time = formatDate(_dateTime, [HH, ':', nn, ':', ss]);
+    Event event = new Event(null, dayId, time, _content);
+    await DB.save(tableEvent, event);
+
+    Navigator.of(context).pop();
+    DialogUtils.showTextDialog(context, 'Successfully added!');
+
+//    print(await DB.query(tableEvent));
   }
 }

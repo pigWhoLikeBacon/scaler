@@ -17,7 +17,7 @@ void main() async {
   Config.init();
   TD.init();
   await HC.init();
-  await InitUtils.setToday();
+  await InitUtils.setDay(DateTime.now());
   runApp(MyApp());
 }
 

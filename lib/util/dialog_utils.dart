@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scaler/config/config.dart';
 import 'package:scaler/config/theme_data.dart';
@@ -68,5 +69,24 @@ class DialogUtils {
                 )));
       },
     );
+  }
+
+  static void showTextDialog(BuildContext context, String text) {
+    var dialog = CupertinoAlertDialog(
+      content: Text(
+        text,
+        style: TextStyle(fontSize: 20),
+      ),
+      actions: <Widget>[
+        CupertinoButton(
+          child: Text("OK"),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ],
+    );
+
+    showDialog(context: context, builder: (_) => dialog);
   }
 }

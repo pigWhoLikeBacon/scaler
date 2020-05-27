@@ -53,6 +53,7 @@ class _TabNavigatorState extends State<TabNavigator> {
             _dropdownMenuController.hide();
             FocusScope.of(context).requestFocus(FocusNode());
           } else {
+            setState(() {});   // rebuild menu
             _dropdownMenuController.show(0);
           }
         },
@@ -76,23 +77,5 @@ class _TabNavigatorState extends State<TabNavigator> {
           ? Theme.of(context).accentColor
           : Theme.of(context).unselectedWidgetColor,
     );
-  }
-
-  add() async {
-    DialogUtils.showLoader(context, 'text');
-
-    await HC.getDio().get('http://www.baidu.com');
-//    Navigator.pop(context);
-//          sleep(Duration(seconds: 3));
-//          Navigator.of(context).pop();
-    if (context != null) {
-      Navigator.of(context).pop();
-      print(context);
-      print(1);
-    } else {
-      print(2);
-    }
-
-    print('hhd');
   }
 }

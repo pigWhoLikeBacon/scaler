@@ -23,8 +23,14 @@ class CalendarPage extends StatefulWidget {
 
   final String title;
 
+  static CalendarController _calendarController;
+
   @override
   _CalendarPageState createState() => _CalendarPageState();
+
+  static DateTime getSelectedDay() {
+    return _calendarController.selectedDay;
+  }
 }
 
 class _CalendarPageState extends State<CalendarPage>
@@ -32,7 +38,6 @@ class _CalendarPageState extends State<CalendarPage>
   Map<DateTime, List> _events;
   List _selectedEvents;
   AnimationController _animationController;
-  CalendarController _calendarController;
 
   @override
   void initState() {
@@ -55,7 +60,7 @@ class _CalendarPageState extends State<CalendarPage>
     };
 
     _selectedEvents = _events[_selectedDay] ?? [];
-    _calendarController = CalendarController();
+    CalendarPage._calendarController = CalendarController();
 
     _animationController = AnimationController(
       vsync: this,
@@ -68,7 +73,7 @@ class _CalendarPageState extends State<CalendarPage>
   @override
   void dispose() {
     _animationController.dispose();
-    _calendarController.dispose();
+    CalendarPage._calendarController.dispose();
     super.dispose();
   }
 
@@ -115,7 +120,7 @@ class _CalendarPageState extends State<CalendarPage>
   // Simple TableCalendar configuration (using Styles)
   Widget _buildTableCalendar() {
     return TableCalendar(
-      calendarController: _calendarController,
+      calendarController: CalendarPage._calendarController,
       events: _events,
       holidays: _holidays,
       startingDayOfWeek: StartingDayOfWeek.monday,
@@ -143,7 +148,7 @@ class _CalendarPageState extends State<CalendarPage>
   Widget _buildTableCalendarWithBuilders() {
     return TableCalendar(
       locale: 'pl_PL',
-      calendarController: _calendarController,
+      calendarController: CalendarPage._calendarController,
       events: _events,
       holidays: _holidays,
       initialCalendarFormat: CalendarFormat.month,
@@ -236,9 +241,9 @@ class _CalendarPageState extends State<CalendarPage>
       duration: const Duration(milliseconds: 300),
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
-        color: _calendarController.isSelected(date)
+        color: CalendarPage._calendarController.isSelected(date)
             ? Colors.brown[500]
-            : _calendarController.isToday(date)
+            : CalendarPage._calendarController.isToday(date)
                 ? Colors.brown[300]
                 : Colors.blue[400],
       ),
@@ -277,7 +282,7 @@ class _CalendarPageState extends State<CalendarPage>
               child: Text(
                   'Set day ${dateTime.day}-${dateTime.month}-${dateTime.year}'),
               onPressed: () {
-                _calendarController.setSelectedDay(
+                CalendarPage._calendarController.setSelectedDay(
                   DateTime(dateTime.year, dateTime.month, dateTime.day),
                   runCallback: true,
                 );
@@ -293,11 +298,11 @@ class _CalendarPageState extends State<CalendarPage>
                   size: 50, color: Colors.orangeAccent),
               onTap: () {
                 setState(() {
-                  if (_calendarController.calendarFormat ==
+                  if (CalendarPage._calendarController.calendarFormat ==
                       CalendarFormat.month) {
-                    _calendarController.setCalendarFormat(CalendarFormat.week);
+                    CalendarPage._calendarController.setCalendarFormat(CalendarFormat.week);
                   } else {
-                    _calendarController.setCalendarFormat(CalendarFormat.month);
+                    CalendarPage._calendarController.setCalendarFormat(CalendarFormat.month);
                   }
                 });
               }, //点击事件
@@ -311,7 +316,6 @@ class _CalendarPageState extends State<CalendarPage>
   List<Plan> _plans = [
     Plan(1, 'content1'),
     Plan(2, 'content2'),
-    Plan(3, 'content3'),
   ];
 
   Widget _buildList() {

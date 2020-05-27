@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
 import 'package:scaler/config/config.dart';
+import 'package:scaler/widget/add/add_plan_item.dart';
 
 import 'add_event_item.dart';
 
@@ -38,7 +39,7 @@ class TabBarTabPageState extends State<TabBarTabPage> {
           labelTitle: "plan",
           icon: Icons.announcement,
           child: Container(
-            child: Text('2'),
+            child: AddPlanItem(),
           )),
     ];
 
