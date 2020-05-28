@@ -35,7 +35,8 @@ create table $tableEvent (
     await db.execute('''
 create table $tablePlan ( 
   $Plan_id integer primary key autoincrement, 
-  $Plan_content text not null)
+  $Plan_content text not null,
+  $Plan_isActive integer not null)
 ''');
 
     await db.execute('''

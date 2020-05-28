@@ -118,16 +118,22 @@ class _EditLogPageState extends State<EditLogPage> {
 
     _formKey.currentState.save();
 
-    int dayId = await InitUtils.setDay(_date);
-    var map = await DB.findById(tableDay, dayId);
-    Day day = Day.fromJson(map);
+    try {
+      int dayId = await InitUtils.setDay(_date);
+      var map = await DB.findById(tableDay, dayId);
+      Day day = Day.fromJson(map);
 
-    day.log = _content;
+      day.log = _content;
 
-    await DB.save(tableDay, day);
+      await DB.save(tableDay, day);
 
-    Navigator.of(context).pop();
-    DialogUtils.showTextDialog(context, 'Successfully edited!');
+      Navigator.of(context).pop();
+      DialogUtils.showTextDialog(context, 'Successfully edited!');
+    } catch (e) {
+      Navigator.of(context).pop();
+      DialogUtils.showTextDialog(context, 'Error:' + e.toString());
+      throw e;
+    }
 
 //    print(await DB.query(tableDay));
   }

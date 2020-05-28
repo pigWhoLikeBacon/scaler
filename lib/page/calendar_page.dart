@@ -314,8 +314,8 @@ class _CalendarPageState extends State<CalendarPage>
   }
 
   List<Plan> _plans = [
-    Plan(1, 'content1'),
-    Plan(2, 'content2'),
+    Plan(1, 'content1', 1,),
+    Plan(2, 'content2', 1,),
   ];
 
   Widget _buildList() {

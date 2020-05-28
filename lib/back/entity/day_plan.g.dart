@@ -11,7 +11,7 @@ DayPlan _$DayPlanFromJson(Map<String, dynamic> json) {
     json['id'] as int,
     json['day_id'] as int,
     json['plan_id'] as int,
-    json['isDone'] as bool,
+    json['isDone'] as int,
   );
 }
 

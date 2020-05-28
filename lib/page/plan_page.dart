@@ -1,34 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:scaler/back/database/db.dart';
 import 'package:scaler/back/entity/plan.dart';
+import 'package:scaler/back/service/plan.dart';
 import 'package:scaler/widget/drawer_widget.dart';
 
 
-List<Plan> _plans = [
-  Plan(1, 'content1'),
-  Plan(2, 'content2'),
-  Plan(3, 'content3'),
-  Plan(4, 'content4'),
-  Plan(5, 'content5'),
-  Plan(6, 'content6'),
-  Plan(7, 'content7'),
-  Plan(8, 'content8'),
-  Plan(9, 'content9'),
-];
+//List<Plan> _plans = [
+//  Plan(1, 'content1', true,),
+//  Plan(2, 'content2', true,),
+//  Plan(3, 'content3', true,),
+//  Plan(4, 'content4', true,),
+//  Plan(5, 'content5', true,),
+//  Plan(6, 'content6', true,),
+//  Plan(7, 'content7', true,),
+//  Plan(8, 'content8', true,),
+//  Plan(9, 'content9', true,),
+//];
 
 class PlanPage extends StatefulWidget {
   @override
   _PlanPageState createState() => _PlanPageState();
 }
 
-class _PlanPageState extends State<PlanPage> with TickerProviderStateMixin {
+class _PlanPageState extends State<PlanPage>{
 
-  //缓存页面
-  @override
-  bool get wantKeepAlive => true;
+  List<Plan> _plans = [];
 
   @override
   void initState() {
+    _loadData();
+
     super.initState();
+  }
+
+  _loadData() async {
+    var plans = await PlanService.getActivePlans();
+    setState(() {
+      _plans = plans;
+    });
   }
 
   @override

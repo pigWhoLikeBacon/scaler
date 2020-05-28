@@ -7,6 +7,7 @@ part 'plan.g.dart';
 final String tablePlan = 'plan';
 final String Plan_id = 'id';
 final String Plan_content = 'content';
+final String Plan_isActive = 'isActive';
 
 @JsonSerializable()
 class Plan extends Base {
@@ -15,9 +16,12 @@ class Plan extends Base {
 
   String content;
 
+  int isActive;
+
   Plan(
     this.id,
     this.content,
+    this.isActive,
   );
 
   factory Plan.fromJson(Map<String, dynamic> srcJson) =>

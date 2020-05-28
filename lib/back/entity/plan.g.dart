@@ -10,10 +10,12 @@ Plan _$PlanFromJson(Map<String, dynamic> json) {
   return Plan(
     json['id'] as int,
     json['content'] as String,
+    json['isActive'] as int,
   );
 }
 
 Map<String, dynamic> _$PlanToJson(Plan instance) => <String, dynamic>{
       'id': instance.id,
       'content': instance.content,
+      'isActive': instance.isActive,
     };

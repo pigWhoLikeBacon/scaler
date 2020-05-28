@@ -19,7 +19,7 @@ class DayPlan extends Base {
 
   int plan_id;
 
-  bool isDone;
+  int isDone;
 
   DayPlan(this.id,this.day_id,this.plan_id,this.isDone,);
 

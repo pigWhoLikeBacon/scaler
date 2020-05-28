@@ -82,10 +82,10 @@ class AddPlanItemState extends State<AddPlanItem> {
 
     int dayId = await InitUtils.setDay(DateTime.now());
 
-    Plan plan = new Plan(null, _content);
+    Plan plan = new Plan(null, _content, 1);
     int planId = await DB.save(tablePlan, plan);
 
-    DayPlan dayPlan = new DayPlan(null, dayId, planId, false);
+    DayPlan dayPlan = new DayPlan(null, dayId, planId, 0);
     await DB.save(tableDayPlan, dayPlan);
 
     Navigator.of(context).pop();
