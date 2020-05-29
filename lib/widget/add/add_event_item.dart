@@ -5,10 +5,10 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:scaler/back/database/db.dart';
 import 'package:scaler/back/entity/day.dart';
 import 'package:scaler/back/entity/event.dart';
+import 'package:scaler/back/service/day_service.dart';
 import 'package:scaler/config/theme_data.dart';
 import 'package:scaler/page/calendar_page.dart';
 import 'package:scaler/util/dialog_utils.dart';
-import 'package:scaler/util/init_utils.dart';
 import 'package:scaler/widget/simple_round_button.dart';
 
 class AddEventItem extends StatefulWidget {
@@ -119,15 +119,21 @@ class AddEventItemState extends State<AddEventItem> {
   _submit() async {
     DialogUtils.showLoader(context, 'Adding...');
 
-    _formKey.currentState.save();
+    try {
+      _formKey.currentState.save();
 
-    int dayId = await InitUtils.setDay(_dateTime);
-    String time = formatDate(_dateTime, [HH, ':', nn, ':', ss]);
-    Event event = new Event(null, dayId, time, _content);
-    await DB.save(tableEvent, event);
+      int dayId = await DayService.setDay(_dateTime);
+      String time = formatDate(_dateTime, [HH, ':', nn, ':', ss]);
+      Event event = new Event(null, dayId, time, _content);
+      await DB.save(tableEvent, event);
 
-    Navigator.of(context).pop();
-    DialogUtils.showTextDialog(context, 'Successfully added!');
+      Navigator.of(context).pop();
+      DialogUtils.showTextDialog(context, 'Successfully added!');
+    } catch (e) {
+      Navigator.of(context).pop();
+      DialogUtils.showTextDialog(context, 'Error' + e.toString());
+      throw e;
+    }
 
 //    print(await DB.query(tableEvent));
   }

@@ -18,6 +18,7 @@ class Plan extends Base {
 
   int isActive;
 
+  /// isActive is bool, true is 1, false is 0
   Plan(
     this.id,
     this.content,

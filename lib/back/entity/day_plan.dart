@@ -21,6 +21,7 @@ class DayPlan extends Base {
 
   int isDone;
 
+  /// isDone is bool, true is 1, false is 0
   DayPlan(this.id,this.day_id,this.plan_id,this.isDone,);
 
   factory DayPlan.fromJson(Map<String, dynamic> srcJson) => _$DayPlanFromJson(srcJson);

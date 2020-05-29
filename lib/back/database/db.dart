@@ -78,6 +78,19 @@ create table $tableDayPlan (
     return await _db.query(table, where: key + ' = ?', whereArgs: [object]);
   }
 
+  /// return map.
+  /// Please use the method "fromJson()" to convert it to an entity before use the result.
+  static Future<List<Map<String, dynamic>>> findByMap(String table, Map<String, dynamic> map) async {
+    String where = '';
+    List<dynamic> whereArgs = [];
+    map.forEach((key, value) {
+      where = where + key + ' = ? AND ';
+      whereArgs.add(value);
+    });
+    where = where.substring(0, where.length - 4);
+    return await _db.query(table, where: where, whereArgs: whereArgs);
+  }
+
   static Future<int> save(String table, Base base) async {
     if (base.id == null || await findById(table, base.id) == null) {
       return await _db.insert(table, base.toJson());

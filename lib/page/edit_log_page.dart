@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:scaler/back/database/db.dart';
 import 'package:scaler/back/entity/day.dart';
+import 'package:scaler/back/service/day_service.dart';
 import 'package:scaler/config/theme_data.dart';
 import 'package:scaler/util/dialog_utils.dart';
-import 'package:scaler/util/init_utils.dart';
 import 'package:scaler/widget/drawer_widget.dart';
 import 'package:scaler/widget/simple_round_button.dart';
 
@@ -116,10 +116,10 @@ class _EditLogPageState extends State<EditLogPage> {
   _edit() async {
     DialogUtils.showLoader(context, 'Editing...');
 
-    _formKey.currentState.save();
-
     try {
-      int dayId = await InitUtils.setDay(_date);
+      _formKey.currentState.save();
+
+      int dayId = await DayService.setDay(_date);
       var map = await DB.findById(tableDay, dayId);
       Day day = Day.fromJson(map);
 

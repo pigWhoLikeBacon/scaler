@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:scaler/back/database/db.dart';
 import 'package:scaler/back/entity/day_plan.dart';
 import 'package:scaler/back/entity/plan.dart';
+import 'package:scaler/back/service/day_service.dart';
 import 'package:scaler/config/theme_data.dart';
 import 'package:scaler/util/dialog_utils.dart';
-import 'package:scaler/util/init_utils.dart';
 import 'package:scaler/widget/simple_round_button.dart';
 
 class AddPlanItem extends StatefulWidget {
@@ -78,18 +78,24 @@ class AddPlanItemState extends State<AddPlanItem> {
   _submit() async {
     DialogUtils.showLoader(context, 'Adding...');
 
-    _formKey.currentState.save();
+    try {
+      _formKey.currentState.save();
 
-    int dayId = await InitUtils.setDay(DateTime.now());
+      int dayId = await DayService.setDay(DateTime.now());
 
-    Plan plan = new Plan(null, _content, 1);
-    int planId = await DB.save(tablePlan, plan);
+      Plan plan = new Plan(null, _content, 1);
+      int planId = await DB.save(tablePlan, plan);
 
-    DayPlan dayPlan = new DayPlan(null, dayId, planId, 0);
-    await DB.save(tableDayPlan, dayPlan);
+      DayPlan dayPlan = new DayPlan(null, dayId, planId, 0);
+      await DB.save(tableDayPlan, dayPlan);
 
-    Navigator.of(context).pop();
-    DialogUtils.showTextDialog(context, 'Successfully added!');
+      Navigator.of(context).pop();
+      DialogUtils.showTextDialog(context, 'Successfully added!');
+    } catch (e) {
+      Navigator.of(context).pop();
+      DialogUtils.showTextDialog(context, 'Error' + e.toString());
+      throw e;
+    }
 
 //    print(await DB.query(tablePlan));
 //    print(await DB.query(tableDayPlan));
