@@ -2,7 +2,12 @@ import 'dart:math' show pi;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:scaler/back/database/db.dart';
+import 'package:scaler/back/entity/day.dart';
+import 'package:scaler/back/entity/event.dart';
 import 'package:scaler/back/entity/plan.dart';
+import 'package:scaler/back/service/day_service.dart';
+import 'package:scaler/back/service/event_service.dart';
 import 'package:scaler/config/theme_data.dart';
 import 'package:scaler/page/edit_log_page.dart';
 import 'package:scaler/widget/drawer_widget.dart';
@@ -41,25 +46,9 @@ class _CalendarPageState extends State<CalendarPage>
 
   @override
   void initState() {
-    super.initState();
-    final _selectedDay = DateTime.now();
+    _selectedEvents = [];
+    _loadData();
 
-    _events = {
-      _selectedDay.subtract(Duration(days: 2)): ['Event A6', 'Event B6'],
-      _selectedDay: ['Event A7', 'Event B7', 'Event C7', 'Event D7'],
-      _selectedDay.add(Duration(days: 1)): [
-        'Event A1',
-        'Event B2',
-        'Event C3',
-        'Event D4',
-        'Event C5',
-        'Event C6',
-        'Event C7',
-        'Event C8',
-      ],
-    };
-
-    _selectedEvents = _events[_selectedDay] ?? [];
     CalendarPage._calendarController = CalendarController();
 
     _animationController = AnimationController(
@@ -68,6 +57,35 @@ class _CalendarPageState extends State<CalendarPage>
     );
 
     _animationController.forward();
+
+    super.initState();
+
+//    final _selectedDay = DateTime.now();
+//    _events = {
+//      _selectedDay.subtract(Duration(days: 2)): ['Event A6', 'Event B6'],
+//      _selectedDay: ['Event A7', 'Event B7', 'Event C7', 'Event D7'],
+//    };
+  }
+
+  _loadData() async {
+    final _selectedDay = DateTime.now();
+
+    Map<DateTime, List> events = {};
+    List<Day> listDay = await DayService.findAll();
+    listDay.forEach((day) async {
+      events[DateTime.parse(day.date)] = await EventService.findContentListByDayId(day.id);
+    });
+    setState(() {
+      _events = events;
+//      CalendarPage._calendarController.visibleEvents = events;
+    });
+  }
+
+  _setSelectEvents(DateTime date) async {
+    _selectedEvents = await EventService.findListByDate(date);
+    print(_selectedEvents);
+
+
   }
 
   @override
@@ -80,7 +98,7 @@ class _CalendarPageState extends State<CalendarPage>
   void _onDaySelected(DateTime day, List events) {
     print('CALLBACK: _onDaySelected');
     setState(() {
-      _selectedEvents = events;
+      _setSelectEvents(day);
     });
   }
 
@@ -270,7 +288,7 @@ class _CalendarPageState extends State<CalendarPage>
   }
 
   Widget _buildButtons() {
-    final dateTime = _events.keys.elementAt(_events.length - 2);
+    final dateTime = DateTime.now();
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
@@ -325,7 +343,13 @@ class _CalendarPageState extends State<CalendarPage>
     _plans.forEach((plan) {
       _planList.add(Container(
         child: ListTile(
-          title: Text(plan.content),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(plan.content),
+              Icon(Icons.check_circle),
+            ],
+          ),
           onTap: () => print('$plan tapped!'),
         ),
       ));
@@ -351,10 +375,15 @@ class _CalendarPageState extends State<CalendarPage>
               ),
               margin:
                   const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-              child: ListTile(
-                title: Text(event.toString()),
-                onTap: () => print('$event tapped!'),
-              ),
+              child: ExpansionTile(
+                title: ListTile(
+                  title: Text(event.toString()),
+                  onTap: () => print('$event tapped!'),
+                ),
+                children: <Widget>[
+                  Text('hhd')
+                ],
+              )
             ))
         .toList();
 
@@ -417,5 +446,9 @@ class _CalendarPageState extends State<CalendarPage>
       ..addAll(_logList);
 
     return ListView(children: _totalList);
+  }
+
+  Widget _getPlanWidget(Event event) {
+
   }
 }

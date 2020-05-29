@@ -3,6 +3,7 @@ import 'package:flare_splash_screen/flare_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:scaler/navigator/tab_navigator.dart';
 import 'package:scaler/web/http.dart';
+import 'package:sqflite/sqflite.dart';
 
 import 'back/database/db.dart';
 import 'back/database/sp.dart';
@@ -18,6 +19,7 @@ void main() async {
   TD.init();
   await HC.init();
   await DayService.setDay(DateTime.now());
+  Sqflite.devSetDebugModeOn(true);
   runApp(MyApp());
 }
 

@@ -112,7 +112,6 @@ class _PlanPageState extends State<PlanPage>{
 
                     print(startDay.date);
 
-                    Sqflite.devSetDebugModeOn(true);
                     DayService.eachDays(DateTime.parse(startDay.date), DateTime.now(), (dayId) async {
                       print(dayId);
                       Map<String, dynamic> map = {

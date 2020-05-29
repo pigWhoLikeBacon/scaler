@@ -17,6 +17,15 @@ class DayService {
     return day;
   }
 
+  static Future<List<Day>> findAll() async {
+    List<Day> listDay = [];
+    List<Map<String, dynamic>> list = await DB.query(tableDay);
+    list.forEach((e) {
+      listDay.add(Day.fromJson(e));
+    });
+    return listDay;
+  }
+
   static Future<void> eachDays(DateTime start, DateTime end, Function function) async {
     while (_isEarlyDay(start, end)) {
       int dayId = await setDay(start);
