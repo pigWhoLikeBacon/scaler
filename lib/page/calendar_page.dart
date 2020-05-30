@@ -1,5 +1,6 @@
 import 'dart:math' show pi;
 
+import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scaler/back/database/db.dart';
@@ -40,6 +41,7 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPageState extends State<CalendarPage>
     with TickerProviderStateMixin {
+  // _events中的key，DateTime统一为当天12点整
   Map<DateTime, List> _events;
   List _selectedEvents;
   AnimationController _animationController;
@@ -59,33 +61,29 @@ class _CalendarPageState extends State<CalendarPage>
     _animationController.forward();
 
     super.initState();
-
-//    final _selectedDay = DateTime.now();
-//    _events = {
-//      _selectedDay.subtract(Duration(days: 2)): ['Event A6', 'Event B6'],
-//      _selectedDay: ['Event A7', 'Event B7', 'Event C7', 'Event D7'],
-//    };
   }
 
   _loadData() async {
-    final _selectedDay = DateTime.now();
+    final _selectedDay = DateTime.parse(formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]));
 
     Map<DateTime, List> events = {};
     List<Day> listDay = await DayService.findAll();
-    listDay.forEach((day) async {
-      events[DateTime.parse(day.date)] = await EventService.findContentListByDayId(day.id);
-    });
+
+    //不使用foreach()方法遍历list，因为foreach中的异步方法不支持await
+    int i = 0;
+    while (i < listDay.length) {
+      Day day = listDay[i];
+      List eventsforDay = await EventService.findListByDayId(day.id);
+      if (eventsforDay.length != 0) {
+        events[DateTime.parse(day.date)] = eventsforDay;
+      }
+      i++;
+    }
+
     setState(() {
       _events = events;
-//      CalendarPage._calendarController.visibleEvents = events;
+      _selectedEvents = _events[_selectedDay] ?? [];
     });
-  }
-
-  _setSelectEvents(DateTime date) async {
-    _selectedEvents = await EventService.findListByDate(date);
-    print(_selectedEvents);
-
-
   }
 
   @override
@@ -98,7 +96,7 @@ class _CalendarPageState extends State<CalendarPage>
   void _onDaySelected(DateTime day, List events) {
     print('CALLBACK: _onDaySelected');
     setState(() {
-      _setSelectEvents(day);
+      _selectedEvents = events;
     });
   }
 
@@ -318,9 +316,11 @@ class _CalendarPageState extends State<CalendarPage>
                 setState(() {
                   if (CalendarPage._calendarController.calendarFormat ==
                       CalendarFormat.month) {
-                    CalendarPage._calendarController.setCalendarFormat(CalendarFormat.week);
+                    CalendarPage._calendarController
+                        .setCalendarFormat(CalendarFormat.week);
                   } else {
-                    CalendarPage._calendarController.setCalendarFormat(CalendarFormat.month);
+                    CalendarPage._calendarController
+                        .setCalendarFormat(CalendarFormat.month);
                   }
                 });
               }, //点击事件
@@ -332,8 +332,16 @@ class _CalendarPageState extends State<CalendarPage>
   }
 
   List<Plan> _plans = [
-    Plan(1, 'content1', 1,),
-    Plan(2, 'content2', 1,),
+    Plan(
+      1,
+      'content1',
+      1,
+    ),
+    Plan(
+      2,
+      'content2',
+      1,
+    ),
   ];
 
   Widget _buildList() {
@@ -367,25 +375,24 @@ class _CalendarPageState extends State<CalendarPage>
       ),
     );
 
-    List<Widget> _eventList = _selectedEvents
-        .map((event) => Container(
-              decoration: BoxDecoration(
-                border: Border.all(width: 0.8),
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              margin:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-              child: ExpansionTile(
-                title: ListTile(
-                  title: Text(event.toString()),
-                  onTap: () => print('$event tapped!'),
-                ),
-                children: <Widget>[
-                  Text('hhd')
-                ],
-              )
-            ))
-        .toList();
+    List<Widget> _eventList = _selectedEvents.map((e) {
+      Event event = e;
+      return Container(
+          decoration: BoxDecoration(
+            border: Border.all(width: 0.8),
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+          child: ExpansionTile(
+            title: ListTile(
+              title: Text(event.content),
+              onTap: () => print('$event tapped!'),
+            ),
+            children: <Widget>[
+              Text('hhd')
+            ],
+          ));
+    }).toList();
 
     List<Widget> _logList = <Widget>[
       Container(
@@ -412,7 +419,7 @@ class _CalendarPageState extends State<CalendarPage>
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
             child: Text('data'),
-          ),// BoxDecoration
+          ), // BoxDecoration
         ), // Container
       ), // Container
       Container(
@@ -448,7 +455,5 @@ class _CalendarPageState extends State<CalendarPage>
     return ListView(children: _totalList);
   }
 
-  Widget _getPlanWidget(Event event) {
-
-  }
+  Widget _getPlanWidget(Event event) {}
 }
