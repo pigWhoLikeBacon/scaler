@@ -119,9 +119,7 @@ class _EditLogPageState extends State<EditLogPage> {
     try {
       _formKey.currentState.save();
 
-      int dayId = await DayService.setDay(_date);
-      var map = await DB.findById(tableDay, dayId);
-      Day day = Day.fromJson(map);
+      Day day = await DayService.setDay(_date);
 
       day.log = _content;
 

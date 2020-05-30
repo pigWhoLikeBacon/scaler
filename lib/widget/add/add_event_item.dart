@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:scaler/back/database/db.dart';
+import 'package:scaler/back/entity/day.dart';
 import 'package:scaler/back/entity/event.dart';
 import 'package:scaler/back/service/day_service.dart';
 import 'package:scaler/config/theme_data.dart';
@@ -120,9 +121,9 @@ class AddEventItemState extends State<AddEventItem> {
     try {
       _formKey.currentState.save();
 
-      int dayId = await DayService.setDay(_dateTime);
+      Day day = await DayService.setDay(_dateTime);
       String time = formatDate(_dateTime, [HH, ':', nn, ':', ss]);
-      Event event = new Event(null, dayId, time, _content);
+      Event event = new Event(null, day.id, time, _content);
       await DB.save(tableEvent, event);
 
       Navigator.of(context).pop();

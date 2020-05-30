@@ -112,18 +112,18 @@ class _PlanPageState extends State<PlanPage>{
 
                     print(startDay.date);
 
-                    DayService.eachDays(DateTime.parse(startDay.date), DateTime.now(), (dayId) async {
-                      print(dayId);
+                    DayService.eachDays(DateTime.parse(startDay.date), DateTime.now(), (day) async {
+//                      print(dayId);
                       Map<String, dynamic> map = {
                         DayPlan_plan_id : plan.id,
-                        DayPlan_day_id : dayId,
+                        DayPlan_day_id : day.id,
                       };
                       var list = await DB.findByMap(tableDayPlan, map);
                       print(list);
 
                       //计划与该日期无联系则执行该代码，添加联系
                       if (list.length == 0) {
-                        DayPlan dayPlan = new DayPlan(null, dayId, plan.id, 0);
+                        DayPlan dayPlan = new DayPlan(null, day.id, plan.id, 0);
                         DB.save(tableDayPlan, dayPlan);
                       }
 //                      var list = DB.find(tableDayPlan, DayPlan_day_id, dayId);

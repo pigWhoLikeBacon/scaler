@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scaler/back/database/db.dart';
+import 'package:scaler/back/entity/day.dart';
 import 'package:scaler/back/entity/day_plan.dart';
 import 'package:scaler/back/entity/plan.dart';
 import 'package:scaler/back/service/day_service.dart';
@@ -81,12 +82,12 @@ class AddPlanItemState extends State<AddPlanItem> {
     try {
       _formKey.currentState.save();
 
-      int dayId = await DayService.setDay(DateTime.now());
+      Day day = await DayService.setDay(DateTime.now());
 
       Plan plan = new Plan(null, _content, 1);
       int planId = await DB.save(tablePlan, plan);
 
-      DayPlan dayPlan = new DayPlan(null, dayId, planId, 0);
+      DayPlan dayPlan = new DayPlan(null, day.id, planId, 0);
       await DB.save(tableDayPlan, dayPlan);
 
       Navigator.of(context).pop();

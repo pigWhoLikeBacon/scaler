@@ -1,5 +1,6 @@
 import 'package:date_format/date_format.dart';
 import 'package:scaler/back/database/db.dart';
+import 'package:scaler/back/entity/day.dart';
 import 'package:scaler/back/entity/event.dart';
 import 'package:scaler/back/entity/plan.dart';
 import 'package:scaler/config/config.dart';
@@ -17,9 +18,8 @@ class EventService {
   }
 
   static Future<List<Event>> findListByDate(DateTime date) async {
-    int dayId = await DayService.setDay(date);
-
-    return findListByDayId(dayId);
+    Day day = await DayService.setDay(date);
+    return findListByDayId(day.id);
   }
 
   static Future<List<String>> findContentListByDayId(int dayId) async {

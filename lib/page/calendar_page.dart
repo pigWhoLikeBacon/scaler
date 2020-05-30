@@ -9,6 +9,7 @@ import 'package:scaler/back/entity/event.dart';
 import 'package:scaler/back/entity/plan.dart';
 import 'package:scaler/back/service/day_service.dart';
 import 'package:scaler/back/service/event_service.dart';
+import 'package:scaler/back/service/plan_service.dart';
 import 'package:scaler/config/theme_data.dart';
 import 'package:scaler/page/edit_log_page.dart';
 import 'package:scaler/widget/drawer_widget.dart';
@@ -41,6 +42,18 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPageState extends State<CalendarPage>
     with TickerProviderStateMixin {
+  List<Plan> _plans = [
+    Plan(
+      1,
+      'content1',
+      1,
+    ),
+    Plan(
+      2,
+      'content2',
+      1,
+    ),
+  ];
   // _events中的key，DateTime统一为当天12点整
   Map<DateTime, List> _events;
   List _selectedEvents;
@@ -66,6 +79,9 @@ class _CalendarPageState extends State<CalendarPage>
   _loadData() async {
     final _selectedDay = DateTime.parse(formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]));
 
+    Day day = await DayService.setDay(_selectedDay);
+    List<Plan> plans = await PlanService.findListByDay(day);
+
     Map<DateTime, List> events = {};
     List<Day> listDay = await DayService.findAll();
 
@@ -81,6 +97,7 @@ class _CalendarPageState extends State<CalendarPage>
     }
 
     setState(() {
+      _plans = plans;
       _events = events;
       _selectedEvents = _events[_selectedDay] ?? [];
     });
@@ -93,9 +110,13 @@ class _CalendarPageState extends State<CalendarPage>
     super.dispose();
   }
 
-  void _onDaySelected(DateTime day, List events) {
-    print('CALLBACK: _onDaySelected');
+  Future<void> _onDaySelected(DateTime date, List events) async {
+    Day day = await DayService.setDay(date);
+    List<Plan> plans = await PlanService.findListByDay(day);
+
+    print('CALLBACK: _onDaySelected,date: ' + day.date);
     setState(() {
+      _plans = plans;
       _selectedEvents = events;
     });
   }
@@ -331,19 +352,6 @@ class _CalendarPageState extends State<CalendarPage>
     );
   }
 
-  List<Plan> _plans = [
-    Plan(
-      1,
-      'content1',
-      1,
-    ),
-    Plan(
-      2,
-      'content2',
-      1,
-    ),
-  ];
-
   Widget _buildList() {
     List<Widget> _totalList = <Widget>[];
 
@@ -363,7 +371,7 @@ class _CalendarPageState extends State<CalendarPage>
       ));
       _planList.add(Divider());
     });
-    _planList.removeLast();
+    if (_planList.length != 0) _planList.removeLast();
     Widget _planItem = Container(
       decoration: BoxDecoration(
         border: Border.all(width: 0.8),

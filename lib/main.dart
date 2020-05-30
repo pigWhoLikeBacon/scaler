@@ -18,8 +18,8 @@ void main() async {
   Config.init();
   TD.init();
   await HC.init();
-  await DayService.setDay(DateTime.now());
-  Sqflite.devSetDebugModeOn(true);
+  await DayService.initDays();
+//  Sqflite.devSetDebugModeOn(true);
   runApp(MyApp());
 }
 
