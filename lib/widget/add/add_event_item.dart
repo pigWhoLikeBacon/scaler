@@ -23,8 +23,14 @@ class AddEventItemState extends State<AddEventItem> {
   final _formKey = GlobalKey<FormState>();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     _dateTime = DateTime.now();
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     return Container(
       child: Column(
@@ -91,7 +97,7 @@ class AddEventItemState extends State<AddEventItem> {
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
 //                color: Colors.cyanAccent,

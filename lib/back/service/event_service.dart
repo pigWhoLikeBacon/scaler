@@ -22,12 +22,7 @@ class EventService {
     return findListByDayId(day.id);
   }
 
-  static Future<List<String>> findContentListByDayId(int dayId) async {
-    List<String> listContent = [];
-    List<Map<String, dynamic>> list = await DB.find(tableEvent, Event_day_id, dayId);
-    list.forEach((e) {
-      listContent.add(Event.fromJson(e).content);
-    });
-    return listContent;
+  static Future<int> deleteById(int id) async {
+    return await DB.deleteById(tableEvent, id);
   }
 }

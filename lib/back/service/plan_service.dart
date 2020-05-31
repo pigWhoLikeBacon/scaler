@@ -56,4 +56,33 @@ class PlanService {
       return listPlan;
     }
   }
+
+  static List<Plan> listOrderById(List<Plan> list) {
+    if (list.length < 2) {
+      //如果只有一个值不需要排序
+      return list;
+    } else {
+      //获取比较的标准（参考）值
+      Plan pivot = list[0];
+      //创建一个集合用来存储小于等于标准值的数值
+      // 没有元素，需要显式指定泛型参数为 int 否则报错 List<dynamic>' is not a subtype of type 'List<int>
+      List<Plan> less = [];
+      //创建一个集合用来存储比标准值大的数值
+      List<Plan> greater = [];
+      //将标准值从集合中移除
+      list.removeAt(0);
+      //遍历整个集合
+      for (var plan in list) {
+        if (plan.id <= pivot.id) {
+          //如果小于等于标准值放入less集合中
+          less.add(plan);
+        } else {
+          //如果大于标准值放入greater集合中
+          greater.add(plan);
+        }
+      }
+      //使用递归的方式，对less 和 greater 再进行排序，最终返回排序好的集合
+      return listOrderById(less) + [pivot] + listOrderById(greater);
+    }
+  }
 }
