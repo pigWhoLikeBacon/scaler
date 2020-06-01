@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:scaler/config/config.dart';
+import 'package:scaler/global/config.dart';
 
 class CookieAction {
 
   //Get the saved cookie.
   static List<String> get() {
-    return Config.get('cookie') == null ? null : List.from(Config.get('cookie'));
+    return Config.get(config_cookie) == null ? null : List.from(Config.get(config_cookie));
   }
 
   //Get cookie from response and save it.
@@ -25,7 +25,7 @@ class CookieAction {
   }
 
   static _saveCookie(List<String> cookies) {
-    Config.set('cookie', cookies);
+    Config.set(config_cookie, cookies);
   }
 
   static List<String> _addCookies(List<String> oldCookies, List<String> newCookies) {

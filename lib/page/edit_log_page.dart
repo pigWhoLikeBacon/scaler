@@ -4,7 +4,6 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:scaler/back/database/db.dart';
 import 'package:scaler/back/entity/day.dart';
 import 'package:scaler/back/service/day_service.dart';
-import 'package:scaler/config/theme_data.dart';
 import 'package:scaler/util/dialog_utils.dart';
 import 'package:scaler/widget/drawer_widget.dart';
 import 'package:scaler/widget/simple_round_button.dart';
@@ -91,7 +90,6 @@ class _EditLogPageState extends State<EditLogPage> {
                     Divider(),
                     ListTile(
                       title: TextFormField(
-//                        initialValue: Config.get('username'),
                         maxLines: 60,
                         minLines: 3,
                         decoration: InputDecoration(labelText: 'Content'),

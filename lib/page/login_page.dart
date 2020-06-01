@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:scaler/config/config.dart';
-import 'package:scaler/config/theme_data.dart';
+import 'package:scaler/global/config.dart';
+import 'package:scaler/global/theme_data.dart';
 import 'package:scaler/util/dialog_utils.dart';
 import 'package:scaler/util/toast_utils.dart';
 import 'package:scaler/web/http.dart';
@@ -29,7 +29,7 @@ class LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         title: Text(
           "Login",
-          textScaleFactor: Config.get('textScaleFactor'),
+          textScaleFactor: Config.get(config_textScaleFactor),
         ),
       ),
       body: SafeArea(
@@ -53,7 +53,7 @@ class LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   ListTile(
                     title: TextFormField(
-                      initialValue: Config.get('username'),
+                      initialValue: Config.get(config_username),
                       decoration: InputDecoration(labelText: 'Username'),
                       validator: (val) =>
                           val.length < 1 ? 'Username Required' : null,
@@ -82,8 +82,8 @@ class LoginPageState extends State<LoginPage> {
                 child: Text(
                   'Login',
                   style: TextStyle(
-                      color: themes[Config.get('themeKey')].selectedRowColor),
-                  textScaleFactor: Config.get('textScaleFactor'),
+                      color: TD.td.selectedRowColor),
+                  textScaleFactor: Config.get(config_textScaleFactor),
                 ),
                 onPressed: () async {
                   // Validate will return true if the form is valid, or false if
@@ -97,7 +97,7 @@ class LoginPageState extends State<LoginPage> {
             FlatButton(
               child: Text(
                 'Need an Account?',
-                textScaleFactor: Config.get('textScaleFactor'),
+                textScaleFactor: Config.get(config_textScaleFactor),
               ),
               onPressed: () {
                 ToastUtils.show('This service is not yet enabled!');
@@ -114,7 +114,7 @@ class LoginPageState extends State<LoginPage> {
 
     _formKey.currentState.save();
     setState(() {
-      Config.set('username', _username);
+      Config.set(config_username, _username);
     });
 
     FormData formData = new FormData.fromMap({

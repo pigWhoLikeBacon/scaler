@@ -6,7 +6,7 @@ import 'package:scaler/back/database/db.dart';
 import 'package:scaler/back/entity/day.dart';
 import 'package:scaler/back/entity/event.dart';
 import 'package:scaler/back/service/day_service.dart';
-import 'package:scaler/config/theme_data.dart';
+import 'package:scaler/global/theme_data.dart';
 import 'package:scaler/util/dialog_utils.dart';
 import 'package:scaler/widget/simple_round_button.dart';
 
@@ -83,7 +83,6 @@ class AddEventItemState extends State<AddEventItem> {
                         Divider(),
                         ListTile(
                           title: TextFormField(
-//                        initialValue: Config.get('username'),
                             maxLines: 3,
                             minLines: 1,
                             decoration: InputDecoration(labelText: 'Content'),

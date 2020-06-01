@@ -1,8 +1,8 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:scaler/config/config.dart';
-import 'package:scaler/config/theme_data.dart';
+import 'package:scaler/global/config.dart';
+import 'package:scaler/global/theme_data.dart';
 
 
 class SettingsPage extends StatefulWidget {
@@ -22,7 +22,7 @@ class _SettingsPageState extends State<SettingsPage> {
       appBar: AppBar(
         title: Text(
           "Settings",
-          textScaleFactor: Config.get('textScaleFactor'),
+          textScaleFactor: Config.get(config_textScaleFactor),
         ),
       ),
       body: SingleChildScrollView(
@@ -36,11 +36,11 @@ class _SettingsPageState extends State<SettingsPage> {
               leading: Icon(Icons.account_box),
               title: Text(
                 'Stay Logged In',
-                textScaleFactor: Config.get('textScaleFactor'),
+                textScaleFactor: Config.get(config_textScaleFactor),
               ),
               subtitle: Text(
                 'Logout from the Main Menu',
-                textScaleFactor: Config.get('textScaleFactor'),
+                textScaleFactor: Config.get(config_textScaleFactor),
               ),
             ),
             Divider(height: 20.0),
@@ -48,7 +48,7 @@ class _SettingsPageState extends State<SettingsPage> {
               title: Text('Boy next door!'),
               trailing: CupertinoSwitch(
                 activeColor: Colors.deepOrange[400],
-                value: Config.get('themeKey') == 'dark' ? true : false, //当前状态
+                value: Config.get(config_themeKey) == 'dark' ? true : false, //当前状态
                 onChanged: (value) {
                   changeBrightness();
                 },
@@ -60,7 +60,7 @@ class _SettingsPageState extends State<SettingsPage> {
               onTap: () {
                 setState(() {
                   Config.initDeleteConfigs();
-                  DynamicTheme.of(context).setThemeData(themes[Config.get('themeKey')]);
+                  DynamicTheme.of(context).setThemeData(TD.td);
                 });
               },
             ),
@@ -72,11 +72,13 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void changeBrightness() {
     if (Theme.of(context).brightness != Brightness.light) {
-      Config.set('themeKey', 'light');
-      DynamicTheme.of(context).setThemeData(themes[Config.get('themeKey')]);
+      Config.set(config_themeKey, 'light');
+      TD.init();
+      DynamicTheme.of(context).setThemeData(TD.td);
     } else {
-      Config.set('themeKey', 'dark');
-      DynamicTheme.of(context).setThemeData(themes[Config.get('themeKey')]);
+      Config.set(config_themeKey, 'dark');
+      TD.init();
+      DynamicTheme.of(context).setThemeData(TD.td);
     }
     TD.init();
   }

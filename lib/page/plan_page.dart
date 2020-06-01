@@ -70,7 +70,6 @@ class _PlanPageState extends State<PlanPage>{
                 children: <Widget>[
                   ListTile(
                     title: TextFormField(
-//                        initialValue: Config.get('username'),
                       maxLines: 6,
                       minLines: 3,
                       decoration: InputDecoration(labelText: 'Content'),

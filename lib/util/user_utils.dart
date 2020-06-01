@@ -1,4 +1,3 @@
-import 'package:scaler/config/config.dart';
 import 'package:scaler/web/cookie_action.dart';
 
 class UserUtils {

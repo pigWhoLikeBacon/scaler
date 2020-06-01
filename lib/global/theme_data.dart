@@ -19,6 +19,6 @@ abstract class TD {
   static ThemeData td;
 
   static init() {
-    td = themes[Config.get('themeKey')];
+    td = themes[Config.get(config_themeKey)];
   }
 }

@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:scaler/config/config.dart';
-import 'package:scaler/config/theme_data.dart';
+import 'package:scaler/global/theme_data.dart';
 
 class ToastUtils {
   static show(String text) {
@@ -12,7 +11,7 @@ class ToastUtils {
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
         backgroundColor:
-        themes[Config.get('themeKey')].dialogBackgroundColor,
+        TD.td.dialogBackgroundColor,
         fontSize: 16.0);
   }
 }

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:scaler/config/config.dart';
+import 'package:scaler/global/config.dart';
 
 import 'custom_interceptors.dart';
 
@@ -9,9 +9,9 @@ abstract class HC {
 
   static init() {
     dio = Dio(BaseOptions(
-      baseUrl: Config.get('baseUrl'),
-      connectTimeout: Config.get('connectTimeout'),
-      receiveTimeout: Config.get('receiveTimeout'),
+      baseUrl: Config.get(config_baseUrl),
+      connectTimeout: Config.get(config_connectTimeout),
+      receiveTimeout: Config.get(config_receiveTimeout),
       validateStatus: (status) {
         if (status == 200 || status == 302) {
           return true;
@@ -24,11 +24,11 @@ abstract class HC {
   }
 
   static Options _getCookieOptions() {
-    return Options(headers: {'cookie': Config.get('cookie')});
+    return Options(headers: {'cookie': Config.get(config_cookie)});
   }
 
   static _saveCookie(List<String> cookies) {
-    Config.set('cookie', cookies);
+    Config.set(config_cookie, cookies);
   }
 
 //  static Future<Response> get(String url, bool saveCookie) async {

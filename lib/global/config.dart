@@ -1,15 +1,21 @@
 import 'package:scaler/back/database/sp.dart';
 
-var a = List<String>();
+const String config_textScaleFactor = 'textScaleFactor';
+const String config_themeKey = 'themeKey';
+const String config_username = 'username';
+const String config_cookie = 'cookie';
+const String config_baseUrl = 'baseUrl';
+const String config_connectTimeout = 'connectTimeout';
+const String config_receiveTimeout = 'receiveTimeout';
 
 const Map<String, dynamic> Configs = {
-  'textScaleFactor' : 1.0,
-  'themeKey' : 'light',
-  'username' : '',
-  'cookie' : null,
-  'baseUrl' : 'http://129.211.9.152:8081',
-  'connectTimeout' : 5000,
-  'receiveTimeout' : 100000,
+  config_textScaleFactor : 1.0,
+  config_themeKey : 'light',
+  config_username : '',
+  config_cookie : null,
+  config_baseUrl : 'http://129.211.9.152:8081',
+  config_connectTimeout : 5000,
+  config_receiveTimeout : 100000,
 };
 
 abstract class Config {

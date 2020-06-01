@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:scaler/config/config.dart';
-import 'package:scaler/config/theme_data.dart';
+import 'package:scaler/global/config.dart';
 import 'package:scaler/widget/color_loader_2.dart';
 
 class DialogUtils {
@@ -52,7 +51,7 @@ class DialogUtils {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         new Padding(padding: const EdgeInsets.only(top: 10.0)),
-                        Config.get('themeKey') == 'light'
+                        Config.get(config_themeKey) == 'light'
                             ? new CircularProgressIndicator()
                             : ColorLoader2(
                                 color1: Colors.redAccent,

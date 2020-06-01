@@ -11,12 +11,15 @@ import 'package:scaler/back/entity/plan.dart';
 import 'package:scaler/back/service/day_service.dart';
 import 'package:scaler/back/service/event_service.dart';
 import 'package:scaler/back/service/plan_service.dart';
-import 'package:scaler/config/theme_data.dart';
+import 'package:scaler/global/theme_data.dart';
+import 'file:///C:/Users/hhd/AndroidStudioProjects/scaler-master/lib/global/global.dart';
 import 'package:scaler/page/edit_log_page.dart';
 import 'package:scaler/util/dialog_utils.dart';
 import 'package:scaler/widget/drawer_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:toggle_rotate/toggle_rotate.dart';
+
+import 'datetime_picker_wrappr.dart';
 
 // Example holidays
 final Map<DateTime, List> _holidays = {
@@ -27,36 +30,31 @@ final Map<DateTime, List> _holidays = {
   DateTime(2019, 4, 22): ['Easter Monday'],
 };
 
-class CalendarPage extends StatefulWidget {
-  CalendarPage({Key key, this.title}) : super(key: key);
+class CalendarPage2 extends StatefulWidget {
+  CalendarPage2({Key key, this.title}) : super(key: key);
 
   final String title;
 
   static CalendarController _calendarController;
 
   @override
-  _CalendarPageState createState() => _CalendarPageState();
+  _CalendarPage2State createState() => _CalendarPage2State();
 
   static DateTime getSelectedDay() {
     return _calendarController.selectedDay;
   }
 }
 
-class _CalendarPageState extends State<CalendarPage>
+class _CalendarPage2State extends State<CalendarPage2>
     with TickerProviderStateMixin {
-  DateTime _selectedDay;
-  List<Plan> _plans = [];
-  // _events中的key，DateTime统一为当天12点整
-  Map<DateTime, List> _events;
-  List _selectedEvents;
   AnimationController _animationController;
 
   @override
   void initState() {
-    _selectedEvents = [];
+    global_selectedEvents = [];
     _loadData();
 
-    CalendarPage._calendarController = CalendarController();
+    CalendarPage2._calendarController = CalendarController();
 
     _animationController = AnimationController(
       vsync: this,
@@ -69,10 +67,10 @@ class _CalendarPageState extends State<CalendarPage>
   }
 
   _loadData() async {
-    _selectedDay =
+    global_selectedDay =
         DateTime.parse(formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]));
 
-    Day day = await DayService.setDay(_selectedDay);
+    Day day = await DayService.setDay(global_selectedDay);
     List<Plan> plans = await PlanService.findListByDay(day);
     plans = PlanService.listOrderById(plans);
 
@@ -92,29 +90,29 @@ class _CalendarPageState extends State<CalendarPage>
     }
 
     setState(() {
-      _plans = plans;
-      _events = events;
-      _selectedEvents = _events[_selectedDay] ?? [];
+      global_plans = plans;
+      global_events = events;
+      global_selectedEvents = global_events[global_selectedDay] ?? [];
     });
   }
 
   @override
   void dispose() {
     _animationController.dispose();
-    CalendarPage._calendarController.dispose();
+    CalendarPage2._calendarController.dispose();
     super.dispose();
   }
 
   Future<void> _onDaySelected(DateTime date, List events) async {
-    _selectedDay = date;
+    global_selectedDay = date;
     Day day = await DayService.setDay(date);
     List<Plan> plans = await PlanService.findListByDay(day);
     plans = PlanService.listOrderById(plans);
 
     print('CALLBACK: _onDaySelected,date: ' + day.date);
     setState(() {
-      _plans = plans;
-      _selectedEvents = events;
+      global_plans = plans;
+      global_selectedEvents = events;
     });
   }
 
@@ -154,8 +152,8 @@ class _CalendarPageState extends State<CalendarPage>
   // Simple TableCalendar configuration (using Styles)
   Widget _buildTableCalendar() {
     return TableCalendar(
-      calendarController: CalendarPage._calendarController,
-      events: _events,
+      calendarController: CalendarPage2._calendarController,
+      events: global_events,
       holidays: _holidays,
       startingDayOfWeek: StartingDayOfWeek.monday,
       calendarStyle: CalendarStyle(
@@ -182,8 +180,8 @@ class _CalendarPageState extends State<CalendarPage>
   Widget _buildTableCalendarWithBuilders() {
     return TableCalendar(
       locale: 'pl_PL',
-      calendarController: CalendarPage._calendarController,
-      events: _events,
+      calendarController: CalendarPage2._calendarController,
+      events: global_events,
       holidays: _holidays,
       initialCalendarFormat: CalendarFormat.month,
       formatAnimation: FormatAnimation.slide,
@@ -275,9 +273,9 @@ class _CalendarPageState extends State<CalendarPage>
       duration: const Duration(milliseconds: 300),
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
-        color: CalendarPage._calendarController.isSelected(date)
+        color: CalendarPage2._calendarController.isSelected(date)
             ? Colors.brown[500]
-            : CalendarPage._calendarController.isToday(date)
+            : CalendarPage2._calendarController.isToday(date)
                 ? Colors.brown[300]
                 : Colors.blue[400],
       ),
@@ -316,7 +314,7 @@ class _CalendarPageState extends State<CalendarPage>
               child: Text(
                   'Set day ${dateTime.day}-${dateTime.month}-${dateTime.year}'),
               onPressed: () {
-                CalendarPage._calendarController.setSelectedDay(
+                CalendarPage2._calendarController.setSelectedDay(
                   DateTime(dateTime.year, dateTime.month, dateTime.day),
                   runCallback: true,
                 );
@@ -332,12 +330,12 @@ class _CalendarPageState extends State<CalendarPage>
                   size: 50, color: Colors.orangeAccent),
               onTap: () {
                 setState(() {
-                  if (CalendarPage._calendarController.calendarFormat ==
+                  if (CalendarPage2._calendarController.calendarFormat ==
                       CalendarFormat.month) {
-                    CalendarPage._calendarController
+                    CalendarPage2._calendarController
                         .setCalendarFormat(CalendarFormat.week);
                   } else {
-                    CalendarPage._calendarController
+                    CalendarPage2._calendarController
                         .setCalendarFormat(CalendarFormat.month);
                   }
                 });
@@ -353,7 +351,7 @@ class _CalendarPageState extends State<CalendarPage>
     List<Widget> _totalList = <Widget>[];
 
     List<Widget> _planList = <Widget>[];
-    _plans.forEach((plan) {
+    global_plans.forEach((plan) {
       _planList.add(Container(
         child: ListTile(
           title: Row(
@@ -380,143 +378,16 @@ class _CalendarPageState extends State<CalendarPage>
       ),
     );
 
-    List<Widget> _eventList = _selectedEvents.map((e) {
-      Event event = e;
-
-      String _content;
-      DateTime _dateTime = DateTime.parse(formatDate(_selectedDay, [yyyy, '-', mm, '-', dd]) + ' ' + event.time);
-
-      final _formKey = GlobalKey<FormState>();
-
-      return Container(
-          decoration: BoxDecoration(
-            border: Border.all(width: 0.8),
-            borderRadius: BorderRadius.circular(12.0),
-          ),
-          margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-          child: ExpansionTile(
-            title: ListTile(
-              title: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(formatDate(_dateTime,
-                      [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss])),
-                  SizedBox(
-                    height: 6,
-                    width: 1,
-                  ),
-                  Text(event.content),
-                ],
-              ),
-              onTap: () => print('$event tapped!'),
-            ),
-            children: <Widget>[
-              Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Divider(),
-                    FlatButton(
-                      onPressed: () {
-                        DatePicker.showDateTimePicker(context,
-                            showTitleActions: true,
-                            minTime: DateTime(2019, 3, 5),
-                            maxTime: DateTime(2021, 6, 7), onConfirm: (data) {
-                          setState(() {
-                            _dateTime = data;
-                          });
-                          print(_dateTime);
-                        }, currentTime: _dateTime, locale: LocaleType.en);
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(6, 0, 10, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text('Start Time'),
-                                SizedBox(
-                                  height: 6,
-                                  width: 1,
-                                ),
-                                Text(formatDate(_dateTime,
-                                    [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss])),
-                              ],
-                            ),
-                            Icon(Icons.arrow_forward_ios),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Divider(),
-                    ListTile(
-                      title: TextFormField(
-//                        initialValue: Config.get('username'),
-                        maxLines: 3,
-                        minLines: 1,
-                        decoration: InputDecoration(labelText: 'Content'),
-                        validator: (val) =>
-                            val.length < 1 ? 'Content Required' : null,
-//                        onSaved: (val) => _content = val,
-                        obscureText: false,
-                        keyboardType: TextInputType.text,
-                        autocorrect: false,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  FlatButton(
-                      textColor: Colors.red,
-                      child: Text('Delete'),
-                      onPressed: () async {
-                        print('delete');
-                        int id = await EventService.deleteById(event.id);
-                        DialogUtils.showTextDialog(
-                            context, 'Delete successful! ID: ' + id.toString());
-                        setState(() {
-                          _events[_selectedDay]
-                              .removeWhere((e) => e.id == event.id);
-                        });
-                      }),
-                  FlatButton(
-                      child: Text('Edit'),
-                      onPressed: () async {
-                        print('edit');
-
-                        //删除该event
-                        await EventService.deleteById(event.id);
-
-                        //添加修改完毕的事件
-                        _formKey.currentState.save();
-
-                        Day day = await DayService.setDay(_dateTime);
-                        String time =
-                            formatDate(_dateTime, [HH, ':', nn, ':', ss]);
-                        Event newEvent =
-                            new Event(null, day.id, time, _content);
-                        newEvent.id = await DB.save(tableEvent, event);
-
-                        DialogUtils.showTextDialog(context, 'Edit successful!');
-
-                        setState(() {
-                          _events[_selectedDay]
-                              .removeWhere((e) => e.id == event.id);
-                          _events[DateTime.parse(day.date)].add(newEvent);
-                        });
-                      })
-                ],
-              )
-            ],
-          ));
+    List<Widget> _eventList = global_selectedEvents.map((e) {
+      return DateTimePickerWrappr(
+        event: e,
+        rebuild: () {
+          setState(() {
+            global_events = global_events;
+            print('hhd');
+          });
+        },
+      );
     }).toList();
 
     List<Widget> _logList = <Widget>[

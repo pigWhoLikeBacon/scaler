@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
 import 'package:gzx_dropdown_menu/gzx_dropdown_menu.dart';
-import 'package:scaler/page/calendar_page.dart';
+import 'package:scaler/page/calendar/calendar_page.dart';
 import 'package:scaler/page/plan_page.dart';
-import 'package:scaler/util/dialog_utils.dart';
-import 'package:scaler/web/http.dart';
 import 'package:scaler/widget/add/add_widget.dart';
 
 class TabNavigator extends StatefulWidget {
@@ -22,7 +20,7 @@ class _TabNavigatorState extends State<TabNavigator> {
     super.initState();
 
     _pageList = List();
-    _pageList..add(CalendarPage())..add(PlanPage());
+    _pageList..add(CalendarPage2())..add(PlanPage());
   }
 
   @override

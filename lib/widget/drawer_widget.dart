@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:scaler/config/config.dart';
+import 'package:scaler/global/config.dart';
 import 'package:scaler/page/login_page.dart';
 import 'package:scaler/page/settings_page.dart';
 import 'package:scaler/util/user_utils.dart';
@@ -18,8 +18,8 @@ class DrawerWidget extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.account_circle),
               title: Text(
-                UserUtils.isLogin() ? Config.get('username') : 'Login',
-                textScaleFactor: Config.get('textScaleFactor'),
+                UserUtils.isLogin() ? Config.get(config_username) : 'Login',
+                textScaleFactor: Config.get(config_textScaleFactor),
                 maxLines: 1,
               ),
               onTap: () {
@@ -32,7 +32,7 @@ class DrawerWidget extends StatelessWidget {
               leading: Icon(Icons.settings),
               title: Text(
                 'Settings',
-                textScaleFactor: Config.get('textScaleFactor'),
+                textScaleFactor: Config.get(config_textScaleFactor),
               ),
               onTap: () {
                 Navigator.push(context,
@@ -44,7 +44,7 @@ class DrawerWidget extends StatelessWidget {
               leading: Icon(Icons.arrow_back),
               title: Text(
                 'Logout',
-                textScaleFactor: Config.get('textScaleFactor'),
+                textScaleFactor: Config.get(config_textScaleFactor),
               ),
 //              onTap: () => _auth.logout(),
             ),
