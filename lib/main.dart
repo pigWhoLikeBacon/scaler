@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flare_splash_screen/flare_splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:scaler/navigator/tab_navigator.dart';
 import 'package:scaler/web/http.dart';
 
@@ -8,6 +11,7 @@ import 'back/database/db.dart';
 import 'back/database/sp.dart';
 import 'back/service/day_service.dart';
 import 'global/config.dart';
+import 'global/global.dart';
 import 'global/theme_data.dart';
 
 void main() async {
@@ -38,19 +42,12 @@ class MyApp extends StatelessWidget {
                     body: SplashScreen.navigate(
                       name: 'assets/intro.flr',
                       next: (_) {
-//                        return LoadingProvider(
-//                          themeData: LoadingThemeData(
-//                             tapDismiss: false,
-//                            animDuration: Duration(
-//                              milliseconds: Config.get('connectTimeout')
-//                            ),
-//                          ),
-//                          loadingWidgetBuilder: (ctx, data) {
-//                            return LoaderWidget();
-//                          },
-//                          child: TabNavigator(),
-//                        );
-                        return TabNavigator();
+                        return MultiProvider(
+                          providers: [
+                            ChangeNotifierProvider(create: (_) => Global()),
+                          ],
+                          child: TabNavigator(),
+                        );
                       },
                       until: () => Future.delayed(Duration(seconds: 3)),
                       startAnimation: '1',

@@ -7,14 +7,18 @@ import 'package:scaler/back/entity/day.dart';
 import 'package:scaler/back/entity/event.dart';
 import 'package:scaler/back/service/day_service.dart';
 import 'package:scaler/back/service/event_service.dart';
-import 'file:///C:/Users/hhd/AndroidStudioProjects/scaler-master/lib/global/global.dart';
+import 'package:scaler/global/global.dart';
 import 'package:scaler/util/dialog_utils.dart';
+
+// ignore_for_file: public_member_api_docs, lines_longer_than_80_chars
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DateTimePickerWrappr extends StatefulWidget {
   final Event event;
-  final Function rebuild;
 
-  const DateTimePickerWrappr({Key key, this.event, this.rebuild}) : super(key: key);
+  const DateTimePickerWrappr({Key key, this.event}) : super(key: key);
 
   DateTimePickerWrapprState createState() => DateTimePickerWrapprState();
 }
@@ -28,6 +32,7 @@ class DateTimePickerWrapprState extends State<DateTimePickerWrappr> {
 
   @override
   void initState() {
+
     _event = widget.event;
     _dateTime = DateTime.parse(formatDate(global_selectedDay, [yyyy, '-', mm, '-', dd]) + ' ' + _event.time);
 
@@ -130,38 +135,55 @@ class DateTimePickerWrapprState extends State<DateTimePickerWrappr> {
                       int id = await EventService.deleteById(_event.id);
                       DialogUtils.showTextDialog(
                           context, 'Delete successful! ID: ' + id.toString());
+                      print('global_events:' + context.read<Global>().events.toString());
                       setState(() {
-                        global_events[global_selectedDay]
-                            .removeWhere((e) => e.id == _event.id);
+                        Map<DateTime, List> events = context.read<Global>().events;
+                        events[global_selectedDay].removeWhere((e) {
+                          Event event = e;
+                          print(event.toJson());
+                          print('e.id:' + event.id.toString());
+                          print('_event.id:' + _event.id.toString());
+                          print(event.id == _event.id);
+                          return event.id == _event.id;
+                        });
+
+                        events[global_selectedDay].forEach((e) {
+                          Event event = e;
+                          print(event.toJson());
+                        });
+
+                        context.read<Global>().setEvents(events);
                       });
-                      widget.rebuild();
+                      print('global_events:' + context.read<Global>().events.toString());
                     }),
-                FlatButton(
-                    child: Text('Edit'),
-                    onPressed: () async {
-                      print('edit');
-
-                      //删除该event
-                      await EventService.deleteById(_event.id);
-
-                      //添加修改完毕的事件
-                      _formKey.currentState.save();
-
-                      Day day = await DayService.setDay(_dateTime);
-                      String time =
-                      formatDate(_dateTime, [HH, ':', nn, ':', ss]);
-                      Event newEvent =
-                      new Event(null, day.id, time, _content);
-                      newEvent.id = await DB.save(tableEvent, _event);
-
-                      DialogUtils.showTextDialog(context, 'Edit successful!');
-
-                      setState(() {
-                        global_events[global_selectedDay]
-                            .removeWhere((e) => e.id == _event.id);
-                        global_events[DateTime.parse(day.date)].add(newEvent);
-                      });
-                    })
+//                FlatButton(
+//                    child: Text('Edit'),
+//                    onPressed: () async {
+//                      print('edit');
+//
+//                      //删除该event
+//                      await EventService.deleteById(_event.id);
+//
+//                      //添加修改完毕的事件
+//                      _formKey.currentState.save();
+//
+//                      Day day = await DayService.setDay(_dateTime);
+//                      String time =
+//                      formatDate(_dateTime, [HH, ':', nn, ':', ss]);
+//                      Event newEvent =
+//                      new Event(null, day.id, time, _content);
+//                      newEvent.id = await DB.save(tableEvent, _event);
+//
+//                      DialogUtils.showTextDialog(context, 'Edit successful!');
+//
+//                      setState(() {
+//                        global_events[global_selectedDay]
+//                            .removeWhere((e) => e.id == _event.id);
+//                        global_events[DateTime.parse(day.date)].add(newEvent);
+//                      });
+//
+//                      print('global_events:' + global_events.toString());
+//                    })
               ],
             )
           ],

@@ -20,7 +20,7 @@ class _TabNavigatorState extends State<TabNavigator> {
     super.initState();
 
     _pageList = List();
-    _pageList..add(CalendarPage2())..add(PlanPage());
+    _pageList..add(CalendarPage())..add(PlanPage());
   }
 
   @override
