@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flare_splash_screen/flare_splash_screen.dart';
 import 'package:flutter/material.dart';

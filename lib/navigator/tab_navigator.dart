@@ -49,9 +49,7 @@ class _TabNavigatorState extends State<TabNavigator> {
         onPressed: () {
           if (_dropdownMenuController.isShow) {
             _dropdownMenuController.hide();
-            FocusScope.of(context).requestFocus(FocusNode());
           } else {
-            setState(() {});   // rebuild menu
             _dropdownMenuController.show(0);
           }
         },

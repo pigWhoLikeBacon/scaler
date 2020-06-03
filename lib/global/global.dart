@@ -38,12 +38,12 @@ class Global with ChangeNotifier, DiagnosticableTreeMixin {
 
   void setPlans(List<Plan> plans) {
     _plans = plans;
-//    notifyListeners();
+    notifyListeners();
   }
 
   void setSelectedEvents(List selectedEvents) {
     _selectedEvents = selectedEvents;
-//    notifyListeners();
+    notifyListeners();
   }
   // Get and set
 }

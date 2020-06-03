@@ -31,6 +31,9 @@ class AddWidgetState extends State<AddWidget> {
         ],
       ),
       GZXDropDownMenu(
+          dropdownMenuChanged: (isCompleted, currentMenuIndex) {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
           // controller用于控制menu的显示或隐藏
           controller: widget.dropdownMenuController,
           // 下拉菜单显示或隐藏动画时长
