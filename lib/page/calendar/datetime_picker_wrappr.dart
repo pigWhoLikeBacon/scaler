@@ -32,15 +32,22 @@ class DateTimePickerWrapprState extends State<DateTimePickerWrappr> {
 
   @override
   void initState() {
-
-    _event = widget.event;
-    _dateTime = DateTime.parse(formatDate(global_selectedDay, [yyyy, '-', mm, '-', dd]) + ' ' + _event.time);
+    _loadData();
 
     super.initState();
   }
 
+  _loadData() {
+    _event = widget.event;
+    DateTime selectedDay = context.read<Global>().selectedDay;
+    _dateTime = DateTime.parse(formatDate(selectedDay, [yyyy, '-', mm, '-', dd]) + ' ' + _event.time);
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    _event = widget.event;
+
     return Container(
         decoration: BoxDecoration(
           border: Border.all(width: 0.8),
@@ -135,26 +142,16 @@ class DateTimePickerWrapprState extends State<DateTimePickerWrappr> {
                       int id = await EventService.deleteById(_event.id);
                       DialogUtils.showTextDialog(
                           context, 'Delete successful! ID: ' + id.toString());
-                      print('global_events:' + context.read<Global>().events.toString());
                       setState(() {
                         Map<DateTime, List> events = context.read<Global>().events;
-                        events[global_selectedDay].removeWhere((e) {
-                          Event event = e;
-                          print(event.toJson());
-                          print('e.id:' + event.id.toString());
-                          print('_event.id:' + _event.id.toString());
-                          print(event.id == _event.id);
-                          return event.id == _event.id;
-                        });
 
-                        events[global_selectedDay].forEach((e) {
-                          Event event = e;
-                          print(event.toJson());
+                        events[context.read<Global>().selectedDay].removeWhere((element) {
+                          Event event = element;
+                          return event.id == _event.id;
                         });
 
                         context.read<Global>().setEvents(events);
                       });
-                      print('global_events:' + context.read<Global>().events.toString());
                     }),
 //                FlatButton(
 //                    child: Text('Edit'),

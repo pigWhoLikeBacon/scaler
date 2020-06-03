@@ -51,9 +51,6 @@ class _CalendarPageState extends State<CalendarPage>
 
   @override
   void initState() {
-    global_selectedEvents = [];
-    global_plans = [];
-    global_selectedDay = DateTime.now();
     _loadData();
 
     CalendarPage._calendarController = CalendarController();
@@ -79,10 +76,10 @@ class _CalendarPageState extends State<CalendarPage>
   }
 
   _loadData() async {
-    global_selectedDay =
-        DateTime.parse(formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]));
+    context.read<Global>().setSelectedDay(
+        DateTime.parse(formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd])));
 
-    Day day = await DayService.setDay(global_selectedDay);
+    Day day = await DayService.setDay(context.read<Global>().selectedDay);
     List<Plan> plans = await PlanService.findListByDay(day);
     plans = PlanService.listOrderById(plans);
 
@@ -102,18 +99,11 @@ class _CalendarPageState extends State<CalendarPage>
     }
 
     setState(() {
-      global_plans = plans;
-//      global_events = events;
+      context.read<Global>().setPlans(plans);
       context.read<Global>().setEvents(events);
-      global_selectedEvents = context.read<Global>().events[global_selectedDay] ?? [];
+      context.read<Global>().setSelectedEvents(
+          context.read<Global>().events[context.read<Global>().selectedDay] ?? []);
     });
-
-//    print(1);
-//    print(global_events);
-//    print(2);
-//    context.read<Global>().set(global_events);
-//    print(3);
-//    print(context.read<Global>().events);
   }
 
   @override
@@ -124,23 +114,21 @@ class _CalendarPageState extends State<CalendarPage>
   }
 
   Future<void> _onDaySelected(DateTime date, List events) async {
-    global_selectedDay = date;
+    context.read<Global>().setSelectedDay(date);
     Day day = await DayService.setDay(date);
     List<Plan> plans = await PlanService.findListByDay(day);
     plans = PlanService.listOrderById(plans);
     setState(() {
-      global_plans = plans;
-      global_selectedEvents = events;
+      context.read<Global>().setPlans(plans);
+      context.read<Global>().setSelectedEvents(events);
     });
   }
 
   void _onVisibleDaysChanged(
-      DateTime first, DateTime last, CalendarFormat format) {
-  }
+      DateTime first, DateTime last, CalendarFormat format) {}
 
   void _onCalendarCreated(
-      DateTime first, DateTime last, CalendarFormat format) {
-  }
+      DateTime first, DateTime last, CalendarFormat format) {}
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +155,7 @@ class _CalendarPageState extends State<CalendarPage>
             ),
             headerStyle: HeaderStyle(
               formatButtonTextStyle:
-              TextStyle().copyWith(color: Colors.white, fontSize: 15.0),
+                  TextStyle().copyWith(color: Colors.white, fontSize: 15.0),
               formatButtonDecoration: BoxDecoration(
                 color: Colors.deepOrange[400],
                 borderRadius: BorderRadius.circular(16.0),
@@ -238,7 +226,7 @@ class _CalendarPageState extends State<CalendarPage>
     List<Widget> _totalList = <Widget>[];
 
     List<Widget> _planList = <Widget>[];
-    global_plans.forEach((plan) {
+    context.watch<Global>().plans.forEach((plan) {
       _planList.add(Container(
         child: ListTile(
           title: Row(
@@ -265,11 +253,8 @@ class _CalendarPageState extends State<CalendarPage>
       ),
     );
 
-    List<Widget> _eventList = global_selectedEvents.map((e) {
-      print(global_selectedDay);
-      return DateTimePickerWrappr(
-        event: e,
-      );
+    List<Widget> _eventList = context.watch<Global>().selectedEvents.map((e) {
+      return DateTimePickerWrappr(event: e);
     }).toList();
 
     List<Widget> _logList = <Widget>[
@@ -340,7 +325,7 @@ class Count extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
 
-      /// Calls `context.watch` to make [MyHomePage] rebuild when [Counter] changes.
+        /// Calls `context.watch` to make [MyHomePage] rebuild when [Counter] changes.
         '${context.watch<Global>().events}',
         style: Theme.of(context).textTheme.headline4);
   }

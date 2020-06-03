@@ -1,32 +1,49 @@
-import 'package:scaler/back/entity/event.dart';
 import 'package:scaler/back/entity/plan.dart';
-import 'package:table_calendar/table_calendar.dart';
-
-// ignore_for_file: public_member_api_docs, lines_longer_than_80_chars
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-DateTime global_selectedDay;
-List<Plan> global_plans;
-// _events中的key，类型为DateTime并统一为当天12点整
-List global_selectedEvents;
-//因为在其他widget中无法使calendar rebuild
-// use 'CalendarPage._calendarController.setSelectedDay(CalendarPage._calendarController.selectedDay);' to rebuild calendar.
-CalendarController global_calendarController;
 
 /// Mix-in [DiagnosticableTreeMixin] to have access to [debugFillProperties] for the devtool
 class Global with ChangeNotifier, DiagnosticableTreeMixin {
+  // 保存了所有的day中的events。
+  // _events中的key，类型为DateTime并统一为当天12点整。
   Map<DateTime, List> _events = {};
+
+  // 保存了当前选择的日期。
+  DateTime _selectedDay = DateTime.now();
+
+  // 保存了当前选择day的palns。
+  List<Plan> _plans = [];
+
+  // 保存了当前选择day的events。
+  List _selectedEvents = [];
+
+  // Get and set
   Map<DateTime, List> get events => _events;
+
+  DateTime get selectedDay => _selectedDay;
+
+  List<Plan> get plans => _plans;
+
+  List get selectedEvents => _selectedEvents;
 
   void setEvents(Map<DateTime, List> events) {
     _events = events;
     notifyListeners();
-
-    _events[global_selectedDay].forEach((e) {
-      Event event = e;
-      print(event.toJson());
-    });
   }
+
+  void setSelectedDay(DateTime selectedDay) {
+    _selectedDay = selectedDay;
+//    notifyListeners();
+  }
+
+  void setPlans(List<Plan> plans) {
+    _plans = plans;
+//    notifyListeners();
+  }
+
+  void setSelectedEvents(List selectedEvents) {
+    _selectedEvents = selectedEvents;
+//    notifyListeners();
+  }
+  // Get and set
 }
