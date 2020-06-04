@@ -6,9 +6,15 @@ import 'package:scaler/back/database/db.dart';
 import 'package:scaler/back/entity/day.dart';
 import 'package:scaler/back/entity/event.dart';
 import 'package:scaler/back/service/day_service.dart';
+import 'package:scaler/global/global.dart';
 import 'package:scaler/global/theme_data.dart';
+import 'package:scaler/navigator/tab_navigator.dart';
 import 'package:scaler/util/dialog_utils.dart';
 import 'package:scaler/widget/simple_round_button.dart';
+
+// ignore_for_file: public_member_api_docs, lines_longer_than_80_chars
+import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
 
 class AddEventItem extends StatefulWidget {
   AddEventItem();
@@ -31,7 +37,6 @@ class AddEventItemState extends State<AddEventItem> {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       child: Column(
         children: <Widget>[
@@ -54,12 +59,10 @@ class AddEventItemState extends State<AddEventItem> {
                                 minTime: DateTime(2019, 3, 5),
                                 maxTime: DateTime(2021, 6, 7),
                                 onConfirm: (data) {
-                                  setState(() {
-                                    _dateTime = data;
-                                  });
-                                },
-                                currentTime: _dateTime,
-                                locale: LocaleType.en);
+                              setState(() {
+                                _dateTime = data;
+                              });
+                            }, currentTime: _dateTime, locale: LocaleType.en);
                           },
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(6, 0, 10, 0),
@@ -67,12 +70,28 @@ class AddEventItemState extends State<AddEventItem> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text('Start Time'),
-                                    SizedBox(height: 6, width: 1,),
-                                    Text(formatDate(_dateTime, [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss])),
+                                    SizedBox(
+                                      height: 6,
+                                      width: 1,
+                                    ),
+                                    Text(formatDate(_dateTime, [
+                                      yyyy,
+                                      '-',
+                                      mm,
+                                      '-',
+                                      dd,
+                                      ' ',
+                                      HH,
+                                      ':',
+                                      nn,
+                                      ':',
+                                      ss
+                                    ])),
                                   ],
                                 ),
                                 Icon(Icons.arrow_forward_ios),
@@ -87,7 +106,7 @@ class AddEventItemState extends State<AddEventItem> {
                             minLines: 1,
                             decoration: InputDecoration(labelText: 'Content'),
                             validator: (val) =>
-                            val.length < 1 ? 'Content Required' : null,
+                                val.length < 1 ? 'Content Required' : null,
                             onSaved: (val) => _content = val,
                             obscureText: false,
                             keyboardType: TextInputType.text,
@@ -121,24 +140,43 @@ class AddEventItemState extends State<AddEventItem> {
   }
 
   _submit() async {
+    FocusScope.of(context).requestFocus(FocusNode());
     DialogUtils.showLoader(context, 'Adding...');
 
+    String info = '';
+    _formKey.currentState.save();
+
+    Day day = await DayService.setDay(_dateTime);
+    String time = formatDate(_dateTime, [HH, ':', nn, ':', ss]);
+    DateTime date = DateTime(_dateTime.year, _dateTime.month, _dateTime.day);
+    Event event = new Event(null, day.id, time, _content);
+
     try {
-      _formKey.currentState.save();
-
-      Day day = await DayService.setDay(_dateTime);
-      String time = formatDate(_dateTime, [HH, ':', nn, ':', ss]);
-      Event event = new Event(null, day.id, time, _content);
-      await DB.save(tableEvent, event);
-
-      Navigator.of(context).pop();
-      DialogUtils.showTextDialog(context, 'Successfully added!');
+      event.id = await DB.save(tableEvent, event);
+      info = 'Successfully added!';
     } catch (e) {
-      Navigator.of(context).pop();
-      DialogUtils.showTextDialog(context, 'Error' + e.toString());
+      info = 'Error' + e.toString();
       throw e;
     }
 
+    setState(() {
+      Map<DateTime, List> events = context.read<Global>().events;
+
+      events.update(
+        date,
+        (previousEvents) => previousEvents..add(event),
+        ifAbsent: () => [event],
+      );
+
+      context.read<Global>().setEvents(events);
+      context.read<Global>().setSelectedEvents(
+          events[context.read<Global>().selectedDay] ??
+              []);
+    });
+
+    Navigator.of(context).pop();
+    DialogUtils.showTextDialog(context, info);
+    dropdownMenuController.hide();
 //    print(await DB.query(tableEvent));
   }
 }

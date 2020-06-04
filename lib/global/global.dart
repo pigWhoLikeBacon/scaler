@@ -17,6 +17,9 @@ class Global with ChangeNotifier, DiagnosticableTreeMixin {
   // 保存了当前选择day的events。
   List _selectedEvents = [];
 
+  // 保存了当前未失效的plans
+  List<Plan> _activePlans = [];
+
   // Get and set
   Map<DateTime, List> get events => _events;
 
@@ -25,6 +28,8 @@ class Global with ChangeNotifier, DiagnosticableTreeMixin {
   List<Plan> get plans => _plans;
 
   List get selectedEvents => _selectedEvents;
+
+  List<Plan> get activePlans => _activePlans;
 
   void setEvents(Map<DateTime, List> events) {
     _events = events;
@@ -43,6 +48,11 @@ class Global with ChangeNotifier, DiagnosticableTreeMixin {
 
   void setSelectedEvents(List selectedEvents) {
     _selectedEvents = selectedEvents;
+    notifyListeners();
+  }
+
+  void setActivePlans(List<Plan> activePlans) {
+    _activePlans = activePlans;
     notifyListeners();
   }
   // Get and set

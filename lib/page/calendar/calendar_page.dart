@@ -76,8 +76,7 @@ class _CalendarPageState extends State<CalendarPage>
   }
 
   _loadData() async {
-    context.read<Global>().setSelectedDay(
-        DateTime.parse(formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd])));
+    context.read<Global>().setSelectedDay(DayService.getDayTime(DateTime.now()));
 
     Day day = await DayService.setDay(context.read<Global>().selectedDay);
     List<Plan> plans = await PlanService.findListByDay(day);
@@ -102,7 +101,8 @@ class _CalendarPageState extends State<CalendarPage>
       context.read<Global>().setPlans(plans);
       context.read<Global>().setEvents(events);
       context.read<Global>().setSelectedEvents(
-          context.read<Global>().events[context.read<Global>().selectedDay] ?? []);
+          context.read<Global>().events[context.read<Global>().selectedDay] ??
+              []);
     });
   }
 
@@ -114,7 +114,7 @@ class _CalendarPageState extends State<CalendarPage>
   }
 
   Future<void> _onDaySelected(DateTime date, List events) async {
-    context.read<Global>().setSelectedDay(date);
+    context.read<Global>().setSelectedDay(DayService.getDayTime(date));
     Day day = await DayService.setDay(date);
     List<Plan> plans = await PlanService.findListByDay(day);
     plans = PlanService.listOrderById(plans);
@@ -253,9 +253,13 @@ class _CalendarPageState extends State<CalendarPage>
       ),
     );
 
+
     List<Widget> _eventList = context.watch<Global>().selectedEvents.map((e) {
       return DateTimePickerWrappr(event: e);
     }).toList();
+
+    print(context.watch<Global>().selectedEvents);
+    print(_eventList);
 
     List<Widget> _logList = <Widget>[
       Container(
@@ -318,15 +322,15 @@ class _CalendarPageState extends State<CalendarPage>
   }
 }
 
-class Count extends StatelessWidget {
-  const Count({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-
-        /// Calls `context.watch` to make [MyHomePage] rebuild when [Counter] changes.
-        '${context.watch<Global>().events}',
-        style: Theme.of(context).textTheme.headline4);
-  }
+Widget getNothingWidget(String text) {
+  return Container(
+    decoration: BoxDecoration(
+      border: Border.all(width: 0.8),
+      borderRadius: BorderRadius.circular(12.0),
+    ),
+    margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+    child: ListTile(
+      title: Text(text),
+    ),
+  );
 }

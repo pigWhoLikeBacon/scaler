@@ -12,7 +12,6 @@ import 'package:scaler/util/dialog_utils.dart';
 
 // ignore_for_file: public_member_api_docs, lines_longer_than_80_chars
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class DateTimePickerWrappr extends StatefulWidget {
@@ -147,7 +146,9 @@ class DateTimePickerWrapprState extends State<DateTimePickerWrappr> {
 
                         events[context.read<Global>().selectedDay].removeWhere((element) {
                           Event event = element;
-                          return event.id == _event.id;
+                          bool flag = event.id == _event.id;
+                          print(flag);
+                          return flag;
                         });
 
                         context.read<Global>().setEvents(events);

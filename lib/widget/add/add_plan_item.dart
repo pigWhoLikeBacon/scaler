@@ -5,9 +5,12 @@ import 'package:scaler/back/entity/day.dart';
 import 'package:scaler/back/entity/day_plan.dart';
 import 'package:scaler/back/entity/plan.dart';
 import 'package:scaler/back/service/day_service.dart';
+import 'package:scaler/global/global.dart';
 import 'package:scaler/global/theme_data.dart';
+import 'package:scaler/navigator/tab_navigator.dart';
 import 'package:scaler/util/dialog_utils.dart';
 import 'package:scaler/widget/simple_round_button.dart';
+import 'package:provider/provider.dart';
 
 class AddPlanItem extends StatefulWidget {
   AddPlanItem();
@@ -40,7 +43,7 @@ class AddPlanItemState extends State<AddPlanItem> {
                           title: TextFormField(
 //                        initialValue: Config.get('username'),
                             maxLines: 6,
-                            minLines: 3,
+                            minLines: 1,
                             decoration: InputDecoration(labelText: 'Content'),
                             validator: (val) =>
                             val.length < 1 ? 'Content Required' : null,
@@ -77,27 +80,36 @@ class AddPlanItemState extends State<AddPlanItem> {
   }
 
   _submit() async {
+    FocusScope.of(context).requestFocus(FocusNode());
     DialogUtils.showLoader(context, 'Adding...');
 
+    String info = '';
+    _formKey.currentState.save();
+
+    Day day = await DayService.setDay(DateTime.now());
+    Plan plan = new Plan(null, _content, 1);
+
     try {
-      _formKey.currentState.save();
-
-      Day day = await DayService.setDay(DateTime.now());
-
-      Plan plan = new Plan(null, _content, 1);
-      int planId = await DB.save(tablePlan, plan);
-
-      DayPlan dayPlan = new DayPlan(null, day.id, planId, 0);
-      await DB.save(tableDayPlan, dayPlan);
-
-      Navigator.of(context).pop();
-      DialogUtils.showTextDialog(context, 'Successfully added!');
+      plan.id = await DB.save(tablePlan, plan);
+      DayPlan dayPlan = new DayPlan(null, day.id, plan.id, 0);
+      dayPlan.id = await DB.save(tableDayPlan, dayPlan);
+      info = 'Successfully added!';
     } catch (e) {
-      Navigator.of(context).pop();
-      DialogUtils.showTextDialog(context, 'Error' + e.toString());
+      info = 'Error' + e.toString();
       throw e;
     }
 
+    setState(() {
+      List<Plan> activePlans = context.read<Global>().activePlans;
+
+      activePlans.add(plan);
+
+      context.read<Global>().setActivePlans(activePlans);
+    });
+
+    Navigator.of(context).pop();
+    DialogUtils.showTextDialog(context, info);
+    dropdownMenuController.hide();
 //    print(await DB.query(tablePlan));
 //    print(await DB.query(tableDayPlan));
   }

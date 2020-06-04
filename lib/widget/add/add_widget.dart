@@ -44,7 +44,7 @@ class AddWidgetState extends State<AddWidget> {
           // 下拉菜单，高度自定义，你想显示什么就显示什么，完全由你决定，你只需要在选择后调用_dropdownMenuController.hide();即可
           menus: [
             GZXDropdownMenuBuilder(
-              dropDownHeight: scaler.getHeight(50),
+              dropDownHeight: scaler.getHeight(48),
 //              dropDownWidget: Container(
 //                width: scaler.getWidth(100),
 //                height: scaler.getHeight(30),

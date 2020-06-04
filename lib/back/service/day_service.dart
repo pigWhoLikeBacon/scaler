@@ -68,10 +68,15 @@ class DayService {
     }
   }
 
-  static isEarlyDay(DateTime start, DateTime end) {
+  static bool isEarlyDay(DateTime start, DateTime end) {
     if (start.year > end.year) return false;
     if (start.month > end.month) return false;
     if (start.day > end.day) return false;
     return true;
+  }
+
+  //获取不设置时区的当天12点
+  static DateTime getDayTime(DateTime dt) {
+    return DateTime.parse(formatDate(dt, [yyyy, '-', mm, '-', dd]));
   }
 }

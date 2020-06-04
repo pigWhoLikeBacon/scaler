@@ -6,9 +6,11 @@ import 'package:scaler/back/entity/plan.dart';
 import 'package:scaler/back/service/day_plan_service.dart';
 import 'package:scaler/back/service/day_service.dart';
 import 'package:scaler/back/service/plan_service.dart';
+import 'package:scaler/global/global.dart';
 import 'package:scaler/util/dialog_utils.dart';
 import 'package:scaler/widget/drawer_widget.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:provider/provider.dart';
 
 
 class PlanPage extends StatefulWidget {
@@ -17,8 +19,6 @@ class PlanPage extends StatefulWidget {
 }
 
 class _PlanPageState extends State<PlanPage>{
-
-  List<Plan> _plans = [];
 
   @override
   void initState() {
@@ -30,7 +30,7 @@ class _PlanPageState extends State<PlanPage>{
   _loadData() async {
     var plans = await PlanService.getActivePlans();
     setState(() {
-      _plans = plans;
+      context.read<Global>().setActivePlans(plans);
     });
   }
 
@@ -43,7 +43,7 @@ class _PlanPageState extends State<PlanPage>{
       drawer: DrawerWidget(),
       body: Center(
       child: new ListView(
-        children: _plans.map((plan) => _getPlanWidget(plan)).toList(),
+        children: context.watch<Global>().activePlans.map((plan) => _getPlanWidget(plan)).toList(),
       ),
       ),
     );
@@ -128,8 +128,6 @@ class _PlanPageState extends State<PlanPage>{
 //                      var list = DB.find(tableDayPlan, DayPlan_day_id, dayId);
 //                      DayPlan dayPlan = new DayPlan(null, dayId, plan.id, isDone)
                     });
-
-                    print('!!!');
 
                     Navigator.of(context).pop();
                     DialogUtils.showTextDialog(context, 'Successfully edited!');

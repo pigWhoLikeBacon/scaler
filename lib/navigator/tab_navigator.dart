@@ -5,6 +5,8 @@ import 'package:scaler/page/calendar/calendar_page.dart';
 import 'package:scaler/page/plan_page.dart';
 import 'package:scaler/widget/add/add_widget.dart';
 
+GZXDropdownMenuController dropdownMenuController;
+
 class TabNavigator extends StatefulWidget {
   @override
   _TabNavigatorState createState() => _TabNavigatorState();
@@ -13,10 +15,10 @@ class TabNavigator extends StatefulWidget {
 class _TabNavigatorState extends State<TabNavigator> {
   int _currentIndex = 0;
   List<Widget> _pageList;
-  GZXDropdownMenuController _dropdownMenuController = GZXDropdownMenuController();
 
   @override
   void initState() {
+    dropdownMenuController = GZXDropdownMenuController();
     super.initState();
 
     _pageList = List();
@@ -25,12 +27,10 @@ class _TabNavigatorState extends State<TabNavigator> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenScaler scaler = new ScreenScaler()..init(context);
-
     return Scaffold(
       body: AddWidget(
         child: _pageList[_currentIndex],
-        dropdownMenuController: _dropdownMenuController,
+        dropdownMenuController: dropdownMenuController,
       ),
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(), // 底部导航栏打一个圆形的洞
@@ -47,10 +47,10 @@ class _TabNavigatorState extends State<TabNavigator> {
         child: Icon(Icons.add),
         heroTag: 'add',
         onPressed: () {
-          if (_dropdownMenuController.isShow) {
-            _dropdownMenuController.hide();
+          if (dropdownMenuController.isShow) {
+            dropdownMenuController.hide();
           } else {
-            _dropdownMenuController.show(0);
+            dropdownMenuController.show(0);
           }
         },
       ),
