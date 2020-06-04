@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
 import 'package:gzx_dropdown_menu/gzx_dropdown_menu.dart';
-import 'package:scaler/page/calendar/calendar_page.dart';
+import 'package:scaler/page/calendar_page/calendar_page.dart';
 import 'package:scaler/page/plan_page.dart';
 import 'package:scaler/widget/add/add_widget.dart';
 

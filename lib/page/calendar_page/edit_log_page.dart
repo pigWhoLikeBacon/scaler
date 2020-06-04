@@ -5,8 +5,6 @@ import 'package:scaler/back/database/db.dart';
 import 'package:scaler/back/entity/day.dart';
 import 'package:scaler/back/service/day_service.dart';
 import 'package:scaler/util/dialog_utils.dart';
-import 'package:scaler/widget/drawer_widget.dart';
-import 'package:scaler/widget/simple_round_button.dart';
 
 
 class EditLogPage extends StatefulWidget {
@@ -90,8 +88,8 @@ class _EditLogPageState extends State<EditLogPage> {
                     Divider(),
                     ListTile(
                       title: TextFormField(
-                        maxLines: 60,
-                        minLines: 3,
+                        maxLines: 12,
+                        minLines: 1,
                         decoration: InputDecoration(labelText: 'Content'),
                         validator: (val) =>
                         val.length < 1 ? 'Content Required' : null,

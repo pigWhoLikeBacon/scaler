@@ -170,7 +170,7 @@ class AddEventItemState extends State<AddEventItem> {
 
       context.read<Global>().setEvents(events);
       context.read<Global>().setSelectedEvents(
-          events[context.read<Global>().selectedDay] ??
+          events[context.read<Global>().selectedDate] ??
               []);
     });
 

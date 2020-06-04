@@ -11,12 +11,13 @@ import 'package:scaler/back/service/event_service.dart';
 import 'package:scaler/back/service/plan_service.dart';
 import 'package:scaler/global/global.dart';
 import 'package:scaler/global/theme_data.dart';
-import 'package:scaler/page/edit_log_page.dart';
+import 'package:scaler/page/calendar_page/calendar_plan.dart';
+import 'file:///C:/Users/hhd/AndroidStudioProjects/scaler-master/lib/page/calendar_page/edit_log_page.dart';
 import 'package:scaler/widget/drawer_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:toggle_rotate/toggle_rotate.dart';
 
-import 'datetime_picker_wrappr.dart';
+import 'calendar_event.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
@@ -65,20 +66,10 @@ class _CalendarPageState extends State<CalendarPage>
     super.initState();
   }
 
-  rebuild() {
-//    print(Global().events);
-//    print(global_events);
-//    setState(() {
-//      global_events = global_events;
-//    });
-//    print(global_events);
-//    CalendarPage._calendarController.setSelectedDay(CalendarPage._calendarController.selectedDay);
-  }
-
   _loadData() async {
-    context.read<Global>().setSelectedDay(DayService.getDayTime(DateTime.now()));
+    context.read<Global>().setSelectedDate(DayService.getDayTime(DateTime.now()));
 
-    Day day = await DayService.setDay(context.read<Global>().selectedDay);
+    Day day = await DayService.setDay(context.read<Global>().selectedDate);
     List<Plan> plans = await PlanService.findListByDay(day);
     plans = PlanService.listOrderById(plans);
 
@@ -101,8 +92,9 @@ class _CalendarPageState extends State<CalendarPage>
       context.read<Global>().setPlans(plans);
       context.read<Global>().setEvents(events);
       context.read<Global>().setSelectedEvents(
-          context.read<Global>().events[context.read<Global>().selectedDay] ??
+          context.read<Global>().events[context.read<Global>().selectedDate] ??
               []);
+      context.read<Global>().setLog(day.log);
     });
   }
 
@@ -114,13 +106,14 @@ class _CalendarPageState extends State<CalendarPage>
   }
 
   Future<void> _onDaySelected(DateTime date, List events) async {
-    context.read<Global>().setSelectedDay(DayService.getDayTime(date));
+    context.read<Global>().setSelectedDate(DayService.getDayTime(date));
     Day day = await DayService.setDay(date);
     List<Plan> plans = await PlanService.findListByDay(day);
     plans = PlanService.listOrderById(plans);
     setState(() {
       context.read<Global>().setPlans(plans);
       context.read<Global>().setSelectedEvents(events);
+      context.read<Global>().setLog(day.log);
     });
   }
 
@@ -188,11 +181,10 @@ class _CalendarPageState extends State<CalendarPage>
               child: Text(
                   'Set day ${dateTime.day}-${dateTime.month}-${dateTime.year}'),
               onPressed: () {
-//                CalendarPage._calendarController.setSelectedDay(
-//                  DateTime(dateTime.year, dateTime.month, dateTime.day),
-//                  runCallback: true,
-//                );
-                rebuild();
+                CalendarPage._calendarController.setSelectedDay(
+                  DateTime(dateTime.year, dateTime.month, dateTime.day),
+                  runCallback: true,
+                );
               },
             ),
           ),
@@ -227,18 +219,7 @@ class _CalendarPageState extends State<CalendarPage>
 
     List<Widget> _planList = <Widget>[];
     context.watch<Global>().plans.forEach((plan) {
-      _planList.add(Container(
-        child: ListTile(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(plan.content),
-              Icon(Icons.check_circle),
-            ],
-          ),
-          onTap: () => print('$plan tapped!'),
-        ),
-      ));
+      _planList.add(CalendarPlan(plan: plan,));
       _planList.add(Divider());
     });
     if (_planList.length != 0) _planList.removeLast();
@@ -255,11 +236,8 @@ class _CalendarPageState extends State<CalendarPage>
 
 
     List<Widget> _eventList = context.watch<Global>().selectedEvents.map((e) {
-      return DateTimePickerWrappr(event: e);
+      return CalendarEvent(event: e);
     }).toList();
-
-    print(context.watch<Global>().selectedEvents);
-    print(_eventList);
 
     List<Widget> _logList = <Widget>[
       Container(
@@ -285,7 +263,7 @@ class _CalendarPageState extends State<CalendarPage>
           ),
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-            child: Text('data'),
+            child: Text(context.watch<Global>().log),
           ), // BoxDecoration
         ), // Container
       ), // Container
@@ -322,7 +300,7 @@ class _CalendarPageState extends State<CalendarPage>
   }
 }
 
-Widget getNothingWidget(String text) {
+Widget _getNothingWidget(String text) {
   return Container(
     decoration: BoxDecoration(
       border: Border.all(width: 0.8),

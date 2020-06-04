@@ -14,15 +14,15 @@ import 'package:scaler/util/dialog_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 
-class DateTimePickerWrappr extends StatefulWidget {
+class CalendarEvent extends StatefulWidget {
   final Event event;
 
-  const DateTimePickerWrappr({Key key, this.event}) : super(key: key);
+  const CalendarEvent({Key key, this.event}) : super(key: key);
 
-  DateTimePickerWrapprState createState() => DateTimePickerWrapprState();
+  CalendarEventState createState() => CalendarEventState();
 }
 
-class DateTimePickerWrapprState extends State<DateTimePickerWrappr> {
+class CalendarEventState extends State<CalendarEvent> {
   Event _event;
   DateTime _dateTime;
   String _content;
@@ -38,7 +38,7 @@ class DateTimePickerWrapprState extends State<DateTimePickerWrappr> {
 
   _loadData() {
     _event = widget.event;
-    DateTime selectedDay = context.read<Global>().selectedDay;
+    DateTime selectedDay = context.read<Global>().selectedDate;
     _dateTime = DateTime.parse(formatDate(selectedDay, [yyyy, '-', mm, '-', dd]) + ' ' + _event.time);
   }
 
@@ -144,7 +144,7 @@ class DateTimePickerWrapprState extends State<DateTimePickerWrappr> {
                       setState(() {
                         Map<DateTime, List> events = context.read<Global>().events;
 
-                        events[context.read<Global>().selectedDay].removeWhere((element) {
+                        events[context.read<Global>().selectedDate].removeWhere((element) {
                           Event event = element;
                           bool flag = event.id == _event.id;
                           print(flag);

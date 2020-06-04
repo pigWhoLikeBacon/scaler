@@ -8,22 +8,25 @@ class Global with ChangeNotifier, DiagnosticableTreeMixin {
   // _events中的key，类型为DateTime并统一为当天12点整。
   Map<DateTime, List> _events = {};
 
-  // 保存了当前选择的日期。
-  DateTime _selectedDay = DateTime.now();
+  // 保存了当前day的日期。
+  DateTime _selectedDate = DateTime.now();
 
-  // 保存了当前选择day的palns。
+  // 保存了当前day的palns。
   List<Plan> _plans = [];
 
   // 保存了当前选择day的events。
   List _selectedEvents = [];
 
-  // 保存了当前未失效的plans
+  // 保存了当前未失效的plans。
   List<Plan> _activePlans = [];
+
+  // 保存了当前day的log。
+  String _log = '';
 
   // Get and set
   Map<DateTime, List> get events => _events;
 
-  DateTime get selectedDay => _selectedDay;
+  DateTime get selectedDate => _selectedDate;
 
   List<Plan> get plans => _plans;
 
@@ -31,13 +34,15 @@ class Global with ChangeNotifier, DiagnosticableTreeMixin {
 
   List<Plan> get activePlans => _activePlans;
 
+  String get log => _log;
+
   void setEvents(Map<DateTime, List> events) {
     _events = events;
     notifyListeners();
   }
 
-  void setSelectedDay(DateTime selectedDay) {
-    _selectedDay = selectedDay;
+  void setSelectedDate(DateTime selectedDay) {
+    _selectedDate = selectedDay;
 //    notifyListeners();
   }
 
@@ -53,6 +58,11 @@ class Global with ChangeNotifier, DiagnosticableTreeMixin {
 
   void setActivePlans(List<Plan> activePlans) {
     _activePlans = activePlans;
+    notifyListeners();
+  }
+
+  void setLog(String log) {
+    _log = log;
     notifyListeners();
   }
   // Get and set
