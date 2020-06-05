@@ -217,27 +217,33 @@ class _CalendarPageState extends State<CalendarPage>
   Widget _buildList() {
     List<Widget> _totalList = <Widget>[];
 
+    Widget _planItem;
     List<Widget> _planList = <Widget>[];
     context.watch<Global>().plans.forEach((plan) {
       _planList.add(CalendarPlan(plan: plan,));
       _planList.add(Divider());
     });
-    if (_planList.length != 0) _planList.removeLast();
-    Widget _planItem = Container(
-      decoration: BoxDecoration(
-        border: Border.all(width: 0.8),
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-      child: Column(
-        children: _planList,
-      ),
-    );
-
+    if (_planList.length != 0){
+      _planList.removeLast();
+      _planItem = Container(
+        decoration: BoxDecoration(
+          border: Border.all(width: 0.8),
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        child: Column(
+          children: _planList,
+        ),
+      );
+    } else {
+      _planItem = _getNothingWidget('No plan for the day!');
+    }
 
     List<Widget> _eventList = context.watch<Global>().selectedEvents.map((e) {
       return CalendarEvent(event: e);
     }).toList();
+    if (_eventList.length == 0)
+      _eventList = [_getNothingWidget('No event for the day!')];
 
     List<Widget> _logList = <Widget>[
       Container(
@@ -263,7 +269,7 @@ class _CalendarPageState extends State<CalendarPage>
           ),
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-            child: Text(context.watch<Global>().log),
+            child: Text(_getLog()),
           ), // BoxDecoration
         ), // Container
       ), // Container
@@ -290,7 +296,7 @@ class _CalendarPageState extends State<CalendarPage>
                   }),
                 );
               },
-              child: Text('hhd'),
+              child: Text('Edit'),
             ),
           ),
         ),
@@ -307,17 +313,24 @@ class _CalendarPageState extends State<CalendarPage>
 
     return ListView(children: _totalList);
   }
-}
 
-Widget _getNothingWidget(String text) {
-  return Container(
-    decoration: BoxDecoration(
-      border: Border.all(width: 0.8),
-      borderRadius: BorderRadius.circular(12.0),
-    ),
-    margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-    child: ListTile(
-      title: Text(text),
-    ),
-  );
+  Widget _getNothingWidget(String text) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(width: 0.8),
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      child: ListTile(
+        title: Text(text),
+      ),
+    );
+  }
+
+  String _getLog() {
+    if (context.watch<Global>().log.length != 0)
+      return context.watch<Global>().log;
+    else
+      return 'No log for the day!';
+  }
 }
