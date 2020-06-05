@@ -77,6 +77,6 @@ class DayService {
 
   //获取不设置时区的当天12点
   static DateTime getDayTime(DateTime dt) {
-    return DateTime.parse(formatDate(dt, [yyyy, '-', mm, '-', dd]));
+    return DateTime(dt.year, dt.month, dt.day);
   }
 }

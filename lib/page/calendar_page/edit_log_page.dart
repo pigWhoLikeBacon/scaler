@@ -4,7 +4,9 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:scaler/back/database/db.dart';
 import 'package:scaler/back/entity/day.dart';
 import 'package:scaler/back/service/day_service.dart';
+import 'package:scaler/global/global.dart';
 import 'package:scaler/util/dialog_utils.dart';
+import 'package:provider/provider.dart';
 
 
 class EditLogPage extends StatefulWidget {
@@ -112,23 +114,26 @@ class _EditLogPageState extends State<EditLogPage> {
   _edit() async {
     DialogUtils.showLoader(context, 'Editing...');
 
+    _formKey.currentState.save();
+    Day day = await DayService.setDay(_date);
+    day.log = _content;
+
+    String info = '';
+
     try {
-      _formKey.currentState.save();
-
-      Day day = await DayService.setDay(_date);
-
-      day.log = _content;
-
-      await DB.save(tableDay, day);
-
-      Navigator.of(context).pop();
-      DialogUtils.showTextDialog(context, 'Successfully edited!');
+      day.id = await DB.save(tableDay, day);
+      info = 'Successfully edited!';
     } catch (e) {
-      Navigator.of(context).pop();
-      DialogUtils.showTextDialog(context, 'Error:' + e.toString());
+      info = 'Error:' + e.toString();
       throw e;
     }
 
+    if (DayService.getDayTime(_date) == context.read<Global>().selectedDate) {
+      context.read<Global>().setLog(day.log);
+    }
+
+    Navigator.of(context).pop();
+    DialogUtils.showTextDialog(context, 'Successfully edited!');
 //    print(await DB.query(tableDay));
   }
 }

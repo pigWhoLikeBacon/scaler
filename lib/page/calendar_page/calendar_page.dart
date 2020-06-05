@@ -278,8 +278,17 @@ class _CalendarPageState extends State<CalendarPage>
             color: Colors.cyan,
             child: FlatButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => EditLogPage()));
+                final myNotifier = Provider.of<Global>(context, listen: false);
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return ChangeNotifierProvider.value(
+                      value: myNotifier,
+                      child: EditLogPage(),
+                    );
+                  }),
+                );
               },
               child: Text('hhd'),
             ),
