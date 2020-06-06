@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:scaler/global/config.dart';
 import 'package:scaler/widget/color_loader_2.dart';
 
@@ -87,5 +88,49 @@ class DialogUtils {
     );
 
     showDialog(context: context, builder: (_) => dialog);
+  }
+
+  static YYDialog editYYBottomSheetDialog(String text, Function function) {
+    YYDialog dialog = YYDialog();
+
+    return dialog.build()
+      ..gravity = Gravity.bottom
+      ..gravityAnimationEnable = true
+      ..backgroundColor = Colors.transparent
+      ..widget(Container(
+        width: 300,
+        height: 45,
+        margin: EdgeInsets.only(bottom: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.0),
+          color: Colors.white,
+        ),
+        child: Center(
+          child: FlatButton(
+            child: Text(text, style: TextStyle(color: Colors.red),),
+            onPressed: () {
+              function();
+              dialog.dismiss();
+            },
+          ),
+        ),
+      ))
+      ..widget(Container(
+        width: 300,
+        height: 45,
+        margin: EdgeInsets.only(bottom: 20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.0),
+          color: Colors.white,
+        ),
+        child: Center(
+            child: FlatButton(
+          child: Text('Cancel'),
+          onPressed: () {
+            dialog.dismiss();
+          },
+        )),
+      ))
+      ..show();
   }
 }

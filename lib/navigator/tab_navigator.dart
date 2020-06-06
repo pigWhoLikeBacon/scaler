@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
 import 'package:gzx_dropdown_menu/gzx_dropdown_menu.dart';
 import 'package:scaler/page/calendar_page/calendar_page.dart';
@@ -18,6 +19,7 @@ class _TabNavigatorState extends State<TabNavigator> {
 
   @override
   void initState() {
+    YYDialog.init(context);
     dropdownMenuController = GZXDropdownMenuController();
     super.initState();
 

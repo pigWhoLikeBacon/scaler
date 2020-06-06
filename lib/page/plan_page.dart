@@ -8,6 +8,7 @@ import 'package:scaler/back/service/day_service.dart';
 import 'package:scaler/back/service/plan_service.dart';
 import 'package:scaler/global/global.dart';
 import 'package:scaler/util/dialog_utils.dart';
+import 'package:scaler/util/toast_utils.dart';
 import 'package:scaler/widget/drawer_widget.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:provider/provider.dart';
@@ -62,6 +63,7 @@ class _PlanPageState extends State<PlanPage>{
         child: ExpansionTile(
 //            key: new PageStorageKey<Entry>(root),
           title: new Text(plan.content),
+          initiallyExpanded: false,
           children: <Widget> [
             Form(
               key: _formKey,
@@ -70,8 +72,8 @@ class _PlanPageState extends State<PlanPage>{
                 children: <Widget>[
                   ListTile(
                     title: TextFormField(
-                      maxLines: 6,
-                      minLines: 3,
+                      maxLines: 3,
+                      minLines: 1,
                       decoration: InputDecoration(labelText: 'Content'),
                       validator: (val) =>
                       val.length < 1 ? 'Content Required' : null,
@@ -84,64 +86,135 @@ class _PlanPageState extends State<PlanPage>{
                 ],
               ),
             ),
-            Container(
-              alignment: Alignment.bottomRight,
-              child: FlatButton(
-                child: Text('Edit'),
-                onPressed: () async {
-                  print(plan.id);
-                  DialogUtils.showLoader(context, 'Editing...');
-
-                  /*
-                  找到该计划的创建时间。
-                  遍历创建时间到现在之间的每一天，如果没有联系则建立联系。
-                  设置该计划为失效。
-                   */
-                  try {
-                    print(await DB.query(tablePlan));
-                    print(await DB.query(tableDayPlan));
-                    print(await DB.query(tableDay));
-
-                    _formKey.currentState.save();
-
-                    var list_dayPlan = await DayPlanService.findListByPlanId(plan.id);
-                    DayPlan start = list_dayPlan[0];
-
-                    Day startDay = await DayService.findById(start.day_id);
-
-                    print(startDay.date);
-
-                    DayService.eachDays(DateTime.parse(startDay.date), DateTime.now(), (day) async {
-//                      print(dayId);
-                      Map<String, dynamic> map = {
-                        DayPlan_plan_id : plan.id,
-                        DayPlan_day_id : day.id,
-                      };
-                      var list = await DB.findByMap(tableDayPlan, map);
-                      print(list);
-
-                      //计划与该日期无联系则执行该代码，添加联系
-                      if (list.length == 0) {
-                        DayPlan dayPlan = new DayPlan(null, day.id, plan.id, 0);
-                        DB.save(tableDayPlan, dayPlan);
-                      }
-//                      var list = DB.find(tableDayPlan, DayPlan_day_id, dayId);
-//                      DayPlan dayPlan = new DayPlan(null, dayId, plan.id, isDone)
-                    });
-
-                    Navigator.of(context).pop();
-                    DialogUtils.showTextDialog(context, 'Successfully edited!');
-                  } catch (e) {
-                    Navigator.of(context).pop();
-                    DialogUtils.showTextDialog(context, 'Error' + e.toString());
-                    throw e;
-                  }
-                  print(_content);
-                },
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                FlatButton(
+                    textColor: Colors.red,
+                    child: Text('Delete'),
+                    onPressed: () {
+                      DialogUtils.editYYBottomSheetDialog(
+                          'Delete this item permanently', () {
+                        _delete(plan);
+                      });
+                    }),
+                FlatButton(
+                    child: Text('Edit'),
+                    onPressed: () {
+                      _formKey.currentState.save();
+                      DialogUtils.editYYBottomSheetDialog(
+                          'Edit this item permanently', () {
+                        _edit(plan, _content);
+                      });
+                    })
+              ],
             ),
+//            Container(
+//              alignment: Alignment.bottomRight,
+//              child: FlatButton(
+//                child: Text('Edit'),
+//                onPressed: () async {
+//                  print(plan.id);
+//                  DialogUtils.showLoader(context, 'Editing...');
+//
+//                  /*
+//                  找到该计划的创建时间。
+//                  遍历创建时间到现在之间的每一天，如果没有联系则建立联系。
+//                  设置该计划为失效。
+//                   */
+//                  try {
+//                    print(await DB.query(tablePlan));
+//                    print(await DB.query(tableDayPlan));
+//                    print(await DB.query(tableDay));
+//
+//                    _formKey.currentState.save();
+//
+//                    var list_dayPlan = await DayPlanService.findListByPlanId(plan.id);
+//                    DayPlan start = list_dayPlan[0];
+//
+//                    Day startDay = await DayService.findById(start.day_id);
+//
+//                    print(startDay.date);
+//
+//                    DayService.eachDays(DateTime.parse(startDay.date), DateTime.now(), (day) async {
+////                      print(dayId);
+//                      Map<String, dynamic> map = {
+//                        DayPlan_plan_id : plan.id,
+//                        DayPlan_day_id : day.id,
+//                      };
+//                      var list = await DB.findByMap(tableDayPlan, map);
+//                      print(list);
+//
+//                      //计划与该日期无联系则执行该代码，添加联系
+//                      if (list.length == 0) {
+//                        DayPlan dayPlan = new DayPlan(null, day.id, plan.id, 0);
+//                        DB.save(tableDayPlan, dayPlan);
+//                      }
+////                      var list = DB.find(tableDayPlan, DayPlan_day_id, dayId);
+////                      DayPlan dayPlan = new DayPlan(null, dayId, plan.id, isDone)
+//                    });
+//
+//                    Navigator.of(context).pop();
+//                    DialogUtils.showTextDialog(context, 'Successfully edited!');
+//                  } catch (e) {
+//                    Navigator.of(context).pop();
+//                    DialogUtils.showTextDialog(context, 'Error' + e.toString());
+//                    throw e;
+//                  }
+//                  print(_content);
+//                },
+//              ),
+//            ),
           ],
         )
     );
+  }
+
+  _delete(Plan plan) async {
+    print('delete');
+    plan.isActive = 0;
+    await DB.save(tablePlan, plan);
+
+    ToastUtils.show('delete successful! ID: ' + plan.id.toString());
+
+    setState(() {
+      List<Plan> activePlans = context.read<Global>().activePlans;
+
+      activePlans.removeWhere((e) {
+        Plan t = e;
+        return e.id == plan.id;
+      });
+
+      context.read<Global>().setActivePlans(activePlans);
+    });
+  }
+
+  _edit(Plan plan, String content) async {
+    //设置plan失效
+    plan.isActive = 0;
+    await DB.save(tablePlan, plan);
+
+    //重新创建一个plan
+    plan.isActive = 1;
+    plan.id = null;
+    plan.content = content;
+    plan.id = await DB.save(tablePlan, plan);
+
+    setState(() {
+      List<Plan> activePlans = context.read<Global>().activePlans;
+
+      activePlans.removeWhere((e) {
+        Plan t = e;
+        return e.id == plan.id;
+      });
+
+      activePlans.add(plan);
+
+      context.read<Global>().setActivePlans(activePlans);
+    });
+
+    ToastUtils.show('Edit successful! ID: ' + plan.id.toString());
+
+    plan.content = content;
   }
 }

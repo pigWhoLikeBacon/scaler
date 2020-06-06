@@ -13,6 +13,7 @@ import 'package:scaler/util/dialog_utils.dart';
 // ignore_for_file: public_member_api_docs, lines_longer_than_80_chars
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
+import 'package:scaler/util/toast_utils.dart';
 
 class CalendarEvent extends StatefulWidget {
   final Event event;
@@ -39,9 +40,9 @@ class CalendarEventState extends State<CalendarEvent> {
   _loadData() {
     _event = widget.event;
     DateTime selectedDay = context.read<Global>().selectedDate;
-    _dateTime = DateTime.parse(formatDate(selectedDay, [yyyy, '-', mm, '-', dd]) + ' ' + _event.time);
+    _dateTime = DateTime.parse(
+        formatDate(selectedDay, [yyyy, '-', mm, '-', dd]) + ' ' + _event.time);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -83,11 +84,11 @@ class CalendarEventState extends State<CalendarEvent> {
                           showTitleActions: true,
                           minTime: DateTime(2019, 3, 5),
                           maxTime: DateTime(2021, 6, 7), onConfirm: (data) {
-                            setState(() {
-                              _dateTime = data;
-                            });
-                            print(_dateTime);
-                          }, currentTime: _dateTime, locale: LocaleType.en);
+                        setState(() {
+                          _dateTime = data;
+                        });
+                        print(_dateTime);
+                      }, currentTime: _dateTime, locale: LocaleType.en);
                     },
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(6, 0, 10, 0),
@@ -103,8 +104,19 @@ class CalendarEventState extends State<CalendarEvent> {
                                 height: 6,
                                 width: 1,
                               ),
-                              Text(formatDate(_dateTime,
-                                  [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss])),
+                              Text(formatDate(_dateTime, [
+                                yyyy,
+                                '-',
+                                mm,
+                                '-',
+                                dd,
+                                ' ',
+                                HH,
+                                ':',
+                                nn,
+                                ':',
+                                ss
+                              ])),
                             ],
                           ),
                           Icon(Icons.arrow_forward_ios),
@@ -120,8 +132,8 @@ class CalendarEventState extends State<CalendarEvent> {
                       minLines: 1,
                       decoration: InputDecoration(labelText: 'Content'),
                       validator: (val) =>
-                      val.length < 1 ? 'Content Required' : null,
-//                        onSaved: (val) => _content = val,
+                          val.length < 1 ? 'Content Required' : null,
+                      onSaved: (val) => _content = val,
                       obscureText: false,
                       keyboardType: TextInputType.text,
                       autocorrect: false,
@@ -136,55 +148,83 @@ class CalendarEventState extends State<CalendarEvent> {
                 FlatButton(
                     textColor: Colors.red,
                     child: Text('Delete'),
-                    onPressed: () async {
-                      print('delete');
-                      int id = await EventService.deleteById(_event.id);
-                      DialogUtils.showTextDialog(
-                          context, 'Delete successful! ID: ' + id.toString());
-                      setState(() {
-                        Map<DateTime, List> events = context.read<Global>().events;
-
-                        events[context.read<Global>().selectedDate].removeWhere((element) {
-                          Event event = element;
-                          bool flag = event.id == _event.id;
-                          print(flag);
-                          return flag;
-                        });
-
-                        context.read<Global>().setEvents(events);
+                    onPressed: () {
+                      DialogUtils.editYYBottomSheetDialog(
+                          'Delete this item permanently', () {
+                        _delete();
                       });
                     }),
-//                FlatButton(
-//                    child: Text('Edit'),
-//                    onPressed: () async {
-//                      print('edit');
-//
-//                      //删除该event
-//                      await EventService.deleteById(_event.id);
-//
-//                      //添加修改完毕的事件
-//                      _formKey.currentState.save();
-//
-//                      Day day = await DayService.setDay(_dateTime);
-//                      String time =
-//                      formatDate(_dateTime, [HH, ':', nn, ':', ss]);
-//                      Event newEvent =
-//                      new Event(null, day.id, time, _content);
-//                      newEvent.id = await DB.save(tableEvent, _event);
-//
-//                      DialogUtils.showTextDialog(context, 'Edit successful!');
-//
-//                      setState(() {
-//                        global_events[global_selectedDay]
-//                            .removeWhere((e) => e.id == _event.id);
-//                        global_events[DateTime.parse(day.date)].add(newEvent);
-//                      });
-//
-//                      print('global_events:' + global_events.toString());
-//                    })
+                FlatButton(
+                    child: Text('Edit'),
+                    onPressed: () {
+                      DialogUtils.editYYBottomSheetDialog(
+                          'Edit this item permanently', () {
+                        _edit();
+                      });
+                    })
               ],
             )
           ],
         ));
+  }
+
+  _delete() async {
+    await EventService.deleteById(_event.id);
+    ToastUtils.show('Delete successful! ID: ' + _event.id.toString());
+
+    setState(() {
+      Map<DateTime, List> events = context.read<Global>().events;
+
+      events[context.read<Global>().selectedDate].removeWhere((element) {
+        Event event = element;
+        bool flag = event.id == _event.id;
+        print(flag);
+        return flag;
+      });
+
+      context.read<Global>().setEvents(events);
+    });
+  }
+
+  _edit() async {
+    //删除该event
+    await EventService.deleteById(_event.id);
+
+    //添加修改完毕的事件
+    _formKey.currentState.save();
+
+    Day day = await DayService.setDay(_dateTime);
+    String time =
+    formatDate(_dateTime, [HH, ':', nn, ':', ss]);
+    Event newEvent = new Event(null, day.id, time, _content);
+    newEvent.id = await DB.save(tableEvent, newEvent);
+    ToastUtils.show('Edit successful! ID: ' + newEvent.id.toString());
+
+    setState(() {
+      Map<DateTime, List> events =
+          context.read<Global>().events;
+
+      //删除events
+      events[context.read<Global>().selectedDate]
+          .removeWhere((element) {
+        Event event = element;
+        bool flag = event.id == _event.id;
+        print(flag);
+        return flag;
+      });
+
+      context.read<Global>().setEvents(events);
+
+      //添加更新完毕的events
+      events.update(
+        DayService.getDayTime(_dateTime),
+            (previousEvents) => previousEvents..add(newEvent),
+        ifAbsent: () => [newEvent],
+      );
+
+      context.read<Global>().setEvents(events);
+      context.read<Global>().setSelectedEvents(
+          events[context.read<Global>().selectedDate] ?? []);
+    });
   }
 }

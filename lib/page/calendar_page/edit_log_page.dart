@@ -22,13 +22,13 @@ class _EditLogPageState extends State<EditLogPage> {
 
   @override
   void initState() {
-    _date = DateTime.now();
+    _date = context.read<Global>().selectedDate;
 
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {-
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Log'),
@@ -92,9 +92,9 @@ class _EditLogPageState extends State<EditLogPage> {
                       title: TextFormField(
                         maxLines: 12,
                         minLines: 1,
+                        initialValue: context.watch<Global>().log,
                         decoration: InputDecoration(labelText: 'Content'),
-                        validator: (val) =>
-                        val.length < 1 ? 'Content Required' : null,
+                        validator: (val) => val.length < 1 ? 'Content Required' : null,
                         onSaved: (val) => _content = val,
                         obscureText: false,
                         keyboardType: TextInputType.text,
