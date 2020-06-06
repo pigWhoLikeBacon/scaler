@@ -109,62 +109,6 @@ class _PlanPageState extends State<PlanPage>{
                     })
               ],
             ),
-//            Container(
-//              alignment: Alignment.bottomRight,
-//              child: FlatButton(
-//                child: Text('Edit'),
-//                onPressed: () async {
-//                  print(plan.id);
-//                  DialogUtils.showLoader(context, 'Editing...');
-//
-//                  /*
-//                  找到该计划的创建时间。
-//                  遍历创建时间到现在之间的每一天，如果没有联系则建立联系。
-//                  设置该计划为失效。
-//                   */
-//                  try {
-//                    print(await DB.query(tablePlan));
-//                    print(await DB.query(tableDayPlan));
-//                    print(await DB.query(tableDay));
-//
-//                    _formKey.currentState.save();
-//
-//                    var list_dayPlan = await DayPlanService.findListByPlanId(plan.id);
-//                    DayPlan start = list_dayPlan[0];
-//
-//                    Day startDay = await DayService.findById(start.day_id);
-//
-//                    print(startDay.date);
-//
-//                    DayService.eachDays(DateTime.parse(startDay.date), DateTime.now(), (day) async {
-////                      print(dayId);
-//                      Map<String, dynamic> map = {
-//                        DayPlan_plan_id : plan.id,
-//                        DayPlan_day_id : day.id,
-//                      };
-//                      var list = await DB.findByMap(tableDayPlan, map);
-//                      print(list);
-//
-//                      //计划与该日期无联系则执行该代码，添加联系
-//                      if (list.length == 0) {
-//                        DayPlan dayPlan = new DayPlan(null, day.id, plan.id, 0);
-//                        DB.save(tableDayPlan, dayPlan);
-//                      }
-////                      var list = DB.find(tableDayPlan, DayPlan_day_id, dayId);
-////                      DayPlan dayPlan = new DayPlan(null, dayId, plan.id, isDone)
-//                    });
-//
-//                    Navigator.of(context).pop();
-//                    DialogUtils.showTextDialog(context, 'Successfully edited!');
-//                  } catch (e) {
-//                    Navigator.of(context).pop();
-//                    DialogUtils.showTextDialog(context, 'Error' + e.toString());
-//                    throw e;
-//                  }
-//                  print(_content);
-//                },
-//              ),
-//            ),
           ],
         )
     );
