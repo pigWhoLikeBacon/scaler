@@ -68,8 +68,9 @@ class _CalendarPageState extends State<CalendarPage>
 
   _loadData() async {
     context.read<Global>().setSelectedDate(DayService.getDayTime(DateTime.now()));
-
     Day day = await DayService.setDay(context.read<Global>().selectedDate);
+    context.read<Global>().setSelectedDay(day);
+
     List<Plan> plans = await PlanService.findListByDay(day);
     plans = PlanService.listOrderById(plans);
 
@@ -108,6 +109,7 @@ class _CalendarPageState extends State<CalendarPage>
   Future<void> _onDaySelected(DateTime date, List events) async {
     context.read<Global>().setSelectedDate(DayService.getDayTime(date));
     Day day = await DayService.setDay(date);
+    context.read<Global>().setSelectedDay(day);
     List<Plan> plans = await PlanService.findListByDay(day);
     plans = PlanService.listOrderById(plans);
     setState(() {

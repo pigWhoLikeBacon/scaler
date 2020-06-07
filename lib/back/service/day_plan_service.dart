@@ -40,6 +40,23 @@ class DayPlanService {
 //    return listDayPlan;
 //  }
 
+  /// if without, return null
+  static Future<DayPlan> findByDayIdPlanId(int dayId, int planId) async {
+    Map<String, dynamic> map = {
+      DayPlan_plan_id : planId,
+      DayPlan_day_id : dayId,
+    };
+    var list = await DB.findByMap(tableDayPlan, map);
+
+    if (list.length == 0) {
+      DayPlan dayPlan = new DayPlan(null, dayId, planId, 0);
+      dayPlan.id = await DB.save(tableDayPlan, dayPlan);
+      return dayPlan;
+    }
+    else
+      return DayPlan.fromJson(list[0]);
+  }
+
   static addRelation(int dayId, int planId) async {
     Map<String, dynamic> map = {
       DayPlan_plan_id : planId,
@@ -50,7 +67,7 @@ class DayPlanService {
     //plan与day无联系则执行该代码，添加联系
     if (list.length == 0) {
       DayPlan dayPlan = new DayPlan(null, dayId, planId, 0);
-      DB.save(tableDayPlan, dayPlan);
+      await DB.save(tableDayPlan, dayPlan);
     }
   }
 }

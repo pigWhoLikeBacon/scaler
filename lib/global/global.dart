@@ -1,3 +1,4 @@
+import 'package:scaler/back/entity/day.dart';
 import 'package:scaler/back/entity/plan.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,9 @@ class Global with ChangeNotifier, DiagnosticableTreeMixin {
 
   // 保存了当前day的日期。
   DateTime _selectedDate = DateTime.now();
+
+  // 保存了当前day的日期。
+  Day _selectedDay = null;
 
   // 保存了当前day的palns。
   List<Plan> _plans = [];
@@ -28,6 +32,8 @@ class Global with ChangeNotifier, DiagnosticableTreeMixin {
 
   DateTime get selectedDate => _selectedDate;
 
+  Day get selectedDay => _selectedDay;
+
   List<Plan> get plans => _plans;
 
   List get selectedEvents => _selectedEvents;
@@ -41,8 +47,13 @@ class Global with ChangeNotifier, DiagnosticableTreeMixin {
     notifyListeners();
   }
 
-  void setSelectedDate(DateTime selectedDay) {
-    _selectedDate = selectedDay;
+  void setSelectedDate(DateTime selectedDate) {
+    _selectedDate = selectedDate;
+//    notifyListeners();
+  }
+
+  void setSelectedDay(Day selectedDay) {
+    _selectedDay = selectedDay;
 //    notifyListeners();
   }
 
