@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:scaler/back/database/db.dart';
-import 'package:scaler/back/entity/day.dart';
-import 'package:scaler/back/entity/day_plan.dart';
 import 'package:scaler/back/entity/plan.dart';
-import 'package:scaler/back/service/day_plan_service.dart';
-import 'package:scaler/back/service/day_service.dart';
 import 'package:scaler/back/service/plan_service.dart';
 import 'package:scaler/global/global.dart';
 import 'package:scaler/util/dialog_utils.dart';
 import 'package:scaler/util/toast_utils.dart';
 import 'package:scaler/widget/drawer_widget.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:provider/provider.dart';
 
 

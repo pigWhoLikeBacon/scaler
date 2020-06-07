@@ -29,6 +29,12 @@ class PlanService {
   ///Get the creation day of the plan.
   static Future<Day> getStartDay(Plan plan) async {
     var listDayPlan = await DayPlanService.findListByPlanId(plan.id);
+
+//    print(plan.toJson());
+//    print(await DB.query(tablePlan));
+//    print(await DB.query(tableDayPlan));
+//    print(listDayPlan);
+
     DayPlan first = listDayPlan[0];
 
     return await DayService.findById(first.day_id);

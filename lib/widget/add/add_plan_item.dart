@@ -83,21 +83,15 @@ class AddPlanItemState extends State<AddPlanItem> {
     FocusScope.of(context).requestFocus(FocusNode());
     DialogUtils.showLoader(context, 'Adding...');
 
-    String info = '';
     _formKey.currentState.save();
 
+    //插入plan
     Day day = await DayService.setDay(DateTime.now());
     Plan plan = new Plan(null, _content, 1);
-
-    try {
-      plan.id = await DB.save(tablePlan, plan);
-      DayPlan dayPlan = new DayPlan(null, day.id, plan.id, 0);
-      dayPlan.id = await DB.save(tableDayPlan, dayPlan);
-      info = 'Successfully added!';
-    } catch (e) {
-      info = 'Error' + e.toString();
-      throw e;
-    }
+    plan.id = await DB.save(tablePlan, plan);
+    //插入plan和day的联系
+    DayPlan dayPlan = new DayPlan(null, day.id, plan.id, 0);
+    dayPlan.id = await DB.save(tableDayPlan, dayPlan);
 
     setState(() {
       List<Plan> activePlans = context.read<Global>().activePlans;
@@ -108,7 +102,7 @@ class AddPlanItemState extends State<AddPlanItem> {
     });
 
     Navigator.of(context).pop();
-    DialogUtils.showTextDialog(context, info);
+    DialogUtils.showTextDialog(context, 'Successfully added!');
     dropdownMenuController.hide();
 //    print(await DB.query(tablePlan));
 //    print(await DB.query(tableDayPlan));

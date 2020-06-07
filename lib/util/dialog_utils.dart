@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:scaler/global/config.dart';
+import 'package:scaler/global/theme_data.dart';
 import 'package:scaler/widget/color_loader_2.dart';
 
 class DialogUtils {
@@ -98,38 +99,35 @@ class DialogUtils {
       ..gravityAnimationEnable = true
       ..backgroundColor = Colors.transparent
       ..widget(Container(
-        width: 300,
-        height: 45,
         margin: EdgeInsets.only(bottom: 10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.0),
-          color: Colors.white,
-        ),
-        child: Center(
-          child: FlatButton(
-            child: Text(text, style: TextStyle(color: Colors.red),),
-            onPressed: () {
-              function();
-              dialog.dismiss();
-            },
+        child: MaterialButton(
+          minWidth: 300,
+          height: 45,
+          color: TD.td.cardColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8.0)),
           ),
+          child: Text(text, style: TextStyle(color: Colors.red)),
+          onPressed: () {
+            function();
+            dialog.dismiss();
+          },
         ),
       ))
       ..widget(Container(
-        width: 300,
-        height: 45,
         margin: EdgeInsets.only(bottom: 20),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.0),
-          color: Colors.white,
-        ),
-        child: Center(
-            child: FlatButton(
+        child: MaterialButton(
+          minWidth: 300,
+          height: 45,
+          color: TD.td.cardColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          ),
           child: Text('Cancel'),
           onPressed: () {
             dialog.dismiss();
           },
-        )),
+        ),
       ))
       ..show();
   }
