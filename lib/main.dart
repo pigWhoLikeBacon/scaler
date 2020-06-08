@@ -3,6 +3,7 @@ import 'package:flare_splash_screen/flare_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scaler/navigator/tab_navigator.dart';
+import 'package:scaler/util/spring_utils.dart';
 import 'package:scaler/web/http.dart';
 
 import 'back/database/db.dart';
@@ -20,6 +21,9 @@ void main() async {
   TD.init();
   await HC.init();
   await DayService.initDays();
+
+  print(await SpringUtils.getUploadJson());
+
 //  Sqflite.devSetDebugModeOn(true);
   runApp(MyApp());
 }
