@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flare_splash_screen/flare_splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +22,9 @@ void main() async {
   TD.init();
   await HC.init();
   await DayService.initDays();
-
-  print(await SpringUtils.getUploadJson());
-
+  List list = await SpringUtils.getUploadJson();
+  print(list);
+//  await SpringUtils.setDownloadJson(list);
 //  Sqflite.devSetDebugModeOn(true);
   runApp(MyApp());
 }
