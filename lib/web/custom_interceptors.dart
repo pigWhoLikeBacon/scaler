@@ -6,15 +6,26 @@ class CustomInterceptors extends InterceptorsWrapper {
   @override
   Future onRequest(RequestOptions options) {
     print("REQUEST[${options?.method}] => PATH: ${options?.path}");
+
+    options = CookieAction.getCookieOptions(options);
+    print(options.headers);
+
     return super.onRequest(options);
   }
 
   @override
   Future onResponse(Response response) {
+    int statusCode = response?.statusCode;
+
     print("RESPONSE[${response?.statusCode}] => PATH: ${response?.request?.path}");
-    CookieAction.set(response);
+    CookieAction.save(response);
 
-
+    bool cond1 = statusCode == 302;
+    bool cond2 = statusCode == 401;
+    bool cond3 = statusCode == 403;
+    if (cond1 || cond2 || cond3) {
+      ToastUtils.show(response?.data.toString());
+    }
 
     return super.onResponse(response);
   }
@@ -23,19 +34,9 @@ class CustomInterceptors extends InterceptorsWrapper {
   Future onError(DioError err) {
     int statusCode = err?.response?.statusCode;
 
-    print("ERROR[$statusCode] => PATH: ${err?.request?.path}");
-//    if (statusCode == 403 || statusCode == 401) {
-//      print(1);
-//      print(err.response.data.toString());
-//      ToastUtils.show(err.response.data.toString());
-////      return onResponse(err?.response);
-//    } else if (err?.response == null) {
-//      print(2);
-//      ToastUtils.show('Connection fail!');
-////      return onResponse(err?.response);
-//    } else {
-//      print(3);
-//      return super.onError(err);
-//    }
+    print("ERROR[${err?.response?.statusCode}] => PATH: ${err?.request?.path}");
+    if (err?.response == null)  ToastUtils.show('Connection fail!');
+    else ToastUtils.show(err.response.data.toString());
+    return super.onError(err);
   }
 }

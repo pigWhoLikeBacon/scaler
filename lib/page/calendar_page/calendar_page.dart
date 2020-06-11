@@ -12,7 +12,6 @@ import 'package:scaler/back/service/plan_service.dart';
 import 'package:scaler/global/global.dart';
 import 'package:scaler/global/theme_data.dart';
 import 'package:scaler/page/calendar_page/calendar_plan.dart';
-import 'file:///C:/Users/hhd/AndroidStudioProjects/scaler-master/lib/page/calendar_page/edit_log_page.dart';
 import 'package:scaler/widget/drawer_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:toggle_rotate/toggle_rotate.dart';
@@ -21,6 +20,8 @@ import 'calendar_event.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
+
+import 'edit_log_page.dart';
 
 // Example holidays
 final Map<DateTime, List> _holidays = {

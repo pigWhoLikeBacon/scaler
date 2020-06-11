@@ -14,9 +14,10 @@ abstract class HC {
       receiveTimeout: Config.get(config_receiveTimeout),
       validateStatus: (status) {
         bool cond1 = status == 200;
-        bool cond2 = status == 401;
-        bool cond3 = status == 403;
-        if (cond1 || cond2 || cond3)
+        bool cond2 = status == 302;
+        bool cond3 = status == 401;
+        bool cond4 = status == 403;
+        if (cond1 || cond2 || cond3 || cond4)
           return true;
         else
           return false;
