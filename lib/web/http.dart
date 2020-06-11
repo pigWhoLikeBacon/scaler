@@ -13,11 +13,13 @@ abstract class HC {
       connectTimeout: Config.get(config_connectTimeout),
       receiveTimeout: Config.get(config_receiveTimeout),
       validateStatus: (status) {
-        if (status == 200 || status == 302) {
+        bool cond1 = status == 200;
+        bool cond2 = status == 401;
+        bool cond3 = status == 403;
+        if (cond1 || cond2 || cond3)
           return true;
-        } else {
+        else
           return false;
-        }
       },
     ));
     dio.interceptors.add(CustomInterceptors());

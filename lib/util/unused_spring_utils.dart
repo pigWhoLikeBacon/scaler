@@ -1,12 +1,30 @@
+import 'package:dio/dio.dart';
 import 'package:scaler/back/database/db.dart';
 import 'package:scaler/back/entity/day.dart';
 import 'package:scaler/back/entity/day_plan.dart';
 import 'package:scaler/back/entity/event.dart';
 import 'package:scaler/back/entity/plan.dart';
 import 'package:scaler/back/service/plan_service.dart';
+import 'package:scaler/web/http.dart';
 
 class SpringUtils {
-  static Future<List> getUploadJson() async {
+  static getDownloadJson() async {
+    try {
+      Response response = await HC.getDio().post("http://10.103.15.185:8081/downdata");
+      print(response);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  static Future<Map> getUploadJson() async {
+    Map json = {};
+    json['days'] = await _getDays();
+    json['plans'] = await _getPlans();
+    return json;
+  }
+
+  static Future<List> _getDays() async {
     /*
     不能直接对DB查询到的map和list进行写操作，
     否则会报Unhandled Exception: Unsupported operation: read-only。
@@ -14,7 +32,7 @@ class SpringUtils {
     在json添加map前使用Map.from(),
     否则会报Unhandled Exception: Unsupported operation: read-only。
      */
-    List json = [];
+    List days = [];
 
     List listDay = await DB.query(tableDay);
     //不使用foreach()方法遍历list，因为foreach中的异步方法不支持await
@@ -22,23 +40,22 @@ class SpringUtils {
     while (i < listDay.length) {
       Day day = Day.fromJson(listDay[i]);
       Map<String, dynamic> map = Map.from(listDay[i]);
-      json.add(map);
+      days.add(map);
 
       List listEvent = await DB.find(tableEvent, Event_day_id, day.id);
-      json[i]['events'] = listEvent;
+      days[i]['events'] = listEvent;
 
-      json[i]['dayPlans'] = [];
+      days[i]['dayPlans'] = [];
       List listDayPlan = await DB.find(tableDayPlan, DayPlan_day_id, day.id);
       int j = 0;
       while (j < listDayPlan.length) {
         DayPlan dayPlan = DayPlan.fromJson(listDayPlan[j]);
         Map<String, dynamic> map = Map.from(listDayPlan[j]);
         map.remove('day_id');
-        map.remove('plan_id');
-        json[i]['dayPlans'].add(map);
+        days[i]['dayPlans'].add(map);
 
-        Plan plan = await PlanService.findById(dayPlan.plan_id);
-        json[i]['dayPlans'][j]['plan'] = plan.toJson();
+//        Plan plan = await PlanService.findById(dayPlan.plan_id);
+//        json[i]['dayPlans'][j]['plan'] = plan.toJson();
 
         j++;
       }
@@ -46,7 +63,11 @@ class SpringUtils {
       i++;
     }
 
-    return json;
+    return days;
+  }
+
+  static Future<List> _getPlans() async {
+    return await DB.query(tablePlan);
   }
 
   static setDownloadJson(List json) {
@@ -60,16 +81,19 @@ class SpringUtils {
         listEvent.forEach((e) {
           Map<String, dynamic> map = e;
           Event event = Event.fromJson(map);
-          print(event);
+          print(event.toJson());
         });
 
         List listDayPlan = map['dayPlans'];
         listDayPlan.forEach((e) {
           Map<String, dynamic> map = e;
-          DayPlan dayPlan = DayPlan.fromJson(map);
-          print(dayPlan);
+          Plan plan = Plan.fromJson(map['plan']);
+          print(plan.toJson());
 
-          List listPlan = map['plan'];
+          map['day_id'] = day.id;
+          map['plan_id'] = plan.id;
+          DayPlan dayPlan = DayPlan.fromJson(map);
+          print(dayPlan.toJson());
         });
       });
     } catch (e) {

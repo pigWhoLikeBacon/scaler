@@ -4,7 +4,7 @@ import 'package:flare_splash_screen/flare_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scaler/navigator/tab_navigator.dart';
-import 'package:scaler/util/spring_utils.dart';
+import 'package:scaler/util/aync_utils.dart';
 import 'package:scaler/web/http.dart';
 
 import 'back/database/db.dart';
@@ -22,9 +22,8 @@ void main() async {
   TD.init();
   await HC.init();
   await DayService.initDays();
-  List list = await SpringUtils.getUploadJson();
-  print(list);
-//  await SpringUtils.setDownloadJson(list);
+  print(await AyncUtils.getLocalData());
+  await AyncUtils.getServiceData();
 //  Sqflite.devSetDebugModeOn(true);
   runApp(MyApp());
 }

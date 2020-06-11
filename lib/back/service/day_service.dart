@@ -21,7 +21,7 @@ class DayService {
       DateTime start = DateTime.parse(startDay.date);
       DateTime end = DateTime.now();
       //调用此方法时已经初始化需要遍历遍历的day。
-      eachDays(start, end, (day) {
+      eachDays(start, end.add(Duration(days: 1)), (day) {
         DayPlanService.addRelation(day.id, plan.id);
       });
       i++;
