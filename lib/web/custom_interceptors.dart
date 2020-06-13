@@ -26,10 +26,10 @@ class CustomInterceptors extends InterceptorsWrapper {
       ToastUtils.show(response?.data.toString());
     }
 
-    print('response.request.headers.toString()!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    print(response.request.headers.toString());
-    print('response.headers.toString()!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    print(response.headers.toString());
+//    print('response.request.headers.toString()!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+//    print(response.request.headers.toString());
+//    print('response.headers.toString()!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+//    print(response.headers.toString());
 
     return super.onResponse(response);
   }
@@ -38,9 +38,19 @@ class CustomInterceptors extends InterceptorsWrapper {
   Future onError(DioError err) {
     int statusCode = err?.response?.statusCode;
 
+//    print('response.request.headers.toString()!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+//    print(err.response.request.headers.toString());
+//    print('response.request.headers.data!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+//    print(err.response.request.data);
+//    print('response.headers.toString()!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+//    print(err.response.headers.toString());
+
     print("ERROR[${err?.response?.statusCode}] => PATH: ${err?.request?.path}");
     if (err?.response == null)  ToastUtils.show('Connection fail!');
-    else ToastUtils.show(err.response.data.toString());
+    else {
+      print(err.response.data.toString());
+      ToastUtils.show(err.response.data.toString());
+    }
     return super.onError(err);
   }
 }

@@ -5,10 +5,28 @@ import 'package:scaler/global/config.dart';
 
 class CookieAction {
   static RequestOptions getCookieOptions(RequestOptions options) {
-//    options.headers.addAll({'Cookie': getCookieString()});
-    options.headers.addAll({'Cookie': 'JSESSIONID=2F167DBAA4FE6CC5A4B0B44396DD16D7; remember-me=byUyRmt1bVJXZWozZFl3aEJwJTJGOSUyRldTQSUzRCUzRDpkeEFYRGgzb0ZZQmZUbGpUaGhuZVh3JTNEJTNE; '});
+    options.headers.addAll({'Cookie': getCookieString()});
+//    options.headers.addAll({
+//
+////'Accept-Encoding':
+////'gzip, deflate',
+////'Accept-Language':
+////'en-US,en;q=0.5',
+////'Cache-Control':
+////'max-age=0',
+////'Connection':
+////'keep-alive',
+////'Host':
+////'192.168.123.79:8081',
+////'Referer':
+////'http://192.168.123.79:8081/login.html',
+////'Upgrade-Insecure-Requests':
+////'1',
+//
+//    });
+//    options.headers.addAll({'Cookie': 'JSESSIONID=2F167DBAA4FE6CC5A4B0B44396DD16D7; remember-me=byUyRmt1bVJXZWozZFl3aEJwJTJGOSUyRldTQSUzRCUzRDpkeEFYRGgzb0ZZQmZUbGpUaGhuZVh3JTNEJTNE; '});
 //    options.headers.addAll({'Cookie': 'JSESSIONID=88EF525028E0FB199FEE0412A33DCE23; remember-me=YzVWTlRaRiUyQlJLclRQS1EyYnY3Rk9RJTNEJTNEOnhSMzZXREFwOE8zZ2NadnVoN3c2SHclM0QlM0Q; '});
-//    print(getCookieString());
+    print(options.headers);
     return options;
   }
 

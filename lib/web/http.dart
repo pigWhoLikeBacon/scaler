@@ -12,6 +12,7 @@ abstract class HC {
       baseUrl: Config.get(config_baseUrl),
       connectTimeout: Config.get(config_connectTimeout),
       receiveTimeout: Config.get(config_receiveTimeout),
+//      contentType: Headers.formUrlEncodedContentType,
       validateStatus: (status) {
         bool cond1 = status == 200;
         bool cond2 = status == 302;
@@ -23,6 +24,7 @@ abstract class HC {
           return false;
       },
     ));
+//    dio.options.contentType = Headers.formUrlEncodedContentType;
     dio.interceptors.add(CustomInterceptors());
   }
 

@@ -82,8 +82,7 @@ class LoginPageState extends State<LoginPage> {
               title: RaisedButton(
                 child: Text(
                   'Login',
-                  style: TextStyle(
-                      color: TD.td.selectedRowColor),
+                  style: TextStyle(color: TD.td.selectedRowColor),
                   textScaleFactor: Config.get(config_textScaleFactor),
                 ),
                 onPressed: () async {
@@ -125,8 +124,11 @@ class LoginPageState extends State<LoginPage> {
     });
 
     try {
-      await HC.getDio()
-          .post("http://129.211.9.152:8081/login", data: formData);
+//      HC.getDio().options.contentType = Headers.formUrlEncodedContentType;
+      await HC.getDio().post("http://192.168.123.79:8081/login",
+          data: formData,
+//          options: Options(contentType: Headers.formUrlEncodedContentType)
+      );
       Navigator.of(context)..pop()..pop()..pop();
       ToastUtils.show('Login success!');
     } catch (e) {
