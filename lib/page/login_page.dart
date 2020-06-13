@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:scaler/global/config.dart';
 import 'package:scaler/global/theme_data.dart';
+import 'package:scaler/util/aync_utils.dart';
 import 'package:scaler/util/dialog_utils.dart';
 import 'package:scaler/util/toast_utils.dart';
 import 'package:scaler/web/http.dart';
@@ -132,5 +133,7 @@ class LoginPageState extends State<LoginPage> {
       Navigator.of(context).pop();
       throw e;
     }
+
+    AyncUtils.getServiceData();
   }
 }

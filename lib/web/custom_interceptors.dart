@@ -8,7 +8,6 @@ class CustomInterceptors extends InterceptorsWrapper {
     print("REQUEST[${options?.method}] => PATH: ${options?.path}");
 
     options = CookieAction.getCookieOptions(options);
-    print(options.headers);
 
     return super.onRequest(options);
   }
@@ -26,6 +25,11 @@ class CustomInterceptors extends InterceptorsWrapper {
     if (cond1 || cond2 || cond3) {
       ToastUtils.show(response?.data.toString());
     }
+
+    print('response.request.headers.toString()!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    print(response.request.headers.toString());
+    print('response.headers.toString()!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    print(response.headers.toString());
 
     return super.onResponse(response);
   }

@@ -6,8 +6,8 @@ import 'package:scaler/global/config.dart';
 class CookieAction {
   static RequestOptions getCookieOptions(RequestOptions options) {
 //    options.headers.addAll({'Cookie': getCookieString()});
-    options.headers.addAll({'Cookie':
-    'JSESSIONID=F19726114AF0F055DAC93DA96461949B; remember-me=Yk9Dczg2OFUlMkZtSnRhQ1Y2aFVVJTJCdkElM0QlM0Q6S1haTjFJQnVWNyUyRk02OW9SMGVVWmFBJTNEJTNE; '});
+    options.headers.addAll({'Cookie': 'JSESSIONID=2F167DBAA4FE6CC5A4B0B44396DD16D7; remember-me=byUyRmt1bVJXZWozZFl3aEJwJTJGOSUyRldTQSUzRCUzRDpkeEFYRGgzb0ZZQmZUbGpUaGhuZVh3JTNEJTNE; '});
+//    options.headers.addAll({'Cookie': 'JSESSIONID=88EF525028E0FB199FEE0412A33DCE23; remember-me=YzVWTlRaRiUyQlJLclRQS1EyYnY3Rk9RJTNEJTNEOnhSMzZXREFwOE8zZ2NadnVoN3c2SHclM0QlM0Q; '});
 //    print(getCookieString());
     return options;
   }
@@ -18,8 +18,6 @@ class CookieAction {
     cookies.forEach((e) {
       cookieString += e + '; ';
     });
-//    if (cookieString.length != 0)
-//      cookieString = cookieString.substring(0, cookieString.length - 1);
     return cookieString;
   }
 
@@ -41,7 +39,6 @@ class CookieAction {
 
   static List<String> _getCookieFromResponse(Response response) {
     List<String> cookies = response.headers['set-cookie'];
-    print(cookies);
     return cookies;
   }
 
