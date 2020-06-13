@@ -22,8 +22,6 @@ void main() async {
   TD.init();
   await HC.init();
   await DayService.initDays();
-  print(await AyncUtils.getLocalData());
-//  await AyncUtils.getServiceData();
 //  Sqflite.devSetDebugModeOn(true);
   runApp(MyApp());
 }

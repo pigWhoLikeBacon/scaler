@@ -1,7 +1,5 @@
-import 'dart:developer';
 import 'dart:math' show pi;
 
-import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scaler/back/entity/day.dart';
@@ -12,6 +10,7 @@ import 'package:scaler/back/service/plan_service.dart';
 import 'package:scaler/global/global.dart';
 import 'package:scaler/global/theme_data.dart';
 import 'package:scaler/page/calendar_page/calendar_plan.dart';
+import 'package:scaler/widget/bar_popup_menu_button.dart';
 import 'package:scaler/widget/drawer_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:toggle_rotate/toggle_rotate.dart';
@@ -131,6 +130,9 @@ class _CalendarPageState extends State<CalendarPage>
     return Scaffold(
       appBar: AppBar(
         title: const Text('calendar'),
+        actions: <Widget>[
+          BarPopupMenuButton(),
+        ],
       ),
       drawer: DrawerWidget(),
       body: Column(

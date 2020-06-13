@@ -135,7 +135,5 @@ class LoginPageState extends State<LoginPage> {
       Navigator.of(context).pop();
       throw e;
     }
-
-    AyncUtils.getServiceData();
   }
 }

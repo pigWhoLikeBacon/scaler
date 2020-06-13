@@ -19,12 +19,15 @@ class CustomInterceptors extends InterceptorsWrapper {
     print("RESPONSE[${response?.statusCode}] => PATH: ${response?.request?.path}");
     CookieAction.save(response);
 
-    bool cond1 = statusCode == 302;
-    bool cond2 = statusCode == 401;
-    bool cond3 = statusCode == 403;
-    if (cond1 || cond2 || cond3) {
-      ToastUtils.show(response?.data.toString());
-    }
+    ToastUtils.show(response?.data.toString());
+    print(response?.data.toString());
+
+//    bool cond1 = statusCode == 302;
+//    bool cond2 = statusCode == 401;
+//    bool cond3 = statusCode == 403;
+//    if (cond1 || cond2 || cond3) {
+//      ToastUtils.show(response?.data.toString());
+//    }
 
 //    print('response.request.headers.toString()!!!!!!!!!!!!!!!!!!!!!!!!!!!');
 //    print(response.request.headers.toString());
