@@ -14,3 +14,8 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+
+service
+服务器返回401，403等状态异常码时，过滤器自动截获并直接在app上显示服务器返回的错误信息。
+服务器返回200，过滤器不做任何操作，由其他代码部分识别，为200时，进行自定义操作。

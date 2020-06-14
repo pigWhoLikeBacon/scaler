@@ -10,8 +10,18 @@ import 'day_plan_service.dart';
 import 'day_service.dart';
 
 class AyncService {
-  static saveServiceData() {
+  static saveServiceData(Map<String, dynamic> map) {
+    DB.initDeleteDb();
 
+    map.forEach((key, value) {
+      String tableName = key;
+      List list = value;
+
+      list.forEach((e) {
+        Map<String, dynamic> map2 = e;
+        DB.insert(tableName, map2);
+      });
+    });
   }
 
   static Future<Map<String, dynamic>> getLocalData() async {

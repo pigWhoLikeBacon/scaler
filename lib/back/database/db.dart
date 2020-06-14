@@ -112,10 +112,10 @@ create table $tableDayPlan (
       await _db.insert(table, map);
 
   /// delete the db, create the folder and returnes its path
-  Future<String> initDeleteDb(String dbName) async {
-    final databasePath = await getDatabasesPath();
-    // print(databasePath);
-    final path = join(databasePath, dbName);
+  static Future<String> initDeleteDb() async {
+//    final databasePath = await getDatabasesPath();
+//    // print(databasePath);
+//    final path = join(databasePath, dbName);
 
     // make sure the folder exists
     if (await Directory(dirname(path)).exists()) {
@@ -135,7 +135,7 @@ create table $tableDayPlan (
   /// Check if a file is a valid database file
   ///
   /// An empty file is a valid empty sqlite file
-  Future<bool> isDatabase(String path) async {
+  static Future<bool> isDatabase(String path) async {
     Database db;
     bool isDatabase = false;
     try {
