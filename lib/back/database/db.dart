@@ -116,6 +116,7 @@ create table $tableDayPlan (
 //    final databasePath = await getDatabasesPath();
 //    // print(databasePath);
 //    final path = join(databasePath, dbName);
+    _db = null;
 
     // make sure the folder exists
     if (await Directory(dirname(path)).exists()) {
@@ -128,7 +129,7 @@ create table $tableDayPlan (
       }
     }
 
-    init();
+    await init();
     return path;
   }
 

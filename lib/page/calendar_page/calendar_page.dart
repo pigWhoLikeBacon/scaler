@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:scaler/back/entity/day.dart';
 import 'package:scaler/back/entity/plan.dart';
 import 'package:scaler/back/service/day_service.dart';
-import 'package:scaler/back/service/event_service.dart';
 import 'package:scaler/back/service/plan_service.dart';
 import 'package:scaler/global/global.dart';
 import 'package:scaler/global/theme_data.dart';
@@ -52,8 +51,6 @@ class _CalendarPageState extends State<CalendarPage>
 
   @override
   void initState() {
-    _loadData();
-
     CalendarPage._calendarController = CalendarController();
 
     _animationController = AnimationController(
@@ -64,39 +61,6 @@ class _CalendarPageState extends State<CalendarPage>
     _animationController.forward();
 
     super.initState();
-  }
-
-  _loadData() async {
-    context.read<Global>().setSelectedDate(DayService.getDayTime(DateTime.now()));
-    Day day = await DayService.setDay(context.read<Global>().selectedDate);
-    context.read<Global>().setSelectedDay(day);
-
-    List<Plan> plans = await PlanService.findListByDay(day);
-    plans = PlanService.listOrderById(plans);
-
-    Map<DateTime, List> events = {};
-    List<Day> listDay = await DayService.findAll();
-
-    //不使用foreach()方法遍历list，因为foreach中的异步方法不支持await
-    int i = 0;
-    while (i < listDay.length) {
-      Day day = listDay[i];
-      List eventsforDay = await EventService.findListByDayId(day.id);
-//      eventsforDay = BaseService.listOrderById(eventsforDay);
-      if (eventsforDay.length != 0) {
-        events[DateTime.parse(day.date)] = eventsforDay;
-      }
-      i++;
-    }
-
-    setState(() {
-      context.read<Global>().setPlans(plans);
-      context.read<Global>().setEvents(events);
-      context.read<Global>().setSelectedEvents(
-          context.read<Global>().events[context.read<Global>().selectedDate] ??
-              []);
-      context.read<Global>().setLog(day.log);
-    });
   }
 
   @override

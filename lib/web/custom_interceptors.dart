@@ -22,19 +22,19 @@ class CustomInterceptors extends InterceptorsWrapper {
     ToastUtils.show(response?.data.toString());
     print(response?.data.toString());
 
-    bool cond1 = statusCode == 302;
-    bool cond2 = statusCode == 401;
-    bool cond3 = statusCode == 403;
-    if (cond1 || cond2 || cond3) {
+//    bool cond1 = statusCode == 302;
+//    bool cond2 = statusCode == 401;
+//    bool cond3 = statusCode == 403;
+    if (statusCode != 200) {
       ToastUtils.show(response?.data.toString());
     }
 
-    print('response.request.headers.toString()!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    print(response.request.headers.toString());
-    print('response.request.headers.data!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    print(response.request.data.toString());
-    print('response.headers.toString()!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    print(response.headers.toString());
+//    print('response.request.headers.toString()!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+//    print(response.request.headers.toString());
+//    print('response.request.headers.data!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+//    print(response.request.data.toString());
+//    print('response.headers.toString()!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+//    print(response.headers.toString());
 
     return super.onResponse(response);
   }

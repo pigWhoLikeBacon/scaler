@@ -123,9 +123,12 @@ class LoginPageState extends State<LoginPage> {
       "remember-me": 'on',
     });
 
-    Response response = await HC.post("http://192.168.123.79:8081/login", data: formData);
+    Response response = await HC.post("/login", data: formData);
 
-    if (response?.statusCode == 200) Navigator.of(context)..pop()..pop()..pop();
+    if (response?.statusCode == 200) {
+      ToastUtils.show(response?.data.toString());
+      Navigator.of(context)..pop()..pop()..pop();
+    }
     else Navigator.of(context).pop();
   }
 }

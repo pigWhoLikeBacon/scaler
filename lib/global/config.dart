@@ -13,7 +13,7 @@ const Map<String, dynamic> Configs = {
   config_themeKey : 'light',
   config_username : '',
   config_cookie : null,
-  config_baseUrl : 'http://129.211.9.152:8081',
+  config_baseUrl : 'http://192.168.123.79:8081',
   config_connectTimeout : 5000,
   config_receiveTimeout : 100000,
 };

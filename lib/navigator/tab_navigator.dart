@@ -2,15 +2,59 @@ import 'package:flutter/material.dart';
 import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
 import 'package:flutter_screen_scaler/flutter_screen_scaler.dart';
 import 'package:gzx_dropdown_menu/gzx_dropdown_menu.dart';
+import 'package:scaler/back/entity/day.dart';
+import 'package:scaler/back/entity/plan.dart';
+import 'package:scaler/back/service/day_service.dart';
+import 'package:scaler/back/service/event_service.dart';
+import 'package:scaler/back/service/plan_service.dart';
+import 'package:scaler/global/global.dart';
 import 'package:scaler/page/calendar_page/calendar_page.dart';
 import 'package:scaler/page/plan_page.dart';
 import 'package:scaler/widget/add/add_widget.dart';
+import 'package:provider/provider.dart';
 
 GZXDropdownMenuController dropdownMenuController;
 
 class TabNavigator extends StatefulWidget {
   @override
+
   _TabNavigatorState createState() => _TabNavigatorState();
+
+  static loadData(BuildContext context) async {
+    //plan_page
+    var activePlans = await PlanService.getActivePlans();
+    context.read<Global>().setActivePlans(activePlans);
+
+    //calendar_page
+    context.read<Global>().setSelectedDate(DayService.getDayTime(DateTime.now()));
+    Day day = await DayService.setDay(context.read<Global>().selectedDate);
+    context.read<Global>().setSelectedDay(day);
+
+    List<Plan> plans = await PlanService.findListByDay(day);
+    plans = PlanService.listOrderById(plans);
+
+    Map<DateTime, List> events = {};
+    List<Day> listDay = await DayService.findAll();
+
+    //不使用foreach()方法遍历list，因为foreach中的异步方法不支持await
+    int i = 0;
+    while (i < listDay.length) {
+      Day day = listDay[i];
+      List eventsforDay = await EventService.findListByDayId(day.id);
+//      eventsforDay = BaseService.listOrderById(eventsforDay);
+      if (eventsforDay.length != 0) {
+        events[DateTime.parse(day.date)] = eventsforDay;
+      }
+      i++;
+    }
+
+    context.read<Global>().setPlans(plans);
+    context.read<Global>().setEvents(events);
+    context.read<Global>().setSelectedEvents(
+        context.read<Global>().events[context.read<Global>().selectedDate] ??
+            []);
+    context.read<Global>().setLog(day.log);
+  }
 }
 
 class _TabNavigatorState extends State<TabNavigator> {
@@ -21,6 +65,9 @@ class _TabNavigatorState extends State<TabNavigator> {
   void initState() {
     YYDialog.init(context);
     dropdownMenuController = GZXDropdownMenuController();
+
+    TabNavigator.loadData(context);
+
     super.initState();
 
     _pageList = List();

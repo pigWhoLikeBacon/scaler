@@ -10,17 +10,25 @@ import 'day_plan_service.dart';
 import 'day_service.dart';
 
 class AyncService {
-  static saveServiceData(Map<String, dynamic> map) {
-    DB.initDeleteDb();
+  static saveServiceData(Map<String, dynamic> map) async {
+    await DB.initDeleteDb();
 
-    map.forEach((key, value) {
+    map.forEach((key, value) async {
+      print('key.toString()');
+      print(key.toString());
+      print('value.toString()');
+      print(value.toString());
+
       String tableName = key;
       List list = value;
 
-      list.forEach((e) {
-        Map<String, dynamic> map2 = e;
-        DB.insert(tableName, map2);
-      });
+      //不使用foreach()方法遍历list，因为foreach中的异步方法不支持await
+      int i = 0;
+      while (i < list.length) {
+        Map<String, dynamic> map2 = list[i];
+        await DB.insert(tableName, map2);
+        i++;
+      }
     });
   }
 

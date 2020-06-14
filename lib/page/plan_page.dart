@@ -5,6 +5,7 @@ import 'package:scaler/back/service/plan_service.dart';
 import 'package:scaler/global/global.dart';
 import 'package:scaler/util/dialog_utils.dart';
 import 'package:scaler/util/toast_utils.dart';
+import 'package:scaler/widget/bar_popup_menu_button.dart';
 import 'package:scaler/widget/drawer_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -18,16 +19,7 @@ class _PlanPageState extends State<PlanPage>{
 
   @override
   void initState() {
-    _loadData();
-
     super.initState();
-  }
-
-  _loadData() async {
-    var plans = await PlanService.getActivePlans();
-    setState(() {
-      context.read<Global>().setActivePlans(plans);
-    });
   }
 
   @override
@@ -35,6 +27,9 @@ class _PlanPageState extends State<PlanPage>{
     return Scaffold(
       appBar: AppBar(
         title: const Text('Plans'),
+        actions: <Widget>[
+          BarPopupMenuButton(),
+        ],
       ),
       drawer: DrawerWidget(),
       body: Center(
