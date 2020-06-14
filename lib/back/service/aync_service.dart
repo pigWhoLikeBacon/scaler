@@ -10,16 +10,16 @@ import 'day_plan_service.dart';
 import 'day_service.dart';
 
 class AyncService {
-  static save() {
+  static saveServiceData() {
 
   }
 
   static Future<Map<String, dynamic>> getLocalData() async {
     return {
-      "days" : await _getDays(),
-      "dayPlans" : await _getDayPlans(),
-      "events" : await _getEvents(),
-      "plans" : await _getPlans(),
+      tableDay : await _getDays(),
+      tableDayPlan : await _getDayPlans(),
+      tableEvent : await _getEvents(),
+      tablePlan : await _getPlans(),
     };
   }
 

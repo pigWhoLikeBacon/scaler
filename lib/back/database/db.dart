@@ -107,41 +107,46 @@ create table $tableDayPlan (
 //
 //  static Future<int> update(String table, Base base) async =>
 //      await _db.update(table, base.toJson(), where: 'id = ?', whereArgs: [base.id]);
-}
 
-/// delete the db, create the folder and returnes its path
-Future<String> initDeleteDb(String dbName) async {
-  final databasePath = await getDatabasesPath();
-  // print(databasePath);
-  final path = join(databasePath, dbName);
+  static Future<int> insert(String table, Map<String, dynamic> map) async =>
+      await _db.insert(table, map);
 
-  // make sure the folder exists
-  if (await Directory(dirname(path)).exists()) {
-    await deleteDatabase(path);
-  } else {
+  /// delete the db, create the folder and returnes its path
+  Future<String> initDeleteDb(String dbName) async {
+    final databasePath = await getDatabasesPath();
+    // print(databasePath);
+    final path = join(databasePath, dbName);
+
+    // make sure the folder exists
+    if (await Directory(dirname(path)).exists()) {
+      await deleteDatabase(path);
+    } else {
+      try {
+        await Directory(dirname(path)).create(recursive: true);
+      } catch (e) {
+        print(e);
+      }
+    }
+
+    init();
+    return path;
+  }
+
+  /// Check if a file is a valid database file
+  ///
+  /// An empty file is a valid empty sqlite file
+  Future<bool> isDatabase(String path) async {
+    Database db;
+    bool isDatabase = false;
     try {
-      await Directory(dirname(path)).create(recursive: true);
-    } catch (e) {
-      print(e);
+      db = await openReadOnlyDatabase(path);
+      int version = await db.getVersion();
+      if (version != null) {
+        isDatabase = true;
+      }
+    } catch (_) {} finally {
+      await db?.close();
     }
+    return isDatabase;
   }
-  return path;
-}
-
-/// Check if a file is a valid database file
-///
-/// An empty file is a valid empty sqlite file
-Future<bool> isDatabase(String path) async {
-  Database db;
-  bool isDatabase = false;
-  try {
-    db = await openReadOnlyDatabase(path);
-    int version = await db.getVersion();
-    if (version != null) {
-      isDatabase = true;
-    }
-  } catch (_) {} finally {
-    await db?.close();
-  }
-  return isDatabase;
 }

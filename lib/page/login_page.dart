@@ -123,17 +123,9 @@ class LoginPageState extends State<LoginPage> {
       "remember-me": 'on',
     });
 
-    try {
-//      HC.getDio().options.contentType = Headers.formUrlEncodedContentType;
-      await HC.getDio().post("http://192.168.123.79:8081/login",
-          data: formData,
-//          options: Options(contentType: Headers.formUrlEncodedContentType)
-      );
-      Navigator.of(context)..pop()..pop()..pop();
-      ToastUtils.show('Login success!');
-    } catch (e) {
-      Navigator.of(context).pop();
-      throw e;
-    }
+    Response response = await HC.post("http://192.168.123.79:8081/login", data: formData);
+
+    if (response?.statusCode == 200) Navigator.of(context)..pop()..pop()..pop();
+    else Navigator.of(context).pop();
   }
 }

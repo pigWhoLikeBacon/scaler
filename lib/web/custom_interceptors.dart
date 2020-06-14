@@ -17,22 +17,24 @@ class CustomInterceptors extends InterceptorsWrapper {
     int statusCode = response?.statusCode;
 
     print("RESPONSE[${response?.statusCode}] => PATH: ${response?.request?.path}");
-    CookieAction.save(response);
 
+    CookieAction.save(response);
     ToastUtils.show(response?.data.toString());
     print(response?.data.toString());
 
-//    bool cond1 = statusCode == 302;
-//    bool cond2 = statusCode == 401;
-//    bool cond3 = statusCode == 403;
-//    if (cond1 || cond2 || cond3) {
-//      ToastUtils.show(response?.data.toString());
-//    }
+    bool cond1 = statusCode == 302;
+    bool cond2 = statusCode == 401;
+    bool cond3 = statusCode == 403;
+    if (cond1 || cond2 || cond3) {
+      ToastUtils.show(response?.data.toString());
+    }
 
-//    print('response.request.headers.toString()!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-//    print(response.request.headers.toString());
-//    print('response.headers.toString()!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-//    print(response.headers.toString());
+    print('response.request.headers.toString()!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    print(response.request.headers.toString());
+    print('response.request.headers.data!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    print(response.request.data.toString());
+    print('response.headers.toString()!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    print(response.headers.toString());
 
     return super.onResponse(response);
   }
@@ -49,8 +51,9 @@ class CustomInterceptors extends InterceptorsWrapper {
 //    print(err.response.headers.toString());
 
     print("ERROR[${err?.response?.statusCode}] => PATH: ${err?.request?.path}");
-    if (err?.response == null)  ToastUtils.show('Connection fail!');
-    else {
+    if (err?.response == null || err?.response?.statusCode == null) {
+      ToastUtils.show('Connection fail!');
+    } else {
       print(err.response.data.toString());
       ToastUtils.show(err.response.data.toString());
     }

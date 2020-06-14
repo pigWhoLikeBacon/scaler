@@ -33,6 +33,7 @@ class BarPopupMenuButton extends StatelessWidget {
             break;
           }
           case '1': {
+            AyncUtils.downloadDataAndSave();
             break;
           }
         }

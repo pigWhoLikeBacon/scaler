@@ -5,15 +5,17 @@ import 'custom_interceptors.dart';
 
 //Http Client
 abstract class HC {
-  static Dio dio;
+  static Dio _dio;
 
   static init() {
-    dio = Dio(BaseOptions(
+    _dio = Dio(BaseOptions(
       baseUrl: Config.get(config_baseUrl),
       connectTimeout: Config.get(config_connectTimeout),
       receiveTimeout: Config.get(config_receiveTimeout),
 //      contentType: Headers.formUrlEncodedContentType,
       validateStatus: (status) {
+        print(status);
+
         bool cond1 = status == 200;
         bool cond2 = status == 302;
         bool cond3 = status == 401;
@@ -25,15 +27,27 @@ abstract class HC {
       },
     ));
 //    dio.options.contentType = Headers.formUrlEncodedContentType;
-    dio.interceptors.add(CustomInterceptors());
+    _dio.interceptors.add(CustomInterceptors());
   }
 
-  static Options _getCookieOptions() {
-    return Options(headers: {'cookie': Config.get(config_cookie)});
+  static Future<Response> get(String url) async {
+    try {
+      Response response = await HC._dio.get(url);
+      return response;
+    } catch (e) {
+      print(e);
+      return null;
+    }
   }
 
-  static _saveCookie(List<String> cookies) {
-    Config.set(config_cookie, cookies);
+  static Future<Response> post(String url, {data}) async {
+    try {
+      Response response = await HC._dio.post(url, data: data);
+      return response;
+    } catch (e) {
+      print(e);
+      return null;
+    }
   }
 
 //  static Future<Response> get(String url, bool saveCookie) async {
@@ -49,8 +63,4 @@ abstract class HC {
 ////    if (saveCookie) _saveCookie(_getCookieFromResponse(response));
 //    return response;
 //  }
-
-  static Dio getDio() {
-    return dio;
-  }
 }
