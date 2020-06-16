@@ -13,6 +13,8 @@ import 'package:scaler/page/plan_page.dart';
 import 'package:scaler/widget/add/add_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../global/theme_data.dart';
+
 GZXDropdownMenuController dropdownMenuController;
 
 class TabNavigator extends StatefulWidget {
@@ -119,8 +121,8 @@ class _TabNavigatorState extends State<TabNavigator> {
         });
       },
       color: _currentIndex == index
-          ? Theme.of(context).accentColor
-          : Theme.of(context).unselectedWidgetColor,
+          ? TD.td.accentColor
+          : TD.td.unselectedWidgetColor,
     );
   }
 }

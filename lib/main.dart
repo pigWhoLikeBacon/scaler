@@ -11,6 +11,9 @@ import 'back/database/db.dart';
 import 'back/database/sp.dart';
 import 'back/service/day_service.dart';
 import 'global/config.dart';
+import 'global/config.dart';
+import 'global/config.dart';
+import 'global/config.dart';
 import 'global/global.dart';
 import 'global/theme_data.dart';
 
@@ -22,6 +25,9 @@ void main() async {
   TD.init();
   await HC.init();
   await DayService.initDays();
+  print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+  print(Config.get(config_username));
+  print(Config.get(config_cookie));
 //  Sqflite.devSetDebugModeOn(true);
   runApp(MyApp());
 }
@@ -33,7 +39,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return RestartWidget(
         child: DynamicTheme(
-            data: (brightness) => themes[Config.get('themeKey')],
+            data: (brightness) => TD.td,
             themedWidgetBuilder: (context, theme) {
               return MaterialApp(
                 theme: theme,

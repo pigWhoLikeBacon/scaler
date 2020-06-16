@@ -72,14 +72,17 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void changeBrightness() {
     if (Theme.of(context).brightness != Brightness.light) {
-      Config.set(config_themeKey, 'light');
-      TD.init();
-      DynamicTheme.of(context).setThemeData(TD.td);
+      setState(() {
+        Config.set(config_themeKey, 'light');
+        TD.init();
+        DynamicTheme.of(context).setThemeData(TD.td);
+      });
     } else {
-      Config.set(config_themeKey, 'dark');
-      TD.init();
-      DynamicTheme.of(context).setThemeData(TD.td);
+      setState(() {
+        Config.set(config_themeKey, 'dark');
+        TD.init();
+        DynamicTheme.of(context).setThemeData(TD.td);
+      });
     }
-    TD.init();
   }
 }

@@ -110,9 +110,12 @@ class _CalendarPageState extends State<CalendarPage>
             holidays: _holidays,
             startingDayOfWeek: StartingDayOfWeek.monday,
             calendarStyle: CalendarStyle(
-              selectedColor: Colors.deepOrange[400],
-              todayColor: Colors.deepOrange[200],
-              markersColor: Colors.brown[700],
+//              selectedColor: Colors.deepOrange[400],
+//              todayColor: Colors.deepOrange[200],
+//              markersColor: Colors.brown[700],
+              selectedColor: TD.selectedColor,
+              todayColor: TD.todayColor,
+              markersColor: TD.markersColor,
               outsideDaysVisible: false,
             ),
             headerStyle: HeaderStyle(
@@ -162,8 +165,8 @@ class _CalendarPageState extends State<CalendarPage>
             child: ToggleRotate(
               rad: pi,
               curve: Curves.linear,
-              child: Icon(Icons.arrow_drop_up,
-                  size: 50, color: Colors.orangeAccent),
+              child:
+                  Icon(Icons.arrow_drop_up, size: 50, color: TD.td.accentColor),
               onTap: () {
                 setState(() {
                   if (CalendarPage._calendarController.calendarFormat ==
@@ -189,21 +192,26 @@ class _CalendarPageState extends State<CalendarPage>
     Widget _planItem;
     List<Widget> _planList = <Widget>[];
     context.watch<Global>().plans.forEach((plan) {
-      _planList.add(CalendarPlan(plan: plan,));
+      _planList.add(CalendarPlan(
+        plan: plan,
+      ));
       _planList.add(Divider());
     });
-    if (_planList.length != 0){
+    if (_planList.length != 0) {
       _planList.removeLast();
       _planItem = Container(
-        decoration: BoxDecoration(
-          border: Border.all(width: 0.8),
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-        child: Column(
-          children: _planList,
-        ),
-      );
+          margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+          child: ClipRRect(
+              borderRadius: BorderRadius.circular(12.0),
+              child: Container(
+//            margin: const EdgeInsetsDirectional.only(start: 2, end: 2, top: 2, bottom: 2),
+                decoration: BoxDecoration(
+                  color: TD.td.cardColor, // BorderRadius
+                ),
+                child: Column(
+                  children: _planList,
+                ),
+              )));
     } else {
       _planItem = _getNothingWidget('No plan for the day!');
     }
@@ -221,7 +229,7 @@ class _CalendarPageState extends State<CalendarPage>
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
         decoration: BoxDecoration(
-          color: Colors.orange,
+          color: TD.logFrameColor,
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(15.0),
             topRight: const Radius.circular(15.0),
@@ -230,7 +238,7 @@ class _CalendarPageState extends State<CalendarPage>
         child: Container(
           margin: const EdgeInsetsDirectional.only(start: 2, end: 2, top: 2),
           decoration: BoxDecoration(
-            color: TD.td.cardColor,
+            color: TD.logBackgroundColor,
             borderRadius: BorderRadius.only(
               topLeft: const Radius.circular(12.0),
               topRight: const Radius.circular(12.0),
@@ -250,7 +258,7 @@ class _CalendarPageState extends State<CalendarPage>
             bottomRight: const Radius.circular(12.0),
           ),
           child: Container(
-            color: Colors.cyan,
+            color: TD.logFrameColor,
             child: FlatButton(
               onPressed: () {
                 final myNotifier = Provider.of<Global>(context, listen: false);
@@ -280,20 +288,26 @@ class _CalendarPageState extends State<CalendarPage>
       ..addAll(_eventList)
       ..addAll(_logList);
 
+    print(TD.td.cardColor);
+
     return ListView(children: _totalList);
   }
 
   Widget _getNothingWidget(String text) {
+
     return Container(
-      decoration: BoxDecoration(
-        border: Border.all(width: 0.8),
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-      child: ListTile(
-        title: Text(text),
-      ),
-    );
+        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(12.0),
+            child: Container(
+//            margin: const EdgeInsetsDirectional.only(start: 2, end: 2, top: 2, bottom: 2),
+              decoration: BoxDecoration(
+                color: TD.td.cardColor, // BorderRadius
+              ),
+              child: ListTile(
+                title: Text(text),
+              ),
+            )));
   }
 
   String _getLog() {

@@ -5,6 +5,7 @@ import 'package:scaler/back/entity/day.dart';
 import 'package:scaler/back/entity/day_plan.dart';
 import 'package:scaler/back/entity/plan.dart';
 import 'package:scaler/back/service/day_service.dart';
+import 'package:scaler/back/service/plan_service.dart';
 import 'package:scaler/global/global.dart';
 import 'package:scaler/global/theme_data.dart';
 import 'package:scaler/navigator/tab_navigator.dart';
@@ -94,11 +95,19 @@ class AddPlanItemState extends State<AddPlanItem> {
     dayPlan.id = await DB.save(tableDayPlan, dayPlan);
 
     setState(() {
+      //设置生效的plan
       List<Plan> activePlans = context.read<Global>().activePlans;
-
       activePlans.add(plan);
-
       context.read<Global>().setActivePlans(activePlans);
+    });
+
+    //重新设置选中当天的plans
+    Day selectedDay = context.read<Global>().selectedDay;
+    List<Plan> plans = await PlanService.findListByDay(selectedDay);
+    plans = PlanService.listOrderById(plans);
+
+    setState(() {
+      context.read<Global>().setPlans(plans);
     });
 
     Navigator.of(context).pop();

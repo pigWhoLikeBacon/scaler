@@ -35,7 +35,7 @@ class CalendarPlanState extends State<CalendarPlan>
   Animation deselectAnimation;
   AnimationController controller;
 
-  Color iconColor;
+  Color iconColor = TD.td.unselectedWidgetColor;
   Color activeColor;
   Color unActiveColor;
 
@@ -56,14 +56,21 @@ class CalendarPlanState extends State<CalendarPlan>
     deselectAnimation =
         ColorTween(begin: activeColor, end: unActiveColor).animate(controller);
 
-    _loadData();
-
     super.initState();
   }
 
   _loadData() async {
+
+    activeColor = TD.td.accentColor;
+    unActiveColor = TD.td.unselectedWidgetColor;
+
+    selectAnimation =
+        ColorTween(begin: unActiveColor, end: activeColor).animate(controller);
+    deselectAnimation =
+        ColorTween(begin: activeColor, end: unActiveColor).animate(controller);
+
     dayPlan = await DayPlanService.findByDayIdPlanId(
-        context.read<Global>().selectedDay.id, _plan.id);
+        context.watch<Global>().selectedDay.id, _plan.id);
     if (dayPlan.isDone == 1)
       setState(() {
         iconColor = activeColor;
@@ -72,6 +79,8 @@ class CalendarPlanState extends State<CalendarPlan>
 
   @override
   Widget build(BuildContext context) {
+    _loadData();
+
     return Container(
       child: ListTile(
         title: Row(
@@ -103,9 +112,15 @@ class CalendarPlanState extends State<CalendarPlan>
             controller.reset();
             controller.forward();
             controller.addListener(() {
-              setState(() {
-                iconColor = selectAnimation.value;
-              });
+              if (controller.isCompleted) {
+                setState(() {
+                  iconColor = activeColor;
+                });
+              } else {
+                setState(() {
+                  iconColor = selectAnimation.value;
+                });
+              }
             });
 
             dayPlan.isDone = 1;
