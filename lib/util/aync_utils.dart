@@ -5,23 +5,20 @@ import 'package:scaler/web/http.dart';
 import 'dart:convert' as convert;
 
 class AyncUtils {
-  static downloadDataAndSave() async {
-    Map<String, dynamic> map = await _getServiceData();
-    if (map != null) {
-//      try {
-//        AyncService.saveServiceData(map);
-//        ToastUtils.show('Save success!');
-//      } catch (e) {
-//        ToastUtils.show('Save error!');
-//        print(e);
-//      }
-      await AyncService.saveServiceData(map);
+  static Future<Response> downloadDataAndSave() async {
+    Response response = await HC.get('/downdata');
+    Map<String, dynamic> map = Map<String, dynamic>()
+    if (response?.statusCode == 200) {
+      Map<String, dynamic> map2 = Map<String, dynamic>.from(response?.data);
+      map = convert.jsonDecode(map['data']);
+      return await AyncService.saveServiceData(map);
+    } else {
+      return null;
     }
-    print(map);
   }
 
-  static uploadData() async {
-    await HC.post("/updata", data: await AyncService.getLocalData());
+  static Future<Response> uploadData() async {
+    return await HC.post("/updata", data: await AyncService.getLocalData());
   }
 
   static Future<Map<String, dynamic>> _getServiceData() async {

@@ -178,7 +178,7 @@ class _CalendarPageState extends State<CalendarPage>
               rad: pi,
               curve: Curves.linear,
               child:
-                  Icon(Icons.arrow_drop_up, size: 50, color: TD.td.accentColor),
+                  Icon(Icons.arrow_drop_down, size: 50, color: TD.td.accentColor),
               onTap: () {
                 setState(() {
                   if (CalendarPage._calendarController.calendarFormat ==

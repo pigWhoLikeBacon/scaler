@@ -136,8 +136,8 @@ class DialogUtils {
             borderRadius: BorderRadius.all(Radius.circular(8.0)),
           ),
           child: Text(text, style: TextStyle(color: Colors.red)),
-          onPressed: () {
-            function();
+          onPressed: () async {
+            await function();
             dialog.dismiss();
           },
         ),

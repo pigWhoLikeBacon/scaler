@@ -126,7 +126,7 @@ class LoginPageState extends State<LoginPage> {
     Response response = await HC.post("/login", data: formData);
 
     if (response?.statusCode == 200) {
-      ToastUtils.show(response?.data.toString());
+      ToastUtils.show('Login success!');
       Navigator.of(context)..pop()..pop()..pop();
     }
     else Navigator.of(context).pop();

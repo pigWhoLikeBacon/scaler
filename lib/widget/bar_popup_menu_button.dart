@@ -1,8 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:scaler/back/service/aync_service.dart';
 import 'package:scaler/navigator/tab_navigator.dart';
 import 'package:scaler/util/aync_utils.dart';
 import 'package:scaler/util/dialog_utils.dart';
+
+import '../util/toast_utils.dart';
 
 class BarPopupMenuButton extends StatelessWidget {
 
@@ -31,17 +34,27 @@ class BarPopupMenuButton extends StatelessWidget {
         // 点击选项的时候
         switch (action) {
           case '0': {
-            AyncUtils.uploadData();
-            DialogUtils.showLoader(context, 'Uploading...');
-            await AyncUtils.uploadData();
-            Navigator.of(context).pop();
+            DialogUtils.editYYBottomSheetDialog(
+                'Delete this item permanently', () async {
+              DialogUtils.showLoader(context, 'Uploading...');
+              AyncUtils.uploadData();
+              Response response = await AyncUtils.uploadData();
+              if (response?.statusCode == 200)
+                ToastUtils.show(response?.data.toString());
+              Navigator.of(context).pop();
+            });
             break;
           }
           case '1': {
-            DialogUtils.showLoader(context, 'Loading and rebuilding...');
-            await AyncUtils.downloadDataAndSave();
-            await TabNavigator.loadData(context);
-            Navigator.of(context).pop();
+            DialogUtils.editYYBottomSheetDialog(
+                'Delete this item permanently', () async {
+              DialogUtils.showLoader(context, 'Loading and rebuilding...');
+              Response response = await AyncUtils.downloadDataAndSave();
+              await TabNavigator.loadData(context);
+              if (response?.statusCode == 200)
+                ToastUtils.show(response?.data.toString());
+              Navigator.of(context).pop();
+            });
             break;
           }
         }

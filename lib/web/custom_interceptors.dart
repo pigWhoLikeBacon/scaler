@@ -19,7 +19,6 @@ class CustomInterceptors extends InterceptorsWrapper {
     print("RESPONSE[${response?.statusCode}] => PATH: ${response?.request?.path}");
 
     CookieAction.save(response);
-    ToastUtils.show(response?.data.toString());
     print(response?.data.toString());
 
 //    bool cond1 = statusCode == 302;

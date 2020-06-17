@@ -52,4 +52,13 @@ abstract class Config {
     });
     init();
   }
+
+  static logout() {
+    Configs.forEach((key, value) {
+      bool cond1 = key == config_username;
+      bool cond2 = key == config_cookie;
+      if (cond1 || cond2) SP.remove(key);
+    });
+    init();
+  }
 }

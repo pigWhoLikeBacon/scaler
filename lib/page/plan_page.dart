@@ -145,7 +145,7 @@ class _PlanPageState extends State<PlanPage>{
 
       activePlans.removeWhere((e) {
         Plan t = e;
-        return e.id == plan.id;
+        return t.id == plan.id;
       });
 
       activePlans.add(plan);

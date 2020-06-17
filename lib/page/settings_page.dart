@@ -39,20 +39,41 @@ class _SettingsPageState extends State<SettingsPage> {
             ListTile(
               leading: Icon(Icons.account_box),
               title: Text(
-                'Stay Logged In',
+                'Logout',
                 textScaleFactor: Config.get(config_textScaleFactor),
               ),
               subtitle: Text(
-                'Logout from the Main Menu',
+                'Clear local user and cookie',
                 textScaleFactor: Config.get(config_textScaleFactor),
               ),
+              onTap: () {
+                _logout();
+              },
             ),
-            Container(
-              height: 10.0,
+            Divider(height: 20.0),
+            ListTile(
+              title: Text('Boy next door!'),
+              trailing: CupertinoSwitch(
+                activeColor: Colors.deepOrange[400],
+                value: Config.get(config_themeKey) == 'dark' ? true : false, //当前状态
+                onChanged: (value) {
+                  _changeBrightness();
+                },
+              ),
             ),
+            Container(height: 10.0,),
             Divider(height: 0),
             ExpansionTile(
-                title: Text('Base url:   ' + Config.get(config_baseUrl)),
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(height: 10,),
+                    Container(height: 10.0,),
+                    Text('Base url:   ' + Config.get(config_baseUrl)),
+                    SizedBox(height: 10,),
+                    Container(height: 10.0,),
+                  ],
+                ),
                 initiallyExpanded: false,
                 children: <Widget> [
                   Form(
@@ -90,33 +111,23 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
             ),
             Divider(height: 0),
-            Container(
-              height: 10.0,
-            ),
-            ListTile(
-              title: Text('Boy next door!'),
-              trailing: CupertinoSwitch(
-                activeColor: Colors.deepOrange[400],
-                value: Config.get(config_themeKey) == 'dark' ? true : false, //当前状态
-                onChanged: (value) {
-                  _changeBrightness();
-                },
-              ),
-            ),
-            Divider(height: 20.0),
+            Container(height: 10.0,),
             ListTile(
               title: Text('Reset Settings'),
               onTap: () {
-                setState(() {
-                  Config.initDeleteConfigs();
-                  DynamicTheme.of(context).setThemeData(TD.td);
-                });
+                _reset();
               },
             ),
           ],
         ),
       )),
     );
+  }
+
+  void _logout() {
+    setState(() {
+      Config.logout();
+    });
   }
 
   void _editBaseUrl() {
@@ -140,5 +151,12 @@ class _SettingsPageState extends State<SettingsPage> {
         DynamicTheme.of(context).setThemeData(TD.td);
       });
     }
+  }
+
+  void _reset() {
+    setState(() {
+      Config.initDeleteConfigs();
+      DynamicTheme.of(context).setThemeData(TD.td);
+    });
   }
 }
