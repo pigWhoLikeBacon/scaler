@@ -52,6 +52,7 @@ class _CalendarPageState extends State<CalendarPage>
   @override
   void initState() {
     CalendarPage._calendarController = CalendarController();
+//    CalendarPage._calendarController.setCalendarFormat(CalendarFormat.month);
 
     _animationController = AnimationController(
       vsync: this,
@@ -105,24 +106,33 @@ class _CalendarPageState extends State<CalendarPage>
           // Switch out 2 lines below to play with TableCalendar's settings
           //-----------------------
           TableCalendar(
+            initialCalendarFormat: CalendarFormat.week,
+            availableCalendarFormats: {
+              CalendarFormat.week: 'Month',
+              CalendarFormat.month: 'Week',
+            },
             calendarController: CalendarPage._calendarController,
             events: context.watch<Global>().events,
             holidays: _holidays,
             startingDayOfWeek: StartingDayOfWeek.monday,
             calendarStyle: CalendarStyle(
-//              selectedColor: Colors.deepOrange[400],
-//              todayColor: Colors.deepOrange[200],
-//              markersColor: Colors.brown[700],
               selectedColor: TD.selectedColor,
               todayColor: TD.todayColor,
               markersColor: TD.markersColor,
-              outsideDaysVisible: false,
+
+//              outsideWeekendStyle: TextStyle(
+//                  color: Colors.cyan[200]
+//              ),
+//              weekendStyle: TextStyle(
+//                  color: Colors.cyan
+//              ),
+              outsideDaysVisible: true,
             ),
             headerStyle: HeaderStyle(
               formatButtonTextStyle:
                   TextStyle().copyWith(color: Colors.white, fontSize: 15.0),
               formatButtonDecoration: BoxDecoration(
-                color: Colors.deepOrange[400],
+                color: TD.td.accentColor,
                 borderRadius: BorderRadius.circular(16.0),
               ),
             ),
@@ -151,7 +161,9 @@ class _CalendarPageState extends State<CalendarPage>
             alignment: Alignment.centerLeft,
             child: RaisedButton(
               child: Text(
-                  'Set day ${dateTime.day}-${dateTime.month}-${dateTime.year}'),
+                'Set day ${dateTime.day}-${dateTime.month}-${dateTime.year}',
+                style: TextStyle(color: Colors.white),
+              ),
               onPressed: () {
                 CalendarPage._calendarController.setSelectedDay(
                   DateTime(dateTime.year, dateTime.month, dateTime.day),
@@ -206,7 +218,7 @@ class _CalendarPageState extends State<CalendarPage>
               child: Container(
 //            margin: const EdgeInsetsDirectional.only(start: 2, end: 2, top: 2, bottom: 2),
                 decoration: BoxDecoration(
-                  color: TD.td.cardColor, // BorderRadius
+                  color: TD.contentColor, // BorderRadius
                 ),
                 child: Column(
                   children: _planList,
@@ -273,7 +285,9 @@ class _CalendarPageState extends State<CalendarPage>
                   }),
                 );
               },
-              child: Text('Edit'),
+              child: Text('Edit',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
         ),
@@ -288,8 +302,6 @@ class _CalendarPageState extends State<CalendarPage>
       ..addAll(_eventList)
       ..addAll(_logList);
 
-    print(TD.td.cardColor);
-
     return ListView(children: _totalList);
   }
 
@@ -302,7 +314,7 @@ class _CalendarPageState extends State<CalendarPage>
             child: Container(
 //            margin: const EdgeInsetsDirectional.only(start: 2, end: 2, top: 2, bottom: 2),
               decoration: BoxDecoration(
-                color: TD.td.cardColor, // BorderRadius
+                color: TD.contentColor, // BorderRadius
               ),
               child: ListTile(
                 title: Text(text),

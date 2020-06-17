@@ -7,6 +7,7 @@ import 'package:scaler/back/service/day_service.dart';
 import 'package:scaler/global/global.dart';
 import 'package:scaler/util/dialog_utils.dart';
 import 'package:provider/provider.dart';
+import 'package:scaler/util/toast_utils.dart';
 
 
 class EditLogPage extends StatefulWidget {
@@ -133,7 +134,7 @@ class _EditLogPageState extends State<EditLogPage> {
     }
 
     Navigator.of(context).pop();
-    DialogUtils.showTextDialog(context, 'Successfully edited!');
+    ToastUtils.show('Edit success!');
 //    print(await DB.query(tableDay));
   }
 }

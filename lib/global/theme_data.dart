@@ -16,6 +16,11 @@ final Map<String, ThemeData> themes = {
   )
 };
 
+final Map<String, Color> contentColors = {
+  'light' : Colors.blue[100],
+  'dark' : Colors.white12,
+};
+
 final Map<String, Color> logFrameColors = {
   'light' : Colors.cyan,
   'dark' : Colors.deepOrange[400],
@@ -42,13 +47,14 @@ final Map<String, Color> todayColors = {
 };
 
 final Map<String, Color> markersColors = {
-  'light' : Colors.brown[700],
+  'light' : Colors.black54,
   'dark' : Colors.white70,
 };
 
 abstract class TD {
   static ThemeData td;
 
+  static Color contentColor;
   static Color logFrameColor;
   static Color buttonTextColor;
   static Color selectedColor;
@@ -58,6 +64,7 @@ abstract class TD {
 
   static init() {
     td = themes[Config.get(config_themeKey)];
+    contentColor = contentColors[Config.get(config_themeKey)];
     logFrameColor = logFrameColors[Config.get(config_themeKey)];
     buttonTextColor = buttonTextColors[Config.get(config_themeKey)];
     selectedColor = selectedColors[Config.get(config_themeKey)];

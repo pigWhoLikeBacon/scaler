@@ -55,7 +55,7 @@ class CalendarEventState extends State<CalendarEvent> {
           child: Container(
 //            margin: const EdgeInsetsDirectional.only(start: 2, end: 2, top: 2, bottom: 2),
             decoration: BoxDecoration(
-              color: TD.td.cardColor, // BorderRadius
+              color: TD.contentColor, // BorderRadius
             ),
             child: ExpansionTile(
               title: ListTile(

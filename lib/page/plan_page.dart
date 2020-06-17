@@ -3,6 +3,7 @@ import 'package:scaler/back/database/db.dart';
 import 'package:scaler/back/entity/plan.dart';
 import 'package:scaler/back/service/plan_service.dart';
 import 'package:scaler/global/global.dart';
+import 'package:scaler/global/theme_data.dart';
 import 'package:scaler/util/dialog_utils.dart';
 import 'package:scaler/util/toast_utils.dart';
 import 'package:scaler/widget/bar_popup_menu_button.dart';
@@ -45,62 +46,67 @@ class _PlanPageState extends State<PlanPage>{
     final _formKey = GlobalKey<FormState>();
 
     return Container(
-        decoration: BoxDecoration(
-          border: Border.all(width: 0.8),
+      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      child:
+      ClipRRect(
           borderRadius: BorderRadius.circular(12.0),
-        ),
-        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-        child: ExpansionTile(
-//            key: new PageStorageKey<Entry>(root),
-          title: new Text(plan.content),
-          initiallyExpanded: false,
-          children: <Widget> [
-            Form(
-              key: _formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ListTile(
-                    title: TextFormField(
-                      maxLines: 3,
-                      minLines: 1,
-                      decoration: InputDecoration(labelText: 'Content'),
-                      validator: (val) =>
-                      val.length < 1 ? 'Content Required' : null,
-                      onSaved: (val) => _content = val,
-                      obscureText: false,
-                      keyboardType: TextInputType.text,
-                      autocorrect: false,
-                    ),
-                  ),
-                ],
-              ),
+          child: Container(
+//            margin: const EdgeInsetsDirectional.only(start: 2, end: 2, top: 2, bottom: 2),
+            decoration: BoxDecoration(
+              color: TD.contentColor, // BorderRadius
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                FlatButton(
-                    textColor: Colors.red,
-                    child: Text('Delete'),
-                    onPressed: () {
-                      DialogUtils.editYYBottomSheetDialog(
-                          'Delete this item permanently', () {
-                        _delete(plan);
-                      });
-                    }),
-                FlatButton(
-                    child: Text('Edit'),
-                    onPressed: () {
-                      _formKey.currentState.save();
-                      DialogUtils.editYYBottomSheetDialog(
-                          'Edit this item permanently', () {
-                        _edit(plan, _content);
-                      });
-                    })
+            child: ExpansionTile(
+//            key: new PageStorageKey<Entry>(root),
+              title: new Text(plan.content),
+              initiallyExpanded: false,
+              children: <Widget> [
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      ListTile(
+                        title: TextFormField(
+                          maxLines: 3,
+                          minLines: 1,
+                          decoration: InputDecoration(labelText: 'Content'),
+                          validator: (val) =>
+                          val.length < 1 ? 'Content Required' : null,
+                          onSaved: (val) => _content = val,
+                          obscureText: false,
+                          keyboardType: TextInputType.text,
+                          autocorrect: false,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    FlatButton(
+                        textColor: Colors.red,
+                        child: Text('Delete'),
+                        onPressed: () {
+                          DialogUtils.editYYBottomSheetDialog(
+                              'Delete this item permanently', () {
+                            _delete(plan);
+                          });
+                        }),
+                    FlatButton(
+                        child: Text('Edit'),
+                        onPressed: () {
+                          _formKey.currentState.save();
+                          DialogUtils.editYYBottomSheetDialog(
+                              'Edit this item permanently', () {
+                            _edit(plan, _content);
+                          });
+                        })
+                  ],
+                ),
               ],
             ),
-          ],
-        )
+          )),
     );
   }
 

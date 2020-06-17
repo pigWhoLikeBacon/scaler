@@ -46,7 +46,9 @@ abstract class Config {
 
   static initDeleteConfigs() {
     Configs.forEach((key, value) {
-      SP.remove(key);
+      bool cond1 = key == config_username;
+      bool cond2 = key == config_cookie;
+      if (!cond1 && !cond2) SP.remove(key);
     });
     init();
   }

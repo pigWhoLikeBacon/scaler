@@ -10,6 +10,7 @@ import 'package:scaler/global/global.dart';
 import 'package:scaler/global/theme_data.dart';
 import 'package:scaler/navigator/tab_navigator.dart';
 import 'package:scaler/util/dialog_utils.dart';
+import 'package:scaler/util/toast_utils.dart';
 import 'package:scaler/widget/simple_round_button.dart';
 
 // ignore_for_file: public_member_api_docs, lines_longer_than_80_chars
@@ -175,7 +176,7 @@ class AddEventItemState extends State<AddEventItem> {
     });
 
     Navigator.of(context).pop();
-    DialogUtils.showTextDialog(context, info);
+    ToastUtils.show('Add success!');
     dropdownMenuController.hide();
 //    print(await DB.query(tableEvent));
   }

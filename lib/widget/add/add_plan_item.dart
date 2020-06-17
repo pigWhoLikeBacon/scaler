@@ -10,6 +10,7 @@ import 'package:scaler/global/global.dart';
 import 'package:scaler/global/theme_data.dart';
 import 'package:scaler/navigator/tab_navigator.dart';
 import 'package:scaler/util/dialog_utils.dart';
+import 'package:scaler/util/toast_utils.dart';
 import 'package:scaler/widget/simple_round_button.dart';
 import 'package:provider/provider.dart';
 
@@ -111,7 +112,7 @@ class AddPlanItemState extends State<AddPlanItem> {
     });
 
     Navigator.of(context).pop();
-    DialogUtils.showTextDialog(context, 'Successfully added!');
+    ToastUtils.show('Add success!');
     dropdownMenuController.hide();
 //    print(await DB.query(tablePlan));
 //    print(await DB.query(tableDayPlan));

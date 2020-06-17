@@ -72,24 +72,52 @@ class DialogUtils {
     );
   }
 
-  static void showTextDialog(BuildContext context, String text) {
-    var dialog = CupertinoAlertDialog(
-      content: Text(
-        text,
-        style: TextStyle(fontSize: 20),
-      ),
-      actions: <Widget>[
-        CupertinoButton(
-          child: Text("OK"),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ],
-    );
-
-    showDialog(context: context, builder: (_) => dialog);
+  static YYDialog YYAlertDialog(String text) {
+    return YYDialog().build()
+      ..width = 220
+      ..borderRadius = 4.0
+      ..text(
+        padding: EdgeInsets.all(25.0),
+        alignment: Alignment.center,
+        text: text,
+        color: Colors.black,
+        fontSize: 14.0,
+        fontWeight: FontWeight.w500,
+      )
+      ..divider()
+      ..doubleButton(
+        padding: EdgeInsets.only(top: 10.0),
+        gravity: Gravity.center,
+        withDivider: true,
+        text1: "OK",
+        color1: Colors.redAccent,
+        fontSize1: 14.0,
+        fontWeight1: FontWeight.bold,
+        onTap1: () {
+          print("OK");
+        },
+      )
+      ..show();
   }
+
+//  static void showTextDialog(BuildContext context, String text) {
+//    var dialog = CupertinoAlertDialog(
+//      content: Text(
+//        text,
+//        style: TextStyle(fontSize: 20),
+//      ),
+//      actions: <Widget>[
+//        CupertinoButton(
+//          child: Text("OK"),
+//          onPressed: () {
+//            Navigator.pop(context);
+//          },
+//        ),
+//      ],
+//    );
+//
+//    showDialog(context: context, builder: (_) => dialog);
+//  }
 
   static YYDialog editYYBottomSheetDialog(String text, Function function) {
     YYDialog dialog = YYDialog();

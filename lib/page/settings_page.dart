@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scaler/global/config.dart';
 import 'package:scaler/global/theme_data.dart';
+import 'package:scaler/util/dialog_utils.dart';
 
 
 class SettingsPage extends StatefulWidget {
@@ -15,9 +16,12 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  String _baseUrl;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -43,14 +47,59 @@ class _SettingsPageState extends State<SettingsPage> {
                 textScaleFactor: Config.get(config_textScaleFactor),
               ),
             ),
-            Divider(height: 20.0),
+            Container(
+              height: 10.0,
+            ),
+            Divider(height: 0),
+            ExpansionTile(
+                title: Text('Base url:   ' + Config.get(config_baseUrl)),
+                initiallyExpanded: false,
+                children: <Widget> [
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        ListTile(
+                          title: TextFormField(
+                            initialValue: Config.get(config_baseUrl),
+                            maxLines: 3,
+                            minLines: 1,
+                            decoration: InputDecoration(labelText: 'BaseUrl'),
+                            validator: (val) =>
+                            val.length < 1 ? 'Content Required' : null,
+                            onSaved: (val) => _baseUrl = val,
+                            obscureText: false,
+                            keyboardType: TextInputType.text,
+                            autocorrect: false,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      FlatButton(
+                          child: Text('Edit'),
+                          onPressed: () {
+                            _editBaseUrl();
+                          })
+                    ],
+                  ),
+                ],
+            ),
+            Divider(height: 0),
+            Container(
+              height: 10.0,
+            ),
             ListTile(
               title: Text('Boy next door!'),
               trailing: CupertinoSwitch(
                 activeColor: Colors.deepOrange[400],
                 value: Config.get(config_themeKey) == 'dark' ? true : false, //当前状态
                 onChanged: (value) {
-                  changeBrightness();
+                  _changeBrightness();
                 },
               ),
             ),
@@ -70,7 +119,14 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  void changeBrightness() {
+  void _editBaseUrl() {
+    _formKey.currentState.save();
+    setState(() {
+      Config.set(config_baseUrl, _baseUrl);
+    });
+  }
+
+  void _changeBrightness() {
     if (Theme.of(context).brightness != Brightness.light) {
       setState(() {
         Config.set(config_themeKey, 'light');
