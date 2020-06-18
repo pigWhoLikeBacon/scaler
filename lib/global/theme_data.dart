@@ -7,7 +7,6 @@ final Map<String, ThemeData> themes = {
     primaryColor: Colors.blue,
     buttonColor: Colors.blue,
     brightness: Brightness.light,
-    cardColor: Colors.blue[100],
   ),
   'dark' : ThemeData(
     accentColor: Colors.deepOrange[400],

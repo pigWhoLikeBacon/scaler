@@ -7,10 +7,12 @@ import 'dart:convert' as convert;
 class AyncUtils {
   static Future<Response> downloadDataAndSave() async {
     Response response = await HC.get('/downdata');
-    Map<String, dynamic> map = Map<String, dynamic>()
+    Map<String, dynamic> map = Map<String, dynamic>();
     if (response?.statusCode == 200) {
       Map<String, dynamic> map2 = Map<String, dynamic>.from(response?.data);
-      map = convert.jsonDecode(map['data']);
+//      print("map['data']");
+//      print(map['data']);
+      map = convert.jsonDecode(map2['data']);
       return await AyncService.saveServiceData(map);
     } else {
       return null;
