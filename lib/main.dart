@@ -1,23 +1,29 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flare_splash_screen/flare_splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:scaler/navigator/tab_navigator.dart';
 import 'package:scaler/util/aync_utils.dart';
 import 'package:scaler/web/http.dart';
+import 'package:scaler/widget/restart_widget.dart';
 
 import 'back/database/db.dart';
 import 'back/database/sp.dart';
 import 'back/service/day_service.dart';
 import 'global/config.dart';
-import 'global/config.dart';
-import 'global/config.dart';
-import 'global/config.dart';
 import 'global/global.dart';
 import 'global/theme_data.dart';
 
 void main() async {
+  init();
+  runApp(MyApp());
+}
+
+Future<void> init() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SP.init();
   await DB.init();
@@ -25,16 +31,14 @@ void main() async {
   TD.init();
   await HC.init();
   await DayService.initDays();
-  print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-  print(Config.get(config_username));
-  print(Config.get(config_cookie));
-//  Sqflite.devSetDebugModeOn(true);
-  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => new _MyAppState();
+}
 
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return RestartWidget(
@@ -61,42 +65,5 @@ class MyApp extends StatelessWidget {
                     )),
               );
             }));
-  }
-}
-
-///这个组件用来重新加载整个child Widget的。当我们需要重启APP的时候，可以使用这个方案
-///https://stackoverflow.com/questions/50115311/flutter-how-to-force-an-application-restart-in-production-mode
-class RestartWidget extends StatefulWidget {
-  final Widget child;
-
-  RestartWidget({Key key, @required this.child})
-      : assert(child != null),
-        super(key: key);
-
-  static restartApp(BuildContext context) {
-    final _RestartWidgetState state =
-        context.ancestorStateOfType(const TypeMatcher<_RestartWidgetState>());
-    state.restartApp();
-  }
-
-  @override
-  _RestartWidgetState createState() => _RestartWidgetState();
-}
-
-class _RestartWidgetState extends State<RestartWidget> {
-  Key key = UniqueKey();
-
-  void restartApp() {
-    setState(() {
-      key = UniqueKey();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      key: key,
-      child: widget.child,
-    );
   }
 }
