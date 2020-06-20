@@ -49,11 +49,17 @@ class BarPopupMenuButton extends StatelessWidget {
             DialogUtils.editYYBottomSheetDialog(
                 'Download', () async {
               DialogUtils.showLoader(context, 'Loading and rebuilding...');
-              Response response = await AyncUtils.downloadDataAndSave();
-              await TabNavigator.loadData(context);
-              if (response?.statusCode == 200)
-                ToastUtils.show(response?.data.toString());
-              Navigator.of(context).pop();
+              try {
+                Response response = await AyncUtils.downloadDataAndSave();
+                await TabNavigator.loadData(context);
+                if (response?.statusCode == 200)
+                  ToastUtils.show(response?.data.toString());
+                Navigator.of(context).pop();
+              } catch (e) {
+                print(e.toString());
+                ToastUtils.show(e.toString());
+                Navigator.of(context).pop();
+              }
             });
             break;
           }
