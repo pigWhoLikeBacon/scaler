@@ -34,7 +34,7 @@ Future<void> init() async {
   await SP.init();
   await DB.init();
   Config.init();
-  TD.init();
+  await TD.init();
   await HC.init();
   await DayService.initDays();
 }
