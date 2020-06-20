@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:scaler/back/service/aync_service.dart';
-import 'package:scaler/navigator/tab_navigator.dart';
 import 'package:scaler/util/aync_utils.dart';
 import 'package:scaler/util/dialog_utils.dart';
 
+import '../tab_navigator.dart';
 import '../util/toast_utils.dart';
 
 class BarPopupMenuButton extends StatelessWidget {

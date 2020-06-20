@@ -8,7 +8,7 @@ import 'package:scaler/back/entity/event.dart';
 import 'package:scaler/back/service/day_service.dart';
 import 'package:scaler/global/global.dart';
 import 'package:scaler/global/theme_data.dart';
-import 'package:scaler/navigator/tab_navigator.dart';
+import 'file:///C:/Users/hhd/Documents/GitHub/scaler/lib/tab_navigator.dart';
 import 'package:scaler/util/dialog_utils.dart';
 import 'package:scaler/util/toast_utils.dart';
 import 'package:scaler/widget/simple_round_button.dart';

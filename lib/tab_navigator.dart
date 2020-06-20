@@ -13,7 +13,7 @@ import 'package:scaler/page/plan_page.dart';
 import 'package:scaler/widget/add/add_widget.dart';
 import 'package:provider/provider.dart';
 
-import '../global/theme_data.dart';
+import 'global/theme_data.dart';
 
 GZXDropdownMenuController dropdownMenuController;
 
