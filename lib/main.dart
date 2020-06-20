@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:background_fetch/background_fetch.dart';
 import 'package:dio/dio.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flare_splash_screen/flare_splash_screen.dart';
@@ -12,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:scaler/navigator/tab_navigator.dart';
 import 'package:scaler/util/aync_utils.dart';
 import 'package:scaler/util/background_fetch_utils.dart';
+import 'package:scaler/util/jpush_utils.dart';
 import 'package:scaler/web/http.dart';
 import 'package:scaler/widget/restart_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,47 +23,9 @@ import 'global/config.dart';
 import 'global/global.dart';
 import 'global/theme_data.dart';
 
-const EVENTS_KEY = "fetch_events";
-
-
-/// This "Headless Task" is run when app is terminated.
-void backgroundFetchHeadlessTask(String taskId) async {
-  print("[BackgroundFetch] Headless event received: $taskId");
-  DateTime timestamp = DateTime.now();
-
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-
-  // Read fetch_events from SharedPreferences
-  List<String> events = [];
-  String json = prefs.getString(EVENTS_KEY);
-  if (json != null) {
-    events = jsonDecode(json).cast<String>();
-
-  }
-  // Add new event.
-  events.insert(0, "$taskId@$timestamp [Headless]");
-  // Persist fetch events in SharedPreferences
-  prefs.setString(EVENTS_KEY, jsonEncode(events));
-
-  BackgroundFetch.finish(taskId);
-
-  if (taskId == 'flutter_background_fetch') {
-    BackgroundFetch.scheduleTask(TaskConfig(
-        taskId: "com.transistorsoft.customtask",
-        delay: 5000,
-        periodic: false,
-        forceAlarmManager: true,
-        stopOnTerminate: false,
-        enableHeadless: true
-    ));
-  }
-}
-
 void main() async {
   init();
   runApp(MyApp());
-
-//  BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
 }
 
 Future<void> init() async {
@@ -83,7 +45,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String debugLable = 'Unknown';
-  final JPush jpush = new JPush();
   @override
   void initState() {
     super.initState();
@@ -95,7 +56,7 @@ class _MyAppState extends State<MyApp> {
     String platformVersion;
 
     try {
-      jpush.addEventHandler(
+      JPushUtils.jpush.addEventHandler(
           onReceiveNotification: (Map<String, dynamic> message) async {
         print("flutter onReceiveNotification: $message");
       }, onOpenNotification: (Map<String, dynamic> message) async {
@@ -109,17 +70,17 @@ class _MyAppState extends State<MyApp> {
       platformVersion = 'Failed to get platform version.';
     }
 
-    jpush.setup(
+    JPushUtils.jpush.setup(
 //      appKey: "e58a32cb3e4469ebf31867e5", //你自己应用的 AppKey
       channel: "theChannel",
       production: false,
       debug: true,
     );
-    jpush.applyPushAuthority(
+    JPushUtils.jpush.applyPushAuthority(
         new NotificationSettingsIOS(sound: true, alert: true, badge: true));
 
     // Platform messages may fail, so we use a try/catch PlatformException.
-    jpush.getRegistrationID().then((rid) {
+    JPushUtils.jpush.getRegistrationID().then((rid) {
       print("flutter get registration id : $rid");
       setState(() {
         debugLable = "flutter getRegistrationID: $rid";
@@ -133,23 +94,6 @@ class _MyAppState extends State<MyApp> {
 
     setState(() {
       debugLable = platformVersion;
-    });
-
-    var fireDate = DateTime.fromMillisecondsSinceEpoch(
-        DateTime.now().millisecondsSinceEpoch);
-    var localNotification = LocalNotification(
-        id: 234,
-        title: 'fadsfa',
-        buildId: 1,
-        content: 'fdas',
-        fireTime: fireDate,
-        subtitle: 'fasf',
-        badge: 5,
-        extra: {"fa": "0"});
-    jpush.sendLocalNotification(localNotification).then((res) {
-      setState(() {
-        debugLable = res;
-      });
     });
   }
 
