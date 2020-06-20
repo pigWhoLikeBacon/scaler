@@ -33,7 +33,7 @@ Future<void> init() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SP.init();
   await DB.init();
-  Config.init();
+  await Config.init();
   await TD.init();
   await HC.init();
   await DayService.initDays();
