@@ -5,6 +5,8 @@ import 'package:scaler/page/login_page.dart';
 import 'package:scaler/page/settings_page.dart';
 import 'package:scaler/util/user_utils.dart';
 
+import '../global/config.dart';
+
 
 class DrawerWidget extends StatelessWidget {
   @override
@@ -46,7 +48,7 @@ class DrawerWidget extends StatelessWidget {
                 'Logout',
                 textScaleFactor: Config.get(config_textScaleFactor),
               ),
-//              onTap: () => _auth.logout(),
+              onTap: () => Config.logout(),
             ),
           ],
         ),
