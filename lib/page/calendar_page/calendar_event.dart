@@ -90,7 +90,7 @@ class CalendarEventState extends State<CalendarEvent> {
                             setState(() {
                               _dateTime = data;
                             });
-                            print(_dateTime);
+//                            print(_dateTime);
                           }, currentTime: _dateTime, locale: LocaleType.en);
                         },
                         child: Padding(
@@ -184,7 +184,7 @@ class CalendarEventState extends State<CalendarEvent> {
       events[context.read<Global>().selectedDate].removeWhere((element) {
         Event event = element;
         bool flag = event.id == _event.id;
-        print(flag);
+//        print(flag);
         return flag;
       });
 
@@ -212,7 +212,7 @@ class CalendarEventState extends State<CalendarEvent> {
       events[context.read<Global>().selectedDate].removeWhere((element) {
         Event event = element;
         bool flag = event.id == _event.id;
-        print(flag);
+//        print(flag);
         return flag;
       });
 

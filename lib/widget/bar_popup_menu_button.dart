@@ -35,7 +35,7 @@ class BarPopupMenuButton extends StatelessWidget {
         switch (action) {
           case '0': {
             DialogUtils.editYYBottomSheetDialog(
-                'Delete this item permanently', () async {
+                'Upload', () async {
               DialogUtils.showLoader(context, 'Uploading...');
               AyncUtils.uploadData();
               Response response = await AyncUtils.uploadData();
@@ -47,7 +47,7 @@ class BarPopupMenuButton extends StatelessWidget {
           }
           case '1': {
             DialogUtils.editYYBottomSheetDialog(
-                'Delete this item permanently', () async {
+                'Download', () async {
               DialogUtils.showLoader(context, 'Loading and rebuilding...');
               Response response = await AyncUtils.downloadDataAndSave();
               await TabNavigator.loadData(context);

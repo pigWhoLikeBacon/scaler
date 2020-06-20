@@ -28,8 +28,6 @@ class DayService {
     }
 
     await setDay(DateTime.now());
-
-    print('initDays()');
   }
 
   static Future<Day> setDay(DateTime dateTime) async {

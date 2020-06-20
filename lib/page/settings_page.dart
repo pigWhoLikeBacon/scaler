@@ -5,6 +5,8 @@ import 'package:scaler/global/config.dart';
 import 'package:scaler/global/theme_data.dart';
 import 'package:scaler/util/dialog_utils.dart';
 
+import '../web/http.dart';
+
 
 class SettingsPage extends StatefulWidget {
   SettingsPage({Key key, this.title}) : super(key: key);
@@ -135,6 +137,7 @@ class _SettingsPageState extends State<SettingsPage> {
     setState(() {
       Config.set(config_baseUrl, _baseUrl);
     });
+    HC.init();
   }
 
   void _changeBrightness() {

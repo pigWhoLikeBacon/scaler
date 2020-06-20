@@ -111,7 +111,7 @@ class _PlanPageState extends State<PlanPage>{
   }
 
   _delete(Plan plan) async {
-    print('delete');
+//    print('delete');
     plan.isActive = 0;
     await DB.save(tablePlan, plan);
 

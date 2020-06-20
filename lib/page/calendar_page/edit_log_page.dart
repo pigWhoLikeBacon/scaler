@@ -63,7 +63,7 @@ class _EditLogPageState extends State<EditLogPage> {
                             onConfirm: (data) {
                               setState(() {
                                 _date = data;
-                                print(_date);
+//                                print(_date);
                               });
                             },
                             currentTime: _date,

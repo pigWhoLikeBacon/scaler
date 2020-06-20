@@ -14,7 +14,7 @@ abstract class HC {
       receiveTimeout: Config.get(config_receiveTimeout),
 //      contentType: Headers.formUrlEncodedContentType,
       validateStatus: (status) {
-        print(status);
+//        print(status);
 
         bool cond1 = status == 200;
         bool cond2 = status == 302;

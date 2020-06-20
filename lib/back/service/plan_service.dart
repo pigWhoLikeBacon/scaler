@@ -15,7 +15,7 @@ class PlanService {
   }
 
   static Future<List<Plan>> getActivePlans() async {
-    print(await DB.query(tablePlan));
+//    print(await DB.query(tablePlan));
 
     List<Plan> plans = [];
     var list = await DB.find(tablePlan, Plan_isActive, '1');

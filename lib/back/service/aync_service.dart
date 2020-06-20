@@ -14,10 +14,10 @@ class AyncService {
     await DB.initDeleteDb();
 
     map.forEach((key, value) async {
-      print('key.toString()');
-      print(key.toString());
-      print('value.toString()');
-      print(value.toString());
+//      print('key.toString()');
+//      print(key.toString());
+//      print('value.toString()');
+//      print(value.toString());
 
       String tableName = key;
       List list = value;
