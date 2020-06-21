@@ -37,62 +37,62 @@ flutter 目前还没有比较完整的适用于中国的推送插件，
 
 ## 文件功能介绍
 
-lib
-├─back   操作客户端数据
-│ ├─database 
-│ │ ├─db.dart   存放sqflite实例
-│ │ └─sp.dart   存放shared_preferences实例
-│ ├─entity   存放实体类
-│ │ ├─base.dart 
-│ │ ├─day.dart 
-│ │ ├─day.g.dart 
-│ │ ├─day_plan.dart 
-│ │ ├─day_plan.g.dart 
-│ │ ├─event.dart 
-│ │ ├─event.g.dart 
-│ │ ├─plan.dart 
-│ │ └─plan.g.dart 
-│ └─service   伪服务层，存放部分服务
-│   ├─aync_service.dart 
-│   ├─day_plan_service.dart 
-│   ├─day_service.dart 
-│   ├─event_service.dart 
-│   └─plan_service.dart 
-├─global 
-│ ├─config.dart   存放cookie，username以及各种设置
-│ ├─global.dart   使用provider插件，存放全局变量
-│ └─theme_data.dart   存放当前使用的theme以及全部的theme
-├─main.dart 
-├─page   存放各种页面
-│ ├─calendar_page 
-│ │ ├─calendar_event.dart 
-│ │ ├─calendar_page.dart 
-│ │ ├─calendar_plan.dart 
-│ │ └─edit_log_page.dart 
-│ ├─login_page.dart 
-│ ├─plan_page.dart 
-│ └─settings_page.dart 
-├─tab_navigator.dart   底部导航栏
-├─util 
-│ ├─aync_utils.dart   用于于服务器同步数据
-│ ├─background_fetch_utils.dart   目前无用的文件，用于项目未来的拓展性
-│ ├─dialog_utils.dart   弹窗
-│ ├─jpush_utils.dart   目前无用的文件，用于项目未来的拓展性
-│ ├─toast_utils.dart   toast
-│ └─user_utils.dart   提供对于user的一些操作
-├─web   存放项目进行web操作的类
-│ ├─cookie_action.dart   存放对cookie的一些方法
-│ ├─custom_interceptors.dart   requset过滤器
-│ └─http.dart   存放dio的单体实例，会对请求的cookie做出类似于浏览器的操作
-└─widget 
-  ├─add   添加event和plan的widget
-  │ ├─add_event_item.dart 
-  │ ├─add_page.dart 
-  │ ├─add_plan_item.dart 
-  │ └─add_widget.dart 
-  ├─bar_popup_menu_button.dart   app右上角的widget
-  ├─cached_image.dart   目前无用的文件，用于项目未来的拓展性
-  ├─color_loader_2.dart 
-  ├─drawer_widget.dart   左菜单widget
-  ├─restart_widget.dart   用于重启app
-  └─simple_round_button.dart 
+lib  
+├─back   操作客户端数据  
+│ ├─database  
+│ │ ├─db.dart   存放sqflite实例  
+│ │ └─sp.dart   存放shared_preferences实例  
+│ ├─entity   存放实体类  
+│ │ ├─base.dart  
+│ │ ├─day.dart  
+│ │ ├─day.g.dart  
+│ │ ├─day_plan.dart  
+│ │ ├─day_plan.g.dart  
+│ │ ├─event.dart  
+│ │ ├─event.g.dart  
+│ │ ├─plan.dart  
+│ │ └─plan.g.dart  
+│ └─service   伪服务层，存放部分服务  
+│   ├─aync_service.dart  
+│   ├─day_plan_service.dart  
+│   ├─day_service.dart  
+│   ├─event_service.dart  
+│   └─plan_service.dart  
+├─global  
+│ ├─config.dart   存放cookie，username以及各种设置  
+│ ├─global.dart   使用provider插件，存放全局变量  
+│ └─theme_data.dart   存放当前使用的theme以及全部的theme  
+├─main.dart  
+├─page   存放各种页面  
+│ ├─calendar_page  
+│ │ ├─calendar_event.dart  
+│ │ ├─calendar_page.dart  
+│ │ ├─calendar_plan.dart  
+│ │ └─edit_log_page.dart  
+│ ├─login_page.dart  
+│ ├─plan_page.dart  
+│ └─settings_page.dart  
+├─tab_navigator.dart   底部导航栏  
+├─util  
+│ ├─aync_utils.dart   用于于服务器同步数据  
+│ ├─background_fetch_utils.dart   目前无用的文件，用于项目未来的拓展性  
+│ ├─dialog_utils.dart   弹窗  
+│ ├─jpush_utils.dart   目前无用的文件，用于项目未来的拓展性  
+│ ├─toast_utils.dart   toast  
+│ └─user_utils.dart   提供对于user的一些操作  
+├─web   存放项目进行web操作的类  
+│ ├─cookie_action.dart   存放对cookie的一些方法  
+│ ├─custom_interceptors.dart   requset过滤器  
+│ └─http.dart   存放dio的单体实例，会对请求的cookie做出类似于浏览器的操作  
+└─widget  
+  ├─add   添加event和plan的widget  
+  │ ├─add_event_item.dart  
+  │ ├─add_page.dart  
+  │ ├─add_plan_item.dart  
+  │ └─add_widget.dart  
+  ├─bar_popup_menu_button.dart   app右上角的widget  
+  ├─cached_image.dart   目前无用的文件，用于项目未来的拓展性  
+  ├─color_loader_2.dart  
+  ├─drawer_widget.dart   左菜单widget  
+  ├─restart_widget.dart   用于重启app  
+  └─simple_round_button.dart  
