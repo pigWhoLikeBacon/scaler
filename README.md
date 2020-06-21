@@ -16,6 +16,22 @@ For help getting started with Flutter, view our
 samples, guidance on mobile development, and a full API reference.
 
 
+## 介绍
+
+这是一个简单的，用于记录事件，日志，日常任务及其完成情况的app。
+
+这是博主的练手项目，市场上有很多类似的app。
+
+
+## 图片
+
+![image](https://github.com/pigWhoLikeBacon/scaler/blob/master/images/Screenshot_2020-06-21-13-40-34-173_com.example.sc.png)
+![image](https://github.com/pigWhoLikeBacon/scaler/blob/master/images/Screenshot_2020-06-21-13-40-34-173_com.example.sc.png)
+![image](https://github.com/pigWhoLikeBacon/scaler/blob/master/images/Screenshot_2020-06-21-13-40-34-173_com.example.sc.png)
+![image](https://github.com/pigWhoLikeBacon/scaler/blob/master/images/Screenshot_2020-06-21-13-40-34-173_com.example.sc.png)
+![image](https://github.com/pigWhoLikeBacon/scaler/blob/master/images/Screenshot_2020-06-21-13-40-34-173_com.example.sc.png)
+
+
 ## 服务器
 
 此项目服务器为scaler_web,项目地址：https://github.com/pigWhoLikeBacon/scaler_web
@@ -32,13 +48,13 @@ samples, guidance on mobile development, and a full API reference.
 
 flutter 目前还没有比较完整的适用于中国的推送插件，
 
-待各个插件完善后再添加此项功能
+待各个插件完善后再添加此项功能。
 
 
 ## 文件功能介绍
 
 lib  
-├─back   操作客户端数据  
+├─back   操作客户端底层数据  
 │ ├─database  
 │ │ ├─db.dart   存放sqflite实例  
 │ │ └─sp.dart   存放shared_preferences实例  
