@@ -25,7 +25,7 @@ import 'global/theme_data.dart';
 import 'util/jpush_utils.dart';
 
 void main() async {
-  init();
+  await init();
   runApp(MyApp());
 }
 
