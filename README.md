@@ -25,10 +25,8 @@ samples, guidance on mobile development, and a full API reference.
 
 ## 图片
 
-![image](https://github.com/pigWhoLikeBacon/scaler/blob/master/images/Screenshot_2020-06-21-13-40-34-173_com.example.sc.png)
-![image](https://github.com/pigWhoLikeBacon/scaler/blob/master/images/Screenshot_2020-06-21-13-40-34-173_com.example.sc.png)
-![image](https://github.com/pigWhoLikeBacon/scaler/blob/master/images/Screenshot_2020-06-21-13-40-34-173_com.example.sc.png)
-![image](https://github.com/pigWhoLikeBacon/scaler/blob/master/images/Screenshot_2020-06-21-13-40-34-173_com.example.sc.png)
+<image src="https://github.com/pigWhoLikeBacon/scaler/blob/master/images/Screenshot_2020-06-21-13-40-34-173_com.example.sc.png" width="200">
+
 ![image](https://github.com/pigWhoLikeBacon/scaler/blob/master/images/Screenshot_2020-06-21-13-40-34-173_com.example.sc.png)
 
 
