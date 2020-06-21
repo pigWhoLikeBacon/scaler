@@ -26,8 +26,10 @@ samples, guidance on mobile development, and a full API reference.
 ## 图片
 
 <image src="https://github.com/pigWhoLikeBacon/scaler/blob/master/images/Screenshot_2020-06-21-13-40-34-173_com.example.sc.png" width="200">
-
-![image](https://github.com/pigWhoLikeBacon/scaler/blob/master/images/Screenshot_2020-06-21-13-40-34-173_com.example.sc.png)
+<image src="https://github.com/pigWhoLikeBacon/scaler/blob/master/images/Screenshot_2020-06-21-13-40-37-677_com.example.sc.png" width="200">
+<image src="https://github.com/pigWhoLikeBacon/scaler/blob/master/images/Screenshot_2020-06-21-13-40-43-026_com.example.sc.png" width="200">
+<image src="https://github.com/pigWhoLikeBacon/scaler/blob/master/images/Screenshot_2020-06-21-13-40-45-512_com.example.sc.png" width="200">
+<image src="https://github.com/pigWhoLikeBacon/scaler/blob/master/images/Screenshot_2020-06-21-13-40-48-243_com.example.sc.png" width="200">
 
 
 ## 服务器
